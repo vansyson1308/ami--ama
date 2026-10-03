@@ -55,3 +55,18 @@ Times are Asia/Saigon, Sun 4 Oct 2026.
 - Sổ rẫy: 3 saved results persist after an offline reload, with consented thumbnails and "Chờ gửi" badges.
 - Hỏi người: `sms:?&body=[Ami Ama] Rẫy của tôi: …` pre-filled; Web Share with photo when supported.
 - Sizes (`node scripts/sizes.mjs`): precache **19.99 MB** (51 entries; ORT WASM 14.26, model 4.40, audio 0.65, app JS/CSS 0.33, samples 0.16, icons 0.18); gzip transfer estimate 8.66 MB.
+
+## M6 — Evidence + About + docs (02:45 → 03:00) ✅
+- Evidence screen reads `model_card.json`: field vs studio table, τ/T, size, "KHÔNG nhận ra" list, limits, datasets with licenses; plain-language abstain rule line. Fixed a CSS clash that misaligned the table.
+- Docs: DATA_CARD, MODEL_CARD (generated from reports by `ml/report_md.py`), RESPONSIBLE_AI (SPEC §8 checklist mapped to code + tests), LANGUAGE (Bahnar MMS TTS/ASR verified on Hugging Face; Ê Đê `rad` / Jarai `jra` have no MMS model; MMS is CC BY-NC 4.0).
+- §8 checklist: fixed library ✓ · calibrated τ + abstain tested ✓ · "Hỏi người" one tap ✓ · no brands/doses ✓ · on-device, no analytics, opt-in photo/GPS (default off), delete-all ✓ · shared/lost phone note ✓ · limitations in-app + docs ✓ · bias statement + feedback loop ✓.
+- Per-epoch checkpoint/resume verified on a 64-image smoke run (interrupted after epoch 0 → `--resume` → epochs 1–2; mismatched `--epochs` exits with a clear message).
+
+## M7 — prices, polish, quality (03:00 → 03:10) ✅ (except real-phone test)
+- Giá cà phê: snapshot table, "Không phải AI" banner, staleness warning ("cũ N ngày"), trader-offer difference đ/kg and %. Fixed a timezone bug that showed 14/9 instead of 15/9.
+- Lighthouse 12.8 (mobile, production build): **Performance 99 · Accessibility 100 · Best Practices 100**; FCP 1.5 s, LCP 1.9 s, TBT 0 ms, CLS 0.001 (`docs/lighthouse.json`). PWA installability via Chrome CDP (Lighthouse 12 dropped its PWA category).
+- README screenshot strip; acceptance checklist `docs/ACCEPTANCE.md`.
+- TODO(human): airplane-mode run on a real Android phone (ACCEPTANCE §A–C); merge PR #2 so production gets the model; optionally refresh `content/prices.vi.json`.
+
+## Next
+- M8: after PR #2 is merged → tag `v1.0` on `main`, confirm production badge reaches ✓.
