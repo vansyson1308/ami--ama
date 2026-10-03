@@ -84,12 +84,13 @@ export default function Result({ analysis, photo, settings }: { analysis: Analys
   const ask = async () => go('ask', await save());
 
   return (
-    <div className={`screen result kind-${d.kind}`} data-testid="result" data-kind={d.kind} data-card={cardId}>
+    <div className={`screen result kind-${d.kind}`} data-testid="result" data-kind={d.kind} data-card={cardId}
+      data-probs={d.kind !== 'retake' ? JSON.stringify(d.probs.map((p) => Number(p.toFixed(5)))) : undefined}>
       <div className="result-head">
         {photo && <img className="result-photo" src={photo} alt="" />}
         <div>
           <h1 data-testid="result-title">{c.title}</h1>
-          {conf && <p className={`conf conf-${confKind}`}>{conf}</p>}
+          {conf && d.kind !== 'abstain' && <p className={`conf conf-${confKind}`}>{conf}</p>}
         </div>
       </div>
       {maybe.length > 0 && (

@@ -157,3 +157,4 @@ test-results/
 playwright-report/
 public/ort/
 .venv/
+tools/tts/voices/
