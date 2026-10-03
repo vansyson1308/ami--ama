@@ -1,24 +1,24 @@
 {
  "args": {
   "arch": "mobilenetv3_large_100",
-  "epochs": 12,
-  "freeze_epochs": 2,
+  "epochs": 9,
+  "freeze_epochs": 1,
   "bs": 48,
   "workers": 3,
   "patience": 4,
-  "max_minutes": 75
+  "max_minutes": 120.0
  },
  "log": [
   {
    "epoch": 0,
    "frozen": true,
-   "train_loss": 2.935480518161126,
-   "val_macro_f1": 0.3466519925718162,
-   "val_rocole_macro_f1": 0.20516892043640458,
-   "val_acc": 0.35917496443812236,
-   "select_score": 0.2759104565041104,
-   "epoch_min": 4.18403012752533
+   "train_loss": 2.8178233878970027,
+   "val_macro_f1": 0.39830822466771065,
+   "val_rocole_macro_f1": 0.24952742221412702,
+   "val_acc": 0.4182076813655761,
+   "select_score": 0.32391782344091885,
+   "epoch_min": 6.663551314671834
   }
  ],
- "best_select_score": 0.2759104565041104
+ "best_select_score": 0.32391782344091885
 }
