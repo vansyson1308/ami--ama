@@ -28,6 +28,7 @@ html, body { margin: 0; background: var(--cream); min-height: 100%; }
 .badge { display: inline-block; font-size: 0.8rem; padding: 4px 10px; border-radius: 99px; background: #ffffff26; color: #fff; white-space: nowrap; }
 .badge.ok { background: #d8f5df; color: #0d4a20; font-weight: 600; }
 .badge.warn { background: var(--warn-bg); color: var(--warn); }
+.badge-btn { border: none; font: inherit; font-size: 0.8rem; min-height: 40px; cursor: pointer; white-space: normal; text-align: left; }
 .badge.pending { background: var(--warn-bg); color: var(--warn); }
 main { padding: 14px 16px 40px; }
 h1 { font-size: 1.5rem; margin: 6px 0 10px; color: var(--green); line-height: 1.25; }

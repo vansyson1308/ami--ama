@@ -1,6 +1,6 @@
 # Acceptance checklist (≈ 15 minutes)
 
-Live URL: **TODO(human): paste Vercel URL** (see PROGRESS.md → M1 for the 4 import clicks).
+Live URL: **https://ami-ama.vercel.app** (Vercel, production = `main`)
 Release: tag `v1.0` · PR: https://github.com/vansyson1308/ami--ama/pull/1
 
 Already verified automatically in this container (headless Chromium, Pixel 5 emulation, production build via `vite preview`) — evidence in `docs/PROGRESS.md`, `docs/e2e-parity.json`, `docs/screenshots/`. The boxes below are for **you** on a real phone.

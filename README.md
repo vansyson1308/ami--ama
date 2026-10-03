@@ -4,7 +4,7 @@
 
 > **Because of Ami Ama**, a smallholder robusta farmer in Tây Nguyên will identify a leaf problem and know a safe first step — or know to call a person — **on the same day she sees it**, offline and in Vietnamese, instead of waiting months for an extension visit or guessing; we know because ~640,000 smallholder households produce ~95% of Vietnam's coffee ([Daily Coffee News, Jul 2026](https://dailycoffeenews.com/2026/07/01/report-says-vietnams-robusta-boom-faces-a-reckoning/)) and extension visits are rare.
 
-**Live demo:** `TODO(human): Vercel URL` · **Try it in airplane mode** (below) · Code MIT · Model 4–5 MB · works with no network after the first visit.
+**Live demo: https://ami-ama.vercel.app** · **Try it in airplane mode** (below) · Code MIT · Model 4–5 MB · works with no network after the first visit.
 
 ("Ama"/"Ami" are the Ê Đê words for father/mother — as in Buôn Ma Thuột ← Buôn Ama Thuột.)
 
