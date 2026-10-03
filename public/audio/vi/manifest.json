@@ -1,0 +1,18 @@
+{
+ "voice": "vi_VN-vais1000-medium",
+ "voice_license": "CC BY 4.0 (VAIS-1000 corpus) via rhasspy/piper-voices",
+ "engine": "piper-tts",
+ "items": [
+  "ask_person",
+  "cercospora",
+  "healthy",
+  "leaf_miner",
+  "not_coffee_leaf",
+  "phoma",
+  "red_spider_mite",
+  "retake",
+  "rust",
+  "uncertain",
+  "welcome"
+ ]
+}
