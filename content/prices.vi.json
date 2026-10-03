@@ -1,0 +1,15 @@
+{
+  "label": "Bảng giá tham chiếu — KHÔNG phải AI, không phải giá thời gian thực",
+  "unit": "đồng/kg cà phê nhân xô (robusta)",
+  "snapshot_date": "2026-09-15",
+  "stale_after_days": 3,
+  "prices": [
+    {"place": "Đắk Lắk", "price": 95200},
+    {"place": "Gia Lai", "price": 95200},
+    {"place": "Đắk Nông (Lâm Đồng)", "price": 95300},
+    {"place": "Lâm Đồng", "price": 94700}
+  ],
+  "world": {"robusta_london_usd_per_ton": 3495, "contract": "Sept 2026"},
+  "source": {"name": "Báo Văn Hóa — Giá cà phê hôm nay 15.9 ổn định sau phiên giảm 500 đồng/kg", "url": "https://baovanhoa.vn/kinh-te/gia-ca-phe-hom-nay-159-on-dinh-sau-phien-giam-500-dongkg-265209.html"},
+  "note": "TODO(human): cập nhật giá mới nhất trước khi quay demo. Khi có mạng, app chỉ hiển thị ngày cập nhật — nông dân nên hỏi HTX/đài địa phương trước khi bán."
+}

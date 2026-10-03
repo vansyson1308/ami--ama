@@ -1,0 +1,44 @@
+[
+ {
+  "id": 0,
+  "key": "healthy",
+  "vi_name": "Lá khỏe",
+  "card_id": "healthy"
+ },
+ {
+  "id": 1,
+  "key": "rust",
+  "vi_name": "Bệnh rỉ sắt",
+  "card_id": "rust"
+ },
+ {
+  "id": 2,
+  "key": "red_spider_mite",
+  "vi_name": "Nhện đỏ",
+  "card_id": "red_spider_mite"
+ },
+ {
+  "id": 3,
+  "key": "leaf_miner",
+  "vi_name": "Sâu đục lá (sâu vẽ bùa)",
+  "card_id": "leaf_miner"
+ },
+ {
+  "id": 4,
+  "key": "cercospora",
+  "vi_name": "Bệnh đốm mắt cua",
+  "card_id": "cercospora"
+ },
+ {
+  "id": 5,
+  "key": "phoma",
+  "vi_name": "Bệnh đốm lá do nấm Phoma",
+  "card_id": "phoma"
+ },
+ {
+  "id": 6,
+  "key": "not_coffee_leaf",
+  "vi_name": "Không phải lá cà phê",
+  "card_id": "not_coffee_leaf"
+ }
+]
