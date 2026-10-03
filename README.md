@@ -4,7 +4,7 @@
 
 > **Because of Ami Ama**, a smallholder robusta farmer in Tây Nguyên will identify a leaf problem and know a safe first step — or know to call a person — **on the same day she sees it**, offline and in Vietnamese, instead of waiting months for an extension visit or guessing; we know because ~640,000 smallholder households produce ~95% of Vietnam's coffee ([Daily Coffee News, Jul 2026](https://dailycoffeenews.com/2026/07/01/report-says-vietnams-robusta-boom-faces-a-reckoning/)) and extension visits are rare.
 
-**Live demo: https://ami-ama.vercel.app** · **Try it in airplane mode** (below) · Code MIT · Model 4–5 MB · works with no network after the first visit.
+**Live demo: https://ami-ama.vercel.app** · **Try it in airplane mode** (below) · Code MIT · Model 4.4 MB · works with no network after the first visit.
 
 ("Ama"/"Ami" are the Ê Đê words for father/mother — as in Buôn Ma Thuột ← Buôn Ama Thuột.)
 
@@ -12,7 +12,7 @@
 
 ## What it does
 1. **Chụp lá** — the farmer photographs one coffee leaf (or taps **Thử với ảnh mẫu** to use a test image).
-2. An image-quality gate asks for a retake if the photo is blurry/dark; otherwise a **tiny on-device vision model** (MobileNetV3, int8 ONNX, runs in the browser with WebAssembly) names the likely problem.
+2. An image-quality gate asks for a retake if the photo is blurry/dark; otherwise a **tiny on-device vision model** (MobileNetV3, 4.4 MB ONNX with int8 weights, runs in the browser with WebAssembly) names the likely problem.
 3. The app shows a **fixed, source-cited 4-step card** in Vietnamese — **Thấy gì · Vì sao · Cần đạt · Làm gì** — and reads it aloud (🔊 Nghe).
 4. If the model is unsure, it says **"Chưa chắc — hỏi cán bộ"** and prepares an SMS/Zalo message for an extension officer (**Hỏi người**, always one tap away).
 5. The observation goes into an offline **Sổ rẫy** (field log) with date, result, optional photo and GPS (only with consent), marked "Chờ gửi" until shared.
@@ -40,7 +40,7 @@ Persona (fictional): chị H'Nơ, 38, Ê Đê, 2 ha robusta in Krông Pắc, Đ�
 flowchart LR
   A[📷 Camera / sample image] --> B{Quality gate<br/>brightness · blur}
   B -- fail --> R[Card: chụp lại]
-  B -- ok --> C[MobileNetV3 int8 ONNX<br/>onnxruntime-web WASM<br/>on-device]
+  B -- ok --> C[MobileNetV3, int8-weight ONNX 4.4 MB<br/>onnxruntime-web WASM<br/>on-device]
   C --> D{Calibrated decision<br/>temperature T, threshold τ, margin 0.15}
   D -- p&lt;τ or close call --> U[Card: Chưa chắc — hỏi cán bộ]
   D -- not coffee --> N[Card: không phải lá cà phê]
@@ -74,7 +74,7 @@ Shipped model: `leaf_v1.int8.onnx`, **4.40 MB** (int8 weight-only per-channel (f
 | Accuracy on answered photos | 89.6% | 99.7% | 97.8% |
 | ECE before → after calibration | 0.071 → 0.075 | 0.119 → 0.025 | 0.099 → 0.009 |
 
-On **real field photos** (RoCoLe test, plants never seen in training) the model answers 80.1% of photos and is right on 89.6% of those; the rest get "Chưa chắc — hỏi cán bộ". These are Ecuadorian robusta photos — **we have no Vietnamese test photos yet**, so treat this as an upper bound. Full report: [docs/MODEL_CARD.md](docs/MODEL_CARD.md) (per-class, confusion matrices, risk–coverage, quantization).
+On **real field photos** (RoCoLe test, plants never seen in training) the model answers 80.1% of photos and is right on 89.6% of those; the rest get "Chưa chắc — hỏi cán bộ". These are Ecuadorian robusta photos — **we have no Vietnamese test photos yet**, so treat this as an upper bound. Temperature scaling was fitted on all validation sources together; on the field split it did **not** improve ECE (0.071 → 0.075). Full report: [docs/MODEL_CARD.md](docs/MODEL_CARD.md) (per-class, confusion matrices, risk–coverage, quantization).
 <!-- METRICS:END -->
 
 ## Responsible AI (pass/fail items)
