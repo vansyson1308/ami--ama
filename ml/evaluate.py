@@ -18,7 +18,9 @@ import numpy as np
 from PIL import Image
 
 from common import CACHE, MARGIN, REPORTS, SPLITS, preprocess_pil, softmax
-from metrics import choose_tau, fit_temperature, plot_confusion, plot_risk_coverage, risk_coverage, summarize
+from common import KEY2ID
+from metrics import (MIN_CLASS_PRECISION, choose_class_gate, choose_tau, class_precision_at_tau, fit_temperature,
+                     plot_confusion, plot_risk_coverage, risk_coverage, summarize)
 
 
 def read_split(name):
@@ -88,14 +90,25 @@ def main():
     field = sv == "rocole"
     tau_info = choose_tau(softmax(lv[field], T), yv[field])
     tau = tau_info["tau"]
-
-    rep = {"tag": a.tag, "model": a.model, "temperature": T, "margin": MARGIN, **tau_info, "splits": {}}
+    # Per-class safety gate: classes whose precision among accepted RoCoLe-val predictions is < 0.80 are never asserted.
+    field_prec_val = class_precision_at_tau(softmax(lv[field], T), yv[field], tau)
+    gate = choose_class_gate(field_prec_val)
+    gate_ids = tuple(KEY2ID[k] for k in gate)
+    _, lt, yt, st_ = data["test"]
+    ft = st_ == "rocole"
+    rep = {"tag": a.tag, "model": a.model, "temperature": T, "margin": MARGIN, **tau_info,
+           "class_gate": {"min_precision": MIN_CLASS_PRECISION, "never_assert": gate,
+                          "basis": "precision among accepted predictions on RoCoLe val (field)",
+                          "field_val": field_prec_val,
+                          "all_val": class_precision_at_tau(softmax(lv, T), yv, tau),
+                          "field_test": class_precision_at_tau(softmax(lt[ft], T), yt[ft], tau)},
+           "splits": {}}
     curves = {}
     for split, (rows, lg, y, src) in data.items():
         groups = {"all": np.ones(len(y), bool), "rocole": src == "rocole", "jmuben": src == "jmuben", "beans": src == "beans"}
         for g, m in groups.items():
             p, pu = softmax(lg[m], T), softmax(lg[m], 1.0)
-            s = summarize(p, y[m], tau, MARGIN, pu)
+            s = summarize(p, y[m], tau, MARGIN, pu, gate_ids)
             rep["splits"][f"{split}_{g}"] = s
             if split == "test" and g in ("rocole", "jmuben", "all"):
                 curves[f"test_{g}"] = risk_coverage(p, y[m])
@@ -114,7 +127,7 @@ def main():
         s = rep["splits"][k]
         print(f"{a.tag:12s} {k:12s} n={s['n']:4d} acc={s['acc']:.3f} macroF1={s['macro_f1']:.3f} "
               f"cov@tau={s['coverage_at_tau']:.3f} acc@tau={s['acc_at_tau']} ece={s['ece']:.3f} (uncal {s['ece_uncalibrated']:.3f})")
-    print(f"T={T:.3f} tau={tau} {tau_info['rule']}")
+    print(f"T={T:.3f} tau={tau} {tau_info['rule']} never_assert={gate}")
 
 
 if __name__ == "__main__":

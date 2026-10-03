@@ -22,6 +22,7 @@ export interface ModelCard {
   temperature: number;
   tau: number;
   margin: number;
+  never_assert?: string[];
   size_bytes: number;
   sha256: string;
   metrics: Record<string, Record<string, number>>;
@@ -71,6 +72,7 @@ export async function analyze(src: Blob | string, opts: { skipQuality?: boolean 
   const logits = Array.from(out.logits.data as Float32Array);
   const probs = softmax(logits, card.temperature);
   const notCoffee = labels.find((l) => l.key === 'not_coffee_leaf')!.id;
-  const decision = decide(probs, card.tau, card.margin, notCoffee);
+  const neverAssert = (card.never_assert ?? []).map((k) => labels.find((l) => l.key === k)!.id);
+  const decision = decide(probs, card.tau, card.margin, notCoffee, neverAssert);
   return { decision, quality, thumb, ms: performance.now() - t0, logits };
 }

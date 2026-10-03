@@ -15,7 +15,7 @@ import numpy as np
 import onnxruntime as ort
 from PIL import Image
 
-from common import CACHE, KEYS, PUBLIC_MODELS, ROOT, SEED, SPLITS, decide, preprocess_pil, softmax
+from common import CACHE, KEY2ID, KEYS, PUBLIC_MODELS, ROOT, SEED, SPLITS, decide, preprocess_pil, softmax
 
 OUT = ROOT.parent / "public" / "samples"
 FIX = ROOT.parent / "tests" / "fixtures"
@@ -47,7 +47,7 @@ def main():
             x = preprocess_pil(Image.open(OUT / name))[None]
             lg = sess.run(["logits"], {"input": x})[0][0]
             p = softmax(lg, card["temperature"])
-            kind, c = decide(p, card["tau"], card["margin"])
+            kind, c = decide(p, card["tau"], card["margin"], tuple(KEY2ID[k] for k in card.get("never_assert", [])))
             samples.append({"file": name, "source": src, "credit": CREDIT[src], "true": key, "orig": r["orig"]})
             expected[name] = {"true": key, "probs": [float(v) for v in p], "top1": KEYS[int(p.argmax())], "decision": kind}
             print(name, "true", key, "->", KEYS[int(p.argmax())], f"{p.max():.3f}", kind)

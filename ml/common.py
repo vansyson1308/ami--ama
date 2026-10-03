@@ -58,10 +58,12 @@ def softmax(logits: np.ndarray, temperature: float = 1.0) -> np.ndarray:
     return e / e.sum(axis=-1, keepdims=True)
 
 
-def decide(probs: np.ndarray, tau: float, margin: float = MARGIN) -> tuple[str, int]:
+def decide(probs: np.ndarray, tau: float, margin: float = MARGIN, never_assert=()) -> tuple[str, int]:
     """Runtime decision rule (quality gate is applied before this, in the app).
 
     Returns (kind, class_id) where kind is 'not_coffee' | 'abstain' | 'predict'.
+    `never_assert`: class ids whose precision on accepted field predictions is too low to state them;
+    a confident prediction of such a class is turned into 'abstain' (the app says "Có thể là <class>").
     """
     order = np.argsort(-probs)
     top1, top2 = int(order[0]), int(order[1])
@@ -69,6 +71,8 @@ def decide(probs: np.ndarray, tau: float, margin: float = MARGIN) -> tuple[str, 
     if top1 == NOT_COFFEE and p1 >= tau:
         return "not_coffee", top1
     if p1 < tau or (p1 - p2) < margin:
+        return "abstain", top1
+    if top1 in never_assert:
         return "abstain", top1
     return "predict", top1
 

@@ -70,11 +70,11 @@ Shipped model: `leaf_v1.int8.onnx`, **4.40 MB** (int8 weight-only per-channel (f
 | Images | 312 | 900 | 1407 |
 | Accuracy (all photos) | 83.7% | 98.6% | 95.5% |
 | Macro-F1 (classes present) | 0.736 | 0.985 | 0.899 |
-| Coverage at τ=0.82 (rest → "hỏi cán bộ") | 80.1% | 95.0% | 92.3% |
-| Accuracy on answered photos | 89.6% | 99.7% | 97.8% |
+| Coverage at τ=0.82 (rest → "hỏi cán bộ") | 74.7% | 95.0% | 91.1% |
+| Accuracy on answered photos | 91.4% | 99.7% | 98.2% |
 | ECE before → after calibration | 0.071 → 0.075 | 0.119 → 0.025 | 0.099 → 0.009 |
 
-On **real field photos** (RoCoLe test, plants never seen in training) the model answers 80.1% of photos and is right on 89.6% of those; the rest get "Chưa chắc — hỏi cán bộ". These are Ecuadorian robusta photos — **we have no Vietnamese test photos yet**, so treat this as an upper bound. Temperature scaling was fitted on all validation sources together; on the field split it did **not** improve ECE (0.071 → 0.075). Full report: [docs/MODEL_CARD.md](docs/MODEL_CARD.md) (per-class, confusion matrices, risk–coverage, quantization).
+On **real field photos** (RoCoLe test, plants never seen in training) the model answers 74.7% of photos and is right on 91.4% of those; the rest get "Chưa chắc — hỏi cán bộ". These are Ecuadorian robusta photos — **we have no Vietnamese test photos yet**, so treat this as an upper bound. Temperature scaling was fitted on all validation sources together; on the field split it did **not** improve ECE (0.071 → 0.075). **Per-class safety gate:** classes whose precision among accepted field-val predictions is below 80% are never asserted (now: red_spider_mite) — they show 'Chưa chắc — hỏi cán bộ' with a 'Có thể là …' hint; the numbers above include this. **Not-a-coffee-leaf check:** on 58 openly licensed real photos of other things (soil, sky, hands, grass, pepper/durian/banana/cashew leaves) 10 (17%) were wrongly given a coffee-leaf result and 42 abstained — a known weakness (the negative class only saw bean leaves). Full report: [docs/MODEL_CARD.md](docs/MODEL_CARD.md) (per-class, confusion matrices, risk–coverage, quantization).
 <!-- METRICS:END -->
 
 ## Responsible AI (pass/fail items)

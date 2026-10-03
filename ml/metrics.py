@@ -34,11 +34,14 @@ def ece(probs: np.ndarray, y: np.ndarray, bins: int = 15) -> float:
     return float(e)
 
 
-def accepted(probs: np.ndarray, tau: float, margin: float = MARGIN):
+MIN_CLASS_PRECISION = 0.80
+
+
+def accepted(probs: np.ndarray, tau: float, margin: float = MARGIN, never_assert=()):
     """Apply the runtime decision rule. Returns (accepted_mask, predicted_class)."""
     acc_mask, pred = [], []
     for p in probs:
-        kind, c = decide(p, tau, margin)
+        kind, c = decide(p, tau, margin, never_assert)
         acc_mask.append(kind != "abstain")
         pred.append(c)
     return np.array(acc_mask), np.array(pred)
@@ -70,11 +73,29 @@ def choose_tau(probs_val_field: np.ndarray, y: np.ndarray, margin: float = MARGI
             "rule": "targets not reachable at >=50% coverage; max accuracy with coverage >=30%"}
 
 
-def summarize(probs: np.ndarray, y: np.ndarray, tau: float, margin: float = MARGIN, probs_uncal=None) -> dict:
+def class_precision_at_tau(probs: np.ndarray, y: np.ndarray, tau: float, margin: float = MARGIN) -> dict:
+    """Precision of each class among ACCEPTED predictions (before any class gate)."""
+    m, pred = accepted(probs, tau, margin)
+    out = {}
+    for c, k in enumerate(KEYS):
+        sel = m & (pred == c)
+        out[k] = {"accepted_predictions": int(sel.sum()), "correct": int((y[sel] == c).sum()),
+                  "precision": float((y[sel] == c).mean()) if sel.any() else None, "support": int((y == c).sum())}
+    return out
+
+
+def choose_class_gate(field_val_prec: dict, min_precision: float = MIN_CLASS_PRECISION) -> list[str]:
+    """Classes never asserted: measured field precision on accepted predictions < min_precision.
+    Classes with no accepted field predictions (no field evidence) are not gated here; see MODEL_CARD."""
+    return [k for k, v in field_val_prec.items() if v["precision"] is not None and v["precision"] < min_precision]
+
+
+def summarize(probs: np.ndarray, y: np.ndarray, tau: float, margin: float = MARGIN, probs_uncal=None,
+              never_assert=()) -> dict:
     pred = probs.argmax(1)
     present = sorted(set(y.tolist()))
     p, r, f, s = precision_recall_fscore_support(y, pred, labels=present, zero_division=0)
-    m, dpred = accepted(probs, tau, margin)
+    m, dpred = accepted(probs, tau, margin, never_assert)
     res = {
         "n": int(len(y)),
         "acc": float((pred == y).mean()),

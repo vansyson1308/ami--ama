@@ -25,6 +25,73 @@
  "margin": 0.15,
  "tau_rule": "target met",
  "tau_target_acc": 0.9,
+ "never_assert": [
+  "red_spider_mite"
+ ],
+ "class_gate": {
+  "min_precision": 0.8,
+  "basis": "precision among accepted predictions on RoCoLe val (field)",
+  "field_val": {
+   "healthy": {
+    "accepted_predictions": 147,
+    "correct": 140,
+    "precision": 0.9523809523809523,
+    "support": 158
+   },
+   "rust": {
+    "accepted_predictions": 76,
+    "correct": 68,
+    "precision": 0.8947368421052632,
+    "support": 120
+   },
+   "red_spider_mite": {
+    "accepted_predictions": 24,
+    "correct": 15,
+    "precision": 0.625,
+    "support": 34
+   }
+  },
+  "field_test": {
+   "healthy": {
+    "accepted_predictions": 159,
+    "correct": 145,
+    "precision": 0.9119496855345912,
+    "support": 157
+   },
+   "rust": {
+    "accepted_predictions": 74,
+    "correct": 68,
+    "precision": 0.918918918918919,
+    "support": 122
+   },
+   "red_spider_mite": {
+    "accepted_predictions": 17,
+    "correct": 11,
+    "precision": 0.6470588235294118,
+    "support": 33
+   }
+  },
+  "studio_only_classes_all_val": {
+   "leaf_miner": {
+    "accepted_predictions": 184,
+    "correct": 179,
+    "precision": 0.9728260869565217,
+    "support": 180
+   },
+   "cercospora": {
+    "accepted_predictions": 180,
+    "correct": 180,
+    "precision": 1.0,
+    "support": 180
+   },
+   "phoma": {
+    "accepted_predictions": 174,
+    "correct": 173,
+    "precision": 0.9942528735632183,
+    "support": 180
+   }
+  }
+ },
  "labels": "labels.json",
  "size_bytes": 4399182,
  "sha256": "ec558c1dd6f6f010af54e48a2759caa3b0d1817d0acee8142eb2e1157f343326",
@@ -33,8 +100,8 @@
    "n": 312,
    "acc": 0.8365,
    "macro_f1": 0.7358,
-   "coverage_at_tau": 0.8013,
-   "acc_at_tau": 0.896,
+   "coverage_at_tau": 0.7468,
+   "acc_at_tau": 0.9142,
    "ece": 0.075,
    "ece_uncalibrated": 0.071
   },
@@ -60,8 +127,8 @@
    "n": 1407,
    "acc": 0.9545,
    "macro_f1": 0.8995,
-   "coverage_at_tau": 0.9232,
-   "acc_at_tau": 0.9777,
+   "coverage_at_tau": 0.9112,
+   "acc_at_tau": 0.9821,
    "ece": 0.0095,
    "ece_uncalibrated": 0.099
   },
@@ -69,8 +136,8 @@
    "n": 312,
    "acc": 0.8333,
    "macro_f1": 0.759,
-   "coverage_at_tau": 0.7917,
-   "acc_at_tau": 0.9028,
+   "coverage_at_tau": 0.7147,
+   "acc_at_tau": 0.9327,
    "ece": 0.0854,
    "ece_uncalibrated": 0.0779
   }
@@ -181,5 +248,39 @@
    "vi_name": "Không phải lá cà phê",
    "card_id": "not_coffee_leaf"
   }
- ]
+ ],
+ "ood": {
+  "synthetic": {
+   "n": 16,
+   "wrong_assertion": 0,
+   "abstain": 5,
+   "not_coffee": 0,
+   "retake": 11,
+   "groups": [
+    "blurred",
+    "checkerboard",
+    "gradient",
+    "noise",
+    "soil",
+    "solid"
+   ]
+  },
+  "commons": {
+   "n": 58,
+   "wrong_assertion": 10,
+   "abstain": 42,
+   "not_coffee": 5,
+   "retake": 1,
+   "groups": [
+    "banana_leaves",
+    "cashew_leaves",
+    "durian_leaves",
+    "grass",
+    "hands",
+    "pepper_leaves",
+    "sky",
+    "soil"
+   ]
+  }
+ }
 }

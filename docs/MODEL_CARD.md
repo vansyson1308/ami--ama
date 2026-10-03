@@ -21,11 +21,22 @@
 | Images | 312 | 900 | 1407 |
 | Accuracy (all photos) | 83.7% | 98.6% | 95.5% |
 | Macro-F1 (classes present) | 0.736 | 0.985 | 0.899 |
-| Coverage at τ=0.82 (rest → "hỏi cán bộ") | 80.1% | 95.0% | 92.3% |
-| Accuracy on answered photos | 89.6% | 99.7% | 97.8% |
+| Coverage at τ=0.82 (rest → "hỏi cán bộ") | 74.7% | 95.0% | 91.1% |
+| Accuracy on answered photos | 91.4% | 99.7% | 98.2% |
 | ECE before → after calibration | 0.071 → 0.075 | 0.119 → 0.025 | 0.099 → 0.009 |
 
 The **field** column is the number that matters: real smartphone photos of robusta leaves, and no plant in the test set was seen in training. It only covers healthy / rust / red spider mite. The **studio** column is optimistic (low-res, uniform crops, likely near-duplicates). **No Vietnamese photos were available**, so real-world accuracy in Tây Nguyên is unknown and probably lower.
+
+## Per-class safety gate
+Rule: a class is **never asserted** when its precision among *accepted* predictions on the RoCoLe (field) **validation** split is below **0.80**. A confident prediction of such a class is shown as the "Chưa chắc — hỏi cán bộ" card with the hint "Có thể là <class>" and the escalation button. Same rule in `ml/common.py::decide` and `src/ml/decide.ts`; the list ships in `model_card.json` (`never_assert`). All metrics above already include the gate.
+
+| class | RoCoLe **val** precision (accepted) | n accepted | RoCoLe **test** precision (accepted) | n accepted | decision |
+|---|---|---|---|---|---|
+| healthy | 0.952 | 147 | 0.912 | 159 | asserted |
+| rust | 0.895 | 76 | 0.919 | 74 | asserted |
+| red_spider_mite | 0.625 | 24 | 0.647 | 17 | **never asserted** → "Có thể là …" + Hỏi cán bộ |
+
+Never asserted: **red_spider_mite**. Leaf miner, cercospora and phoma have **no field photos**; the model made no accepted field predictions of them (no false alarms on RoCoLe), so their field precision cannot be measured. Their studio-only precision (all-source val) is leaf_miner 0.973 (n=184), cercospora 1.000 (n=180), phoma 0.994 (n=174). Their advice cards already say an officer must confirm.
 
 Risk–coverage (test): ![risk-coverage](../ml/reports/risk_coverage_onnx_int8_weights.png)
 
@@ -59,6 +70,30 @@ Confusion matrix — field (rows = truth):
 
 ## Not-a-coffee-leaf (beans test)
 Accuracy 100.0% on 195 bean-leaf photos. Untested on soil, hands, other crops.
+
+## Out-of-distribution check (`ml/ood_check.py`, `ml/reports/ood.json`)
+Outcome as a farmer would see it for a camera photo (quality gate first, then the model with τ and the class gate):
+
+| set / group | wrong assertion | abstain | not coffee | retake |
+|---|---|---|---|---|
+| synthetic/solid | 0 | 0 | 0 | 6 |
+| synthetic/noise | 0 | 3 | 0 | 0 |
+| synthetic/gradient | 0 | 0 | 0 | 2 |
+| synthetic/checkerboard | 0 | 1 | 0 | 0 |
+| synthetic/soil | 0 | 1 | 0 | 0 |
+| synthetic/blurred | 0 | 0 | 0 | 3 |
+| commons/sky | 1 | 1 | 0 | 0 |
+| commons/soil | 1 | 6 | 1 | 0 |
+| commons/hands | 1 | 5 | 2 | 0 |
+| commons/grass | 2 | 5 | 0 | 1 |
+| commons/pepper_leaves | 0 | 8 | 0 | 0 |
+| commons/durian_leaves | 0 | 7 | 1 | 0 |
+| commons/banana_leaves | 3 | 5 | 0 | 0 |
+| commons/cashew_leaves | 2 | 5 | 1 | 0 |
+
+**Real photos (Wikimedia Commons, 58 images, CC0/PD/CC BY/CC BY-SA — sources in `ml/reports/ood_sources.json`): 10 of 58 (17%) were confidently labelled as a coffee problem** (rust ×7, healthy ×1, leaf_miner ×1, phoma ×1); 42 abstained, 5 'not coffee', 1 retake. Synthetic images (16: solid colours, noise, gradients, checkerboard, soil texture, blurred leaves): 0 wrong assertions — the quality gate stops flat/blurred images, the model abstains on noise.
+
+Why: the `not_coffee_leaf` class was trained only on bean leaves. Mitigations in place: the advice cards for a wrong 'rust' assertion recommend only low-risk cultural practices and always show 'Hỏi cán bộ'. Fix for v2: add openly licensed negatives (other crops' leaves — pepper, durian, cashew, banana — plus soil, sky, hands) to `not_coffee_leaf` and retrain.
 
 ## Rust severity (metadata only, not shown to farmers)
 Recall of class *rust* on RoCoLe test by annotated severity: level 1: 60.9% (n=69) · level 2: 94.1% (n=34) · level 3: 84.6% (n=13) · level 4: 83.3% (n=6).

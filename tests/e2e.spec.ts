@@ -95,6 +95,16 @@ test('offline end-to-end: samples, parity, audio, abstain, field log, escalation
     await page.screenshot({ path: `${SHOT}/abstain.png`, fullPage: true });
   }
 
+  // Per-class safety gate: a confident red-spider-mite prediction is never asserted -> uncertain card + single hint
+  const gatedIdx = files.findIndex((f) => expected[f].top1 === 'red_spider_mite' && expected[f].decision === 'abstain');
+  if (gatedIdx >= 0) {
+    const r = await runSample(page, gatedIdx);
+    await expect(r).toHaveAttribute('data-kind', 'abstain');
+    await expect(page.getByTestId('result-title')).toHaveText('Chưa chắc — hỏi cán bộ');
+    await expect(page.getByTestId('maybe')).toHaveText(/Có thể là\s+Nhện đỏ$/);
+    await page.screenshot({ path: `${SHOT}/gated-red-spider-mite.png`, fullPage: true });
+  }
+
   // Quality gate: blurred photo -> retake card, no prediction
   await page.goto('/#/capture');
   await page.getByTestId('file-input').setInputFiles('tests/fixtures/blurred.jpg');
@@ -129,6 +139,8 @@ test('offline end-to-end: samples, parity, audio, abstain, field log, escalation
   // Evidence + prices render offline
   await page.goto('/#/evidence');
   await expect(page.getByTestId('metrics')).toBeVisible();
+  await expect(page.getByTestId('class-gate')).toContainText('Không khẳng định');
+  await expect(page.getByTestId('ood')).toBeVisible();
   await page.screenshot({ path: `${SHOT}/evidence.png`, fullPage: true });
   await page.goto('/#/prices');
   await page.getByTestId('offer').fill('90000');

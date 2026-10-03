@@ -1,0 +1,98 @@
+onnx_int8_weights test_rocole  n= 312 acc=0.837 macroF1=0.736 cov@tau=0.747 acc@tau=0.9141630901287554 ece=0.075 (uncal 0.071)
+onnx_int8_weights test_jmuben  n= 900 acc=0.986 macroF1=0.985 cov@tau=0.950 acc@tau=0.9964912280701754 ece=0.025 (uncal 0.119)
+onnx_int8_weights test_beans   n= 195 acc=1.000 macroF1=1.000 cov@tau=0.995 acc@tau=1.0 ece=0.012 (uncal 0.090)
+onnx_int8_weights test_all     n=1407 acc=0.955 macroF1=0.899 cov@tau=0.911 acc@tau=0.9820592823712948 ece=0.010 (uncal 0.099)
+T=0.607 tau=0.82 target met never_assert=['red_spider_mite']
+{
+ "shipped": "onnx_int8_weights",
+ "size_mb": 4.399182,
+ "comparison": {
+  "onnx_int8_static": {
+   "file": "leaf_int8_static.onnx",
+   "size_bytes": 4680881,
+   "acc_drop_vs_fp32": {
+    "test_rocole": 0.08653846153846156,
+    "test_jmuben": 0.33333333333333326
+   },
+   "eligible": false,
+   "test_rocole_acc": 0.7628205128205128,
+   "test_jmuben_acc": 0.6544444444444445
+  },
+  "onnx_int8_static_pct": {
+   "file": "leaf_int8_static_pct.onnx",
+   "size_bytes": 4680901,
+   "acc_drop_vs_fp32": {
+    "test_rocole": 0.05128205128205121,
+    "test_jmuben": 0.06999999999999995
+   },
+   "eligible": false,
+   "test_rocole_acc": 0.7980769230769231,
+   "test_jmuben_acc": 0.9177777777777778
+  },
+  "onnx_int8_dynamic": {
+   "file": "leaf_int8_dynamic.onnx",
+   "size_bytes": 4415430,
+   "acc_drop_vs_fp32": {
+    "test_rocole": 0.22115384615384615,
+    "test_jmuben": 0.61
+   },
+   "eligible": false,
+   "test_rocole_acc": 0.6282051282051282,
+   "test_jmuben_acc": 0.37777777777777777
+  },
+  "onnx_int8_weights": {
+   "file": "leaf_int8_weights.onnx",
+   "size_bytes": 4399182,
+   "acc_drop_vs_fp32": {
+    "test_rocole": 0.012820512820512775,
+    "test_jmuben": 0.0022222222222222365
+   },
+   "eligible": true,
+   "test_rocole_acc": 0.8365384615384616,
+   "test_jmuben_acc": 0.9855555555555555
+  },
+  "onnx_fp32": {
+   "file": "leaf_fp32.onnx",
+   "size_bytes": 16831150,
+   "acc_drop_vs_fp32": {
+    "test_rocole": 0.0,
+    "test_jmuben": 0.0
+   },
+   "eligible": false,
+   "test_rocole_acc": 0.8493589743589743,
+   "test_jmuben_acc": 0.9877777777777778
+  }
+ }
+}
+{
+ "onnx_fp32": {
+  "max_abs_logit_diff": 7.68899917602539e-06,
+  "max_abs_prob_diff": 1.2479722499847412e-07,
+  "mean_abs_prob_diff": 1.0369048730751729e-08,
+  "top1_agreement": 1.0
+ },
+ "shipped": {
+  "max_abs_logit_diff": 0.44678211212158203,
+  "max_abs_prob_diff": 0.0229111909866333,
+  "mean_abs_prob_diff": 0.0009357212693430483,
+  "top1_agreement": 1.0
+ },
+ "shipped_acc_drop_vs_fp32_full_test": {
+  "test_rocole": 0.012820512820512775,
+  "test_jmuben": 0.0022222222222222365
+ },
+ "shipped_size_mb": 4.399182,
+ "pass": true
+}
+00_healthy.jpg true healthy -> healthy 0.939 predict
+01_healthy.jpg true healthy -> healthy 0.861 predict
+02_rust.jpg true rust -> rust 1.000 predict
+03_rust.jpg true rust -> rust 0.495 abstain
+04_red_spider_mite.jpg true red_spider_mite -> red_spider_mite 0.904 abstain
+05_red_spider_mite.jpg true red_spider_mite -> healthy 0.719 abstain
+06_leaf_miner.jpg true leaf_miner -> leaf_miner 1.000 predict
+07_cercospora.jpg true cercospora -> cercospora 0.999 predict
+08_phoma.jpg true phoma -> phoma 0.994 predict
+09_not_coffee_leaf.jpg true not_coffee_leaf -> not_coffee_leaf 0.965 not_coffee
+wrote MODEL_CARD.md and README metrics
+EXIT 0

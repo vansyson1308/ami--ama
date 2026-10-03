@@ -8,6 +8,145 @@
  "val_field_coverage": 0.7916666666666666,
  "val_field_acc_at_tau": 0.902834008097166,
  "rule": "target met",
+ "class_gate": {
+  "min_precision": 0.8,
+  "never_assert": [
+   "red_spider_mite"
+  ],
+  "basis": "precision among accepted predictions on RoCoLe val (field)",
+  "field_val": {
+   "healthy": {
+    "accepted_predictions": 147,
+    "correct": 140,
+    "precision": 0.9523809523809523,
+    "support": 158
+   },
+   "rust": {
+    "accepted_predictions": 76,
+    "correct": 68,
+    "precision": 0.8947368421052632,
+    "support": 120
+   },
+   "red_spider_mite": {
+    "accepted_predictions": 24,
+    "correct": 15,
+    "precision": 0.625,
+    "support": 34
+   },
+   "leaf_miner": {
+    "accepted_predictions": 0,
+    "correct": 0,
+    "precision": null,
+    "support": 0
+   },
+   "cercospora": {
+    "accepted_predictions": 0,
+    "correct": 0,
+    "precision": null,
+    "support": 0
+   },
+   "phoma": {
+    "accepted_predictions": 0,
+    "correct": 0,
+    "precision": null,
+    "support": 0
+   },
+   "not_coffee_leaf": {
+    "accepted_predictions": 0,
+    "correct": 0,
+    "precision": null,
+    "support": 0
+   }
+  },
+  "all_val": {
+   "healthy": {
+    "accepted_predictions": 327,
+    "correct": 320,
+    "precision": 0.9785932721712538,
+    "support": 338
+   },
+   "rust": {
+    "accepted_predictions": 215,
+    "correct": 207,
+    "precision": 0.9627906976744186,
+    "support": 300
+   },
+   "red_spider_mite": {
+    "accepted_predictions": 24,
+    "correct": 15,
+    "precision": 0.625,
+    "support": 34
+   },
+   "leaf_miner": {
+    "accepted_predictions": 184,
+    "correct": 179,
+    "precision": 0.9728260869565217,
+    "support": 180
+   },
+   "cercospora": {
+    "accepted_predictions": 180,
+    "correct": 180,
+    "precision": 1.0,
+    "support": 180
+   },
+   "phoma": {
+    "accepted_predictions": 174,
+    "correct": 173,
+    "precision": 0.9942528735632183,
+    "support": 180
+   },
+   "not_coffee_leaf": {
+    "accepted_predictions": 191,
+    "correct": 191,
+    "precision": 1.0,
+    "support": 194
+   }
+  },
+  "field_test": {
+   "healthy": {
+    "accepted_predictions": 159,
+    "correct": 145,
+    "precision": 0.9119496855345912,
+    "support": 157
+   },
+   "rust": {
+    "accepted_predictions": 74,
+    "correct": 68,
+    "precision": 0.918918918918919,
+    "support": 122
+   },
+   "red_spider_mite": {
+    "accepted_predictions": 17,
+    "correct": 11,
+    "precision": 0.6470588235294118,
+    "support": 33
+   },
+   "leaf_miner": {
+    "accepted_predictions": 0,
+    "correct": 0,
+    "precision": null,
+    "support": 0
+   },
+   "cercospora": {
+    "accepted_predictions": 0,
+    "correct": 0,
+    "precision": null,
+    "support": 0
+   },
+   "phoma": {
+    "accepted_predictions": 0,
+    "correct": 0,
+    "precision": null,
+    "support": 0
+   },
+   "not_coffee_leaf": {
+    "accepted_predictions": 0,
+    "correct": 0,
+    "precision": null,
+    "support": 0
+   }
+  }
+ },
  "splits": {
   "val_all": {
    "n": 1406,
@@ -122,9 +261,9 @@
      194
     ]
    ],
-   "coverage_at_tau": 0.9210526315789473,
-   "acc_at_tau": 0.9768339768339769,
-   "macro_f1_at_tau": 0.9349180026490679,
+   "coverage_at_tau": 0.9039829302987198,
+   "acc_at_tau": 0.983477576711251,
+   "macro_f1_at_tau": 0.8464164889450428,
    "ece": 0.013538420136758298,
    "ece_uncalibrated": 0.09311393738471259
   },
@@ -217,9 +356,9 @@
      0
     ]
    ],
-   "coverage_at_tau": 0.7916666666666666,
-   "acc_at_tau": 0.902834008097166,
-   "macro_f1_at_tau": 0.8226384991664002,
+   "coverage_at_tau": 0.7147435897435898,
+   "acc_at_tau": 0.9327354260089686,
+   "macro_f1_at_tau": 0.6262962962962962,
    "ece": 0.0854261044699412,
    "ece_uncalibrated": 0.07793508021113199
   },
@@ -544,9 +683,9 @@
      195
     ]
    ],
-   "coverage_at_tau": 0.9232409381663113,
-   "acc_at_tau": 0.9776751347190146,
-   "macro_f1_at_tau": 0.9276224676377319,
+   "coverage_at_tau": 0.9111584932480455,
+   "acc_at_tau": 0.9820592823712948,
+   "macro_f1_at_tau": 0.8467584997273748,
    "ece": 0.009514088146044375,
    "ece_uncalibrated": 0.09897213688155988
   },
@@ -639,9 +778,9 @@
      0
     ]
    ],
-   "coverage_at_tau": 0.8012820512820513,
-   "acc_at_tau": 0.896,
-   "macro_f1_at_tau": 0.7978847435043305,
+   "coverage_at_tau": 0.7467948717948718,
+   "acc_at_tau": 0.9141630901287554,
+   "macro_f1_at_tau": 0.6162280701754387,
    "ece": 0.0750211746646808,
    "ece_uncalibrated": 0.07096180415306337
   },
