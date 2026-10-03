@@ -11,6 +11,7 @@ import io
 import json
 import random
 import time
+from pathlib import Path
 from collections import Counter
 
 import numpy as np
@@ -123,13 +124,23 @@ def main():
     ap.add_argument("--workers", type=int, default=3)
     ap.add_argument("--patience", type=int, default=4)
     ap.add_argument("--max-minutes", type=float, default=75)
+    ap.add_argument("--resume", action="store_true", help="continue from checkpoints/last.pt")
+    ap.add_argument("--limit", type=int, default=0, help="smoke test: use only N train/val rows")
+    ap.add_argument("--ckpt-dir", default=None, help="override checkpoint directory (smoke tests)")
     a = ap.parse_args()
     seed_everything(SEED)
     torch.set_num_threads(4)
-    CKPT.mkdir(exist_ok=True)
+    global CKPT
+    if a.ckpt_dir:
+        CKPT = Path(a.ckpt_dir)
+    CKPT.mkdir(parents=True, exist_ok=True)
     REPORTS.mkdir(exist_ok=True)
 
     tr, va = read_split("train"), read_split("val")
+    if a.limit:
+        random.Random(SEED).shuffle(tr)
+        random.Random(SEED).shuffle(va)
+        tr, va = tr[:a.limit], va[:a.limit]
     dl_tr = DataLoader(LeafDS(tr, True), batch_size=a.bs, num_workers=a.workers, persistent_workers=True,
                        sampler=WeightedRandomSampler(sample_weights(tr), num_samples=len(tr), replacement=True,
                                                      generator=torch.Generator().manual_seed(SEED)))
@@ -146,8 +157,15 @@ def main():
                                                 anneal_strategy="cos")
     crit = nn.CrossEntropyLoss(label_smoothing=0.1)
 
-    log, best, bad, t0 = [], -1.0, 0, time.time()
-    for ep in range(a.epochs):
+    log, best, bad, t0, start = [], -1.0, 0, time.time(), 0
+    if a.resume and (CKPT / "last.pt").exists():
+        st = torch.load(CKPT / "last.pt", map_location=DEV, weights_only=False)
+        model.load_state_dict(st["state_dict"])
+        opt.load_state_dict(st["optimizer"])
+        sched.load_state_dict(st["scheduler"])
+        log, best, bad, start = st["log"], st["best"], st["bad"], st["epoch"] + 1
+        print(f"resumed after epoch {st['epoch']} (best {best:.4f})", flush=True)
+    for ep in range(start, a.epochs):
         frozen = ep < a.freeze_epochs
         for p in backbone:
             p.requires_grad = not frozen
@@ -179,7 +197,14 @@ def main():
             torch.save({"arch": a.arch, "state_dict": {k: v.cpu() for k, v in model.state_dict().items()}, "epoch": ep, "score": score}, CKPT / "best.pt")
         else:
             bad += 1
-        json.dump({"args": vars(a), "log": log, "best_select_score": best}, open(REPORTS / "train_log.json", "w"), indent=1)
+        # Per-epoch checkpoint: weights of this epoch + full training state, so a crash or timeout loses <= 1 epoch.
+        torch.save({"arch": a.arch, "epoch": ep, "state_dict": {k: v.cpu() for k, v in model.state_dict().items()},
+                    "optimizer": opt.state_dict(), "scheduler": sched.state_dict(), "log": log, "best": best, "bad": bad},
+                   CKPT / "last.pt")
+        torch.save({"arch": a.arch, "state_dict": {k: v.cpu() for k, v in model.state_dict().items()}, "epoch": ep,
+                    "score": score}, CKPT / f"epoch_{ep:02d}.pt")
+        if not a.limit:
+            json.dump({"args": vars(a), "log": log, "best_select_score": best}, open(REPORTS / "train_log.json", "w"), indent=1)
         if bad >= a.patience:
             print("early stop", flush=True)
             break

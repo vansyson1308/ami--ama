@@ -1,0 +1,37 @@
+Warning: You are sending unauthenticated requests to the HF Hub. Please set a HF_TOKEN to enable higher rate limits and faster downloads.
+  ep0 1920/6042 loss 3.301 1.4 min
+  ep0 3840/6042 loss 3.097 3.9 min
+  ep0 5760/6042 loss 2.853 5.8 min
+{"epoch": 0, "frozen": true, "train_loss": 2.8178233878970027, "val_macro_f1": 0.39830822466771065, "val_rocole_macro_f1": 0.24952742221412702, "val_acc": 0.4182076813655761, "select_score": 0.32391782344091885, "epoch_min": 6.663551314671834}
+  ep1 1920/6042 loss 1.425 1.7 min
+  ep1 3840/6042 loss 1.212 3.6 min
+  ep1 5760/6042 loss 1.102 5.5 min
+{"epoch": 1, "frozen": false, "train_loss": 1.0897546581620612, "val_macro_f1": 0.8383464070997338, "val_rocole_macro_f1": 0.6453401548946179, "val_acc": 0.884068278805121, "select_score": 0.7418432809971759, "epoch_min": 5.9551807324091595}
+  ep2 1920/6042 loss 0.742 1.7 min
+  ep2 3840/6042 loss 0.727 3.3 min
+  ep2 5760/6042 loss 0.722 5.0 min
+{"epoch": 2, "frozen": false, "train_loss": 0.7204195458697231, "val_macro_f1": 0.8696823208283684, "val_rocole_macro_f1": 0.7218872499198353, "val_acc": 0.9203413940256046, "select_score": 0.7957847853741018, "epoch_min": 5.551944331328074}
+  ep3 1920/6042 loss 0.656 1.7 min
+  ep3 3840/6042 loss 0.644 3.4 min
+  ep3 5760/6042 loss 0.639 5.2 min
+{"epoch": 3, "frozen": false, "train_loss": 0.6411820344678695, "val_macro_f1": 0.9001596461608942, "val_rocole_macro_f1": 0.7470674631799952, "val_acc": 0.9459459459459459, "select_score": 0.8236135546704446, "epoch_min": 5.698263661066691}
+  ep4 1920/6042 loss 0.641 1.7 min
+  ep4 3840/6042 loss 0.620 3.3 min
+  ep4 5760/6042 loss 0.608 4.9 min
+{"epoch": 4, "frozen": false, "train_loss": 0.6076271467672915, "val_macro_f1": 0.9039509980168923, "val_rocole_macro_f1": 0.7427773381022093, "val_acc": 0.9459459459459459, "select_score": 0.8233641680595507, "epoch_min": 5.473998737335205}
+  ep5 1920/6042 loss 0.577 1.6 min
+  ep5 3840/6042 loss 0.575 3.3 min
+  ep5 5760/6042 loss 0.575 4.9 min
+{"epoch": 5, "frozen": false, "train_loss": 0.5758789602552412, "val_macro_f1": 0.8935406679429317, "val_rocole_macro_f1": 0.7190949324423341, "val_acc": 0.9431009957325747, "select_score": 0.806317800192633, "epoch_min": 5.407991790771485}
+  ep6 1920/6042 loss 0.563 1.7 min
+  ep6 3840/6042 loss 0.557 3.3 min
+  ep6 5760/6042 loss 0.556 4.9 min
+{"epoch": 6, "frozen": false, "train_loss": 0.5572282243390543, "val_macro_f1": 0.9033334493400474, "val_rocole_macro_f1": 0.7440398381574852, "val_acc": 0.9551920341394026, "select_score": 0.8236866437487663, "epoch_min": 5.416640468438467}
+  ep7 1920/6042 loss 0.553 1.6 min
+  ep7 3840/6042 loss 0.550 3.2 min
+  ep7 5760/6042 loss 0.550 4.9 min
+{"epoch": 7, "frozen": false, "train_loss": 0.5491558820038827, "val_macro_f1": 0.9074846561943394, "val_rocole_macro_f1": 0.7509081989211897, "val_acc": 0.9523470839260313, "select_score": 0.8291964275577646, "epoch_min": 5.3614470561345415}
+  ep8 1920/6042 loss 0.542 1.6 min
+  ep8 3840/6042 loss 0.548 3.4 min
+  ep8 5760/6042 loss 0.550 4.9 min
+{"epoch": 8, "frozen": false, "train_loss": 0.5497852616537411, "val_macro_f1": 0.9028336742272802, "val_rocole_macro_f1": 0.7357201533406353, "val_acc": 0.94950213371266, "select_score": 0.8192769137839577, "epoch_min": 5.4562324245770775}
