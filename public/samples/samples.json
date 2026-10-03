@@ -1,1 +1,72 @@
-[]
+[
+ {
+  "file": "00_healthy.jpg",
+  "source": "rocole",
+  "credit": "RoCoLe — Parraga-Alava et al. 2019, CC BY 4.0 (cropped/resized)",
+  "true": "healthy",
+  "orig": "C4P10E1.jpg"
+ },
+ {
+  "file": "01_healthy.jpg",
+  "source": "rocole",
+  "credit": "RoCoLe — Parraga-Alava et al. 2019, CC BY 4.0 (cropped/resized)",
+  "true": "healthy",
+  "orig": "C1P14E1.jpg"
+ },
+ {
+  "file": "02_rust.jpg",
+  "source": "rocole",
+  "credit": "RoCoLe — Parraga-Alava et al. 2019, CC BY 4.0 (cropped/resized)",
+  "true": "rust",
+  "orig": "C10P5H1.jpg"
+ },
+ {
+  "file": "03_rust.jpg",
+  "source": "rocole",
+  "credit": "RoCoLe — Parraga-Alava et al. 2019, CC BY 4.0 (cropped/resized)",
+  "true": "rust",
+  "orig": "C2P28H2.jpg"
+ },
+ {
+  "file": "04_red_spider_mite.jpg",
+  "source": "rocole",
+  "credit": "RoCoLe — Parraga-Alava et al. 2019, CC BY 4.0 (cropped/resized)",
+  "true": "red_spider_mite",
+  "orig": "C6P9E2.jpg"
+ },
+ {
+  "file": "05_red_spider_mite.jpg",
+  "source": "rocole",
+  "credit": "RoCoLe — Parraga-Alava et al. 2019, CC BY 4.0 (cropped/resized)",
+  "true": "red_spider_mite",
+  "orig": "C4P10E2.jpg"
+ },
+ {
+  "file": "06_leaf_miner.jpg",
+  "source": "jmuben",
+  "credit": "JMuBEN via AgML — CC BY 4.0 (resized)",
+  "true": "leaf_miner",
+  "orig": "train-3.parquet#656:1(8691).jpg"
+ },
+ {
+  "file": "07_cercospora.jpg",
+  "source": "jmuben",
+  "credit": "JMuBEN via AgML — CC BY 4.0 (resized)",
+  "true": "cercospora",
+  "orig": "train-0.parquet#986:6(287).jpg"
+ },
+ {
+  "file": "08_phoma.jpg",
+  "source": "jmuben",
+  "credit": "JMuBEN via AgML — CC BY 4.0 (resized)",
+  "true": "phoma",
+  "orig": "train-0.parquet#13917:6(533).jpg"
+ },
+ {
+  "file": "09_not_coffee_leaf.jpg",
+  "source": "beans",
+  "credit": "iBean — Makerere AI Lab, MIT (resized)",
+  "true": "not_coffee_leaf",
+  "orig": "test.parquet#94:healthy_test.16.jpg"
+ }
+]

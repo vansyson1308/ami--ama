@@ -1,1 +1,185 @@
-{"version":"placeholder","file":"leaf_v1.int8.onnx","temperature":1,"tau":0.5,"margin":0.15,"size_bytes":0,"sha256":"","arch":"","metrics":{}}
+{
+ "version": "leaf_v1",
+ "arch": "mobilenetv3_large_100",
+ "file": "leaf_v1.int8.onnx",
+ "quantization": "int8 weight-only per-channel (fp32 activations/compute)",
+ "input": {
+  "name": "input",
+  "size": 224,
+  "layout": "NCHW",
+  "mean": [
+   0.485,
+   0.456,
+   0.406
+  ],
+  "std": [
+   0.229,
+   0.224,
+   0.225
+  ],
+  "preprocess": "center square crop -> bilinear resize 224 -> /255 -> ImageNet normalisation"
+ },
+ "output": "logits",
+ "temperature": 0.607,
+ "tau": 0.82,
+ "margin": 0.15,
+ "tau_rule": "target met",
+ "tau_target_acc": 0.9,
+ "labels": "labels.json",
+ "size_bytes": 4399182,
+ "sha256": "ec558c1dd6f6f010af54e48a2759caa3b0d1817d0acee8142eb2e1157f343326",
+ "metrics": {
+  "test_rocole": {
+   "n": 312,
+   "acc": 0.8365,
+   "macro_f1": 0.7358,
+   "coverage_at_tau": 0.8013,
+   "acc_at_tau": 0.896,
+   "ece": 0.075,
+   "ece_uncalibrated": 0.071
+  },
+  "test_jmuben": {
+   "n": 900,
+   "acc": 0.9856,
+   "macro_f1": 0.9854,
+   "coverage_at_tau": 0.95,
+   "acc_at_tau": 0.9965,
+   "ece": 0.0254,
+   "ece_uncalibrated": 0.1192
+  },
+  "test_beans": {
+   "n": 195,
+   "acc": 1.0,
+   "macro_f1": 1.0,
+   "coverage_at_tau": 0.9949,
+   "acc_at_tau": 1.0,
+   "ece": 0.0123,
+   "ece_uncalibrated": 0.0896
+  },
+  "test_all": {
+   "n": 1407,
+   "acc": 0.9545,
+   "macro_f1": 0.8995,
+   "coverage_at_tau": 0.9232,
+   "acc_at_tau": 0.9777,
+   "ece": 0.0095,
+   "ece_uncalibrated": 0.099
+  },
+  "val_rocole": {
+   "n": 312,
+   "acc": 0.8333,
+   "macro_f1": 0.759,
+   "coverage_at_tau": 0.7917,
+   "acc_at_tau": 0.9028,
+   "ece": 0.0854,
+   "ece_uncalibrated": 0.0779
+  }
+ },
+ "rust_recall_by_rocole_level_test": {
+  "1": {
+   "n": 69,
+   "recall": 0.6086956521739131
+  },
+  "2": {
+   "n": 34,
+   "recall": 0.9411764705882353
+  },
+  "3": {
+   "n": 13,
+   "recall": 0.8461538461538461
+  },
+  "4": {
+   "n": 6,
+   "recall": 0.8333333333333334
+  }
+ },
+ "trained_on": [
+  "rocole",
+  "jmuben(subsampled 1,200/class)",
+  "beans"
+ ],
+ "split": "RoCoLe 60/20/20 grouped by plant; JMuBEN & beans 70/15/15 stratified; seed 42",
+ "date": "2026-10-04",
+ "not_covered": [
+  "Ảnh lá cà phê ở Việt Nam (chưa có trong dữ liệu học)",
+  "Rệp sáp, mọt đục quả (sâu hại quả)",
+  "Mọt đục cành",
+  "Tuyến trùng (bệnh rễ)",
+  "Thiếu dinh dưỡng",
+  "Bệnh nấm hồng",
+  "Thán thư / khô cành"
+ ],
+ "not_covered_en": [
+  "Vietnamese field photos",
+  "fruit/cherry pests (rệp sáp, mọt đục quả)",
+  "stem borers (mọt đục cành)",
+  "root problems (tuyến trùng)",
+  "nutrient deficiencies",
+  "pink disease (nấm hồng)",
+  "anthracnose/khô cành"
+ ],
+ "datasets": [
+  {
+   "name": "RoCoLe",
+   "license": "CC BY 4.0",
+   "n": "1.560 ảnh robusta, Ecuador",
+   "note": "Ảnh vườn thật bằng điện thoại. Chỉ có lá khỏe, rỉ sắt, nhện đỏ."
+  },
+  {
+   "name": "JMuBEN (AgML)",
+   "license": "CC BY 4.0",
+   "n": "6.000/58.549 ảnh arabica, Kenya",
+   "note": "Ảnh 128 px, gần như chụp chuẩn. Nguồn duy nhất cho sâu đục lá, đốm mắt cua, Phoma."
+  },
+  {
+   "name": "iBean (Makerere)",
+   "license": "MIT",
+   "n": "1.295 ảnh lá đậu, Uganda",
+   "note": "Chỉ dùng làm lớp 'không phải lá cà phê'."
+  }
+ ],
+ "labels_list": [
+  {
+   "id": 0,
+   "key": "healthy",
+   "vi_name": "Lá khỏe",
+   "card_id": "healthy"
+  },
+  {
+   "id": 1,
+   "key": "rust",
+   "vi_name": "Bệnh rỉ sắt",
+   "card_id": "rust"
+  },
+  {
+   "id": 2,
+   "key": "red_spider_mite",
+   "vi_name": "Nhện đỏ",
+   "card_id": "red_spider_mite"
+  },
+  {
+   "id": 3,
+   "key": "leaf_miner",
+   "vi_name": "Sâu đục lá (sâu vẽ bùa)",
+   "card_id": "leaf_miner"
+  },
+  {
+   "id": 4,
+   "key": "cercospora",
+   "vi_name": "Bệnh đốm mắt cua",
+   "card_id": "cercospora"
+  },
+  {
+   "id": 5,
+   "key": "phoma",
+   "vi_name": "Bệnh đốm lá do nấm Phoma",
+   "card_id": "phoma"
+  },
+  {
+   "id": 6,
+   "key": "not_coffee_leaf",
+   "vi_name": "Không phải lá cà phê",
+   "card_id": "not_coffee_leaf"
+  }
+ ]
+}

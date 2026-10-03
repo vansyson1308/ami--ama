@@ -1,0 +1,146 @@
+/home/user/venv/bin/python evaluate.py --backend torch --model checkpoints/best.pt --tag torch_fp32
+torch_fp32   test_rocole  n= 312 acc=0.849 macroF1=0.755 cov@tau=0.837 acc@tau=0.89272030651341 ece=0.061 (uncal 0.095)
+torch_fp32   test_jmuben  n= 900 acc=0.988 macroF1=0.988 cov@tau=0.971 acc@tau=0.9965675057208238 ece=0.024 (uncal 0.109)
+torch_fp32   test_beans   n= 195 acc=1.000 macroF1=1.000 cov@tau=1.000 acc@tau=1.0 ece=0.012 (uncal 0.087)
+torch_fp32   test_all     n=1407 acc=0.959 macroF1=0.908 cov@tau=0.945 acc@tau=0.9766917293233083 ece=0.008 (uncal 0.096)
+T=0.613 tau=0.77 target met
+/home/user/venv/bin/python export.py
+/home/user/ami--ama/ml/export.py:54: DeprecationWarning: You are using the legacy TorchScript-based ONNX export. Starting in PyTorch 2.9, the new torch.export-based ONNX exporter has become the default. Learn more about the new export logic: https://docs.pytorch.org/docs/stable/onnx_export.html. For exporting control flow: https://pytorch.org/tutorials/beginner/onnx/export_control_flow_model_to_onnx_tutorial.html
+  torch.onnx.export(m, x, str(fp32), dynamo=False, **kw)
+fp32 16.83115 MB
+static int8 4.680881 MB
+Collecting tensor data and making histogram ...
+Finding optimal threshold for each tensor using 'percentile' algorithm ...
+Number of tensors : 141
+Number of histogram bins : 2048
+Percentile : (0.010000000000005116,99.99)
+static int8 (percentile) 4.680901 MB
+dynamic int8 4.41543 MB
+weight-only int8 4.399182 MB
+/home/user/venv/bin/python evaluate.py --backend onnx --model checkpoints/leaf_fp32.onnx --tag onnx_fp32
+onnx_fp32    test_rocole  n= 312 acc=0.849 macroF1=0.755 cov@tau=0.837 acc@tau=0.89272030651341 ece=0.061 (uncal 0.095)
+onnx_fp32    test_jmuben  n= 900 acc=0.988 macroF1=0.988 cov@tau=0.971 acc@tau=0.9965675057208238 ece=0.024 (uncal 0.109)
+onnx_fp32    test_beans   n= 195 acc=1.000 macroF1=1.000 cov@tau=1.000 acc@tau=1.0 ece=0.012 (uncal 0.087)
+onnx_fp32    test_all     n=1407 acc=0.959 macroF1=0.908 cov@tau=0.945 acc@tau=0.9766917293233083 ece=0.008 (uncal 0.096)
+T=0.613 tau=0.77 target met
+/home/user/venv/bin/python evaluate.py --backend onnx --model checkpoints/leaf_int8_static.onnx --tag onnx_int8_static
+onnx_int8_static test_rocole  n= 312 acc=0.763 macroF1=0.697 cov@tau=0.737 acc@tau=0.8565217391304348 ece=0.050 (uncal 0.127)
+onnx_int8_static test_jmuben  n= 900 acc=0.654 macroF1=0.685 cov@tau=0.557 acc@tau=0.8383233532934131 ece=0.057 (uncal 0.151)
+onnx_int8_static test_beans   n= 195 acc=0.995 macroF1=0.997 cov@tau=0.985 acc@tau=1.0 ece=0.078 (uncal 0.187)
+onnx_int8_static test_all     n=1407 acc=0.726 macroF1=0.632 cov@tau=0.656 acc@tau=0.8764897074756229 ece=0.047 (uncal 0.145)
+T=0.695 tau=0.62 target met
+/home/user/venv/bin/python evaluate.py --backend onnx --model checkpoints/leaf_int8_static_pct.onnx --tag onnx_int8_static_pct
+onnx_int8_static_pct test_rocole  n= 312 acc=0.798 macroF1=0.710 cov@tau=0.766 acc@tau=0.8828451882845189 ece=0.138 (uncal 0.053)
+onnx_int8_static_pct test_jmuben  n= 900 acc=0.918 macroF1=0.932 cov@tau=0.653 acc@tau=1.0 ece=0.055 (uncal 0.222)
+onnx_int8_static_pct test_beans   n= 195 acc=1.000 macroF1=1.000 cov@tau=0.995 acc@tau=1.0 ece=0.008 (uncal 0.106)
+onnx_int8_static_pct test_all     n=1407 acc=0.903 macroF1=0.838 cov@tau=0.726 acc@tau=0.9725759059745348 ece=0.024 (uncal 0.163)
+T=0.527 tau=0.89 target met
+/home/user/venv/bin/python evaluate.py --backend onnx --model checkpoints/leaf_int8_dynamic.onnx --tag onnx_int8_dynamic
+onnx_int8_dynamic test_rocole  n= 312 acc=0.628 macroF1=0.488 cov@tau=0.420 acc@tau=0.816793893129771 ece=0.158 (uncal 0.103)
+onnx_int8_dynamic test_jmuben  n= 900 acc=0.378 macroF1=0.349 cov@tau=0.390 acc@tau=0.4700854700854701 ece=0.110 (uncal 0.163)
+onnx_int8_dynamic test_beans   n= 195 acc=0.559 macroF1=0.717 cov@tau=0.400 acc@tau=0.717948717948718 ece=0.127 (uncal 0.091)
+onnx_int8_dynamic test_all     n=1407 acc=0.458 macroF1=0.408 cov@tau=0.398 acc@tau=0.5857142857142857 ece=0.073 (uncal 0.100)
+T=1.247 tau=0.47 targets not reachable at >=50% coverage; max accuracy with coverage >=30%
+/home/user/venv/bin/python evaluate.py --backend onnx --model checkpoints/leaf_int8_weights.onnx --tag onnx_int8_weights
+onnx_int8_weights test_rocole  n= 312 acc=0.837 macroF1=0.736 cov@tau=0.801 acc@tau=0.896 ece=0.075 (uncal 0.071)
+onnx_int8_weights test_jmuben  n= 900 acc=0.986 macroF1=0.985 cov@tau=0.950 acc@tau=0.9964912280701754 ece=0.025 (uncal 0.119)
+onnx_int8_weights test_beans   n= 195 acc=1.000 macroF1=1.000 cov@tau=0.995 acc@tau=1.0 ece=0.012 (uncal 0.090)
+onnx_int8_weights test_all     n=1407 acc=0.955 macroF1=0.899 cov@tau=0.923 acc@tau=0.9776751347190146 ece=0.010 (uncal 0.099)
+T=0.607 tau=0.82 target met
+/home/user/venv/bin/python finalize.py
+{
+ "shipped": "onnx_int8_weights",
+ "size_mb": 4.399182,
+ "comparison": {
+  "onnx_int8_static": {
+   "file": "leaf_int8_static.onnx",
+   "size_bytes": 4680881,
+   "acc_drop_vs_fp32": {
+    "test_rocole": 0.08653846153846156,
+    "test_jmuben": 0.33333333333333326
+   },
+   "eligible": false,
+   "test_rocole_acc": 0.7628205128205128,
+   "test_jmuben_acc": 0.6544444444444445
+  },
+  "onnx_int8_static_pct": {
+   "file": "leaf_int8_static_pct.onnx",
+   "size_bytes": 4680901,
+   "acc_drop_vs_fp32": {
+    "test_rocole": 0.05128205128205121,
+    "test_jmuben": 0.06999999999999995
+   },
+   "eligible": false,
+   "test_rocole_acc": 0.7980769230769231,
+   "test_jmuben_acc": 0.9177777777777778
+  },
+  "onnx_int8_dynamic": {
+   "file": "leaf_int8_dynamic.onnx",
+   "size_bytes": 4415430,
+   "acc_drop_vs_fp32": {
+    "test_rocole": 0.22115384615384615,
+    "test_jmuben": 0.61
+   },
+   "eligible": false,
+   "test_rocole_acc": 0.6282051282051282,
+   "test_jmuben_acc": 0.37777777777777777
+  },
+  "onnx_int8_weights": {
+   "file": "leaf_int8_weights.onnx",
+   "size_bytes": 4399182,
+   "acc_drop_vs_fp32": {
+    "test_rocole": 0.012820512820512775,
+    "test_jmuben": 0.0022222222222222365
+   },
+   "eligible": true,
+   "test_rocole_acc": 0.8365384615384616,
+   "test_jmuben_acc": 0.9855555555555555
+  },
+  "onnx_fp32": {
+   "file": "leaf_fp32.onnx",
+   "size_bytes": 16831150,
+   "acc_drop_vs_fp32": {
+    "test_rocole": 0.0,
+    "test_jmuben": 0.0
+   },
+   "eligible": false,
+   "test_rocole_acc": 0.8493589743589743,
+   "test_jmuben_acc": 0.9877777777777778
+  }
+ }
+}
+/home/user/venv/bin/python verify_onnx.py
+{
+ "onnx_fp32": {
+  "max_abs_logit_diff": 7.68899917602539e-06,
+  "max_abs_prob_diff": 1.2479722499847412e-07,
+  "mean_abs_prob_diff": 1.0369048730751729e-08,
+  "top1_agreement": 1.0
+ },
+ "shipped": {
+  "max_abs_logit_diff": 0.44678211212158203,
+  "max_abs_prob_diff": 0.0229111909866333,
+  "mean_abs_prob_diff": 0.0009357212693430483,
+  "top1_agreement": 1.0
+ },
+ "shipped_acc_drop_vs_fp32_full_test": {
+  "test_rocole": 0.012820512820512775,
+  "test_jmuben": 0.0022222222222222365
+ },
+ "shipped_size_mb": 4.399182,
+ "pass": true
+}
+/home/user/venv/bin/python make_samples.py
+00_healthy.jpg true healthy -> healthy 0.939 predict
+01_healthy.jpg true healthy -> healthy 0.861 predict
+02_rust.jpg true rust -> rust 1.000 predict
+03_rust.jpg true rust -> rust 0.495 abstain
+04_red_spider_mite.jpg true red_spider_mite -> red_spider_mite 0.904 predict
+05_red_spider_mite.jpg true red_spider_mite -> healthy 0.719 abstain
+06_leaf_miner.jpg true leaf_miner -> leaf_miner 1.000 predict
+07_cercospora.jpg true cercospora -> cercospora 0.999 predict
+08_phoma.jpg true phoma -> phoma 0.994 predict
+09_not_coffee_leaf.jpg true not_coffee_leaf -> not_coffee_leaf 0.965 not_coffee
+/home/user/venv/bin/python report_md.py
+wrote MODEL_CARD.md and README metrics
+EXIT 0

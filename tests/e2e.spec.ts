@@ -120,6 +120,7 @@ test('offline end-to-end: samples, parity, audio, abstain, field log, escalation
 
   // Hỏi người: pre-filled SMS
   await page.goto('/#/ask');
+  await expect(page.getByTestId('ask-msg')).toHaveValue(/\[Ami Ama\] Rẫy của tôi:/);
   const href = await page.getByTestId('sms-link').getAttribute('href');
   expect(href).toMatch(/^sms:/);
   expect(decodeURIComponent(href!)).toContain('[Ami Ama] Rẫy của tôi:');
