@@ -68,5 +68,12 @@ Times are Asia/Saigon, Sun 4 Oct 2026.
 - README screenshot strip; acceptance checklist `docs/ACCEPTANCE.md`.
 - TODO(human): airplane-mode run on a real Android phone (ACCEPTANCE §A–C); merge PR #2 so production gets the model; optionally refresh `content/prices.vi.json`.
 
-## Next
-- M8: after PR #2 is merged → tag `v1.0` on `main`, confirm production badge reaches ✓.
+## M8 — release (03:55) ✅ except the tag
+- PR #2 merged (`bcfbe44`). Production check (headless Chromium → https://ami-ama.vercel.app, `tests/prod.spec.ts`): model served (4,399,182 B, sha256 `ec558c1d…`, in the SW precache list), badge **"Sẵn sàng dùng offline ✓" after 8.4 s**, offline reload keeps ✓, sample → "Có thể là bệnh rỉ sắt". (The container's TLS proxy needs `--ignore-certificate-errors` for this test; not relevant for users.)
+- **Tag `v1.0` blocked**: the container's GitHub proxy rejects tag refs (git push: "remote end hung up"; API: 403 "Write access to this GitHub API path is not permitted"). TODO(human): create `v1.0` on the final `main` commit (ACCEPTANCE.md has the clicks).
+
+## Post-release hardening — PR #3 (04:00 → 04:30) ✅
+1. **Per-class safety gate**: precision among accepted predictions, RoCoLe **val**: healthy 0.952 (n=147), rust 0.895 (n=76), **red_spider_mite 0.625 (n=24) → never asserted**. RoCoLe test confirms (0.912 / 0.919 / 0.647). Leaf miner / cercospora / phoma: 0 accepted predictions on field photos (no false alarms, precision unmeasurable), studio val 0.973 / 1.000 / 0.994 — kept, cards already demand officer confirmation. With the gate: field coverage 80.1% → **74.7%**, accuracy on answered 89.6% → **91.4%**. Same rule in Python and TS; e2e asserts sample 04 → "Chưa chắc" + "Có thể là Nhện đỏ"; JS↔Python parity still 10/10.
+2. **OOD check** (`ml/ood_check.py`): 16 synthetic (solid colours, noise, gradients, checkerboard, soil texture, blurred leaves) → 0 wrong (11 stopped by the quality gate, 5 abstain). 58 Wikimedia Commons photos (CC0/PD/CC BY/BY-SA; sources in `ml/reports/ood_sources.json`) → **10 wrong (17%)** — rust ×7, healthy ×1, leaf_miner ×1, phoma ×1 — 42 abstain, 5 "not coffee", 1 retake. Pepper 8/8 and durian 8/8 safe; banana 3/8 and cashew 2/8 wrong. Not retrained (needs a new negative set + ~1 h CPU); documented in MODEL_CARD, README, Evidence screen, ACCEPTANCE.
+3. **Demo media** (`docs/media/`, `tests/media.spec.ts`, `scripts/media.sh`): 11.6 s MP4 (0.33 MB) + GIF (0.97 MB) at 390×844, 6 JPEG screenshots (93–160 KB).
+4. `content/prices.vi.json` left unchanged on purpose (staleness warning demo).

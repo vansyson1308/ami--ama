@@ -8,6 +8,7 @@ Ami Ama is a **first-step helper**, not a diagnosis. A person — the farmer and
 |---|---|---|
 | **Fixed answer library; no free-text generation** | The model only outputs one of 7 class ids. The app maps the id to a card in `content/advice.vi.json` and renders that text verbatim. There is no language model anywhere in the app. | `src/lib/content.ts`, `src/screens/Result.tsx`, `public/models/labels.json` (`card_id`) |
 | **Calibrated threshold + ABSTAIN** | Temperature scaling fitted on val; threshold τ chosen on the RoCoLe (field) val split for ≥ 90 % accuracy on answered photos (85 % fallback). Rule: quality gate → `not_coffee` if p ≥ τ → **ABSTAIN if p < τ or top1−top2 < 0.15** → else card. Same rule in Python and TS. | `ml/metrics.py`, `ml/common.py::decide`, `src/ml/decide.ts`, `public/models/model_card.json` |
+| **Per-class safety gate** | A class is never asserted if its precision among accepted predictions on field (RoCoLe) validation photos is < 0.80. Today: **red spider mite** (0.625) → always "Chưa chắc — hỏi cán bộ" + "Có thể là Nhện đỏ". Numbers on the Evidence screen and in MODEL_CARD. | `ml/metrics.py::choose_class_gate`, `decide()` in Python + TS, `model_card.json` `never_assert` |
 | **Abstain path tested** | Playwright e2e opens a sample the model abstains on and asserts the "Chưa chắc — hỏi cán bộ" card; a blurred photo must give the "chụp lại" card; a non-leaf texture must not get a disease card. | `tests/e2e.spec.ts` |
 | **"Hỏi người" always one tap away** | Home tile "Hỏi người"; on every result a "Hỏi cán bộ" button (primary, top of the card when abstaining); in every Sổ rẫy entry. Pre-filled SMS (`sms:` — works to any phone number, incl. basic phones) and Web Share (Zalo/Messenger) with the photo when consented. | `src/screens/Ask.tsx`, `src/lib/message.ts` |
 | **No pesticide brands or doses** | The advice library contains none; every card's `safety` line + `global_safety` say: don't spray on a seller's word, only registered products, follow the label, ask an officer. | `content/advice.vi.json` |
@@ -29,7 +30,7 @@ Ami Ama is a **first-step helper**, not a diagnosis. A person — the farmer and
 | Situation | Behaviour |
 |---|---|
 | Blurry / too dark / too bright photo | "Ảnh chưa rõ — chụp lại nhé" (no prediction) |
-| Not a leaf / not coffee | "Có vẻ không phải lá cà phê" or abstain |
+| Not a leaf / not coffee | "Có vẻ không phải lá cà phê" or abstain — **but** on 58 real non-coffee photos 17% got a confident coffee result (mostly "rust"); see MODEL_CARD → Out-of-distribution. |
 | Disease the model never learnt (mealybug, borers, nematodes, deficiency, pink disease, dieback) | Ideally abstain → "Chưa chắc — hỏi cán bộ" (the uncertain card names these explicitly). It **can** be confidently wrong; the safety lines and "Hỏi cán bộ" remain visible on every card. |
 | Confident but wrong | Advice cards only recommend low-risk cultural practices (pruning, sanitation, balanced fertiliser, watering, monitoring, asking an officer), so a wrong card should not lead to harmful action. |
 

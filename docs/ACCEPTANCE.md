@@ -1,7 +1,7 @@
 # Acceptance checklist (≈ 15 minutes)
 
 Live URL: **https://ami-ama.vercel.app** (Vercel, production = `main`)
-Release: tag `v1.0` · PRs: [#1](https://github.com/vansyson1308/ami--ama/pull/1) (M1, merged), [#2](https://github.com/vansyson1308/ami--ama/pull/2) (model + M2–M7)
+Release: tag `v1.0` — **TODO(human)**: this container may not create tags (GitHub proxy returns 403 for tag refs). Create it on the final `main` commit: GitHub → Releases → *Draft a new release* → tag `v1.0`, target `main` (or `git tag -a v1.0 origin/main -m v1.0 && git push origin v1.0`). · PRs: [#1](https://github.com/vansyson1308/ami--ama/pull/1) (M1, merged), [#2](https://github.com/vansyson1308/ami--ama/pull/2) (model + M2–M7, merged), [#3](https://github.com/vansyson1308/ami--ama/pull/3) (per-class safety gate, OOD check, demo media)
 
 Already verified automatically in this container (headless Chromium, Pixel 5 emulation, production build via `vite preview`) — evidence in `docs/PROGRESS.md`, `docs/e2e-parity.json`, `docs/screenshots/`. The boxes below are for **you** on a real phone.
 
@@ -15,6 +15,7 @@ Already verified automatically in this container (headless Chromium, Pixel 5 emu
 - [ ] **Thử với ảnh mẫu** → tap 3 different leaves → each shows a title, a 4-part card (Thấy gì · Vì sao · Cần đạt · Làm gì), safety footer, sources.
 - [ ] Tap **🔊 Nghe** → Vietnamese voice plays (offline).
 - [ ] Open **Chi tiết** → top-3 percentages + model version + inference time (ms). Note the time: ______ ms (target ≤ 1500 ms).
+- [ ] **Per-class safety gate**: tap the **5th** sample (`04_red_spider_mite.jpg`, model is 90% sure it is red spider mite) → still **"Chưa chắc — hỏi cán bộ"** with "Có thể là **Nhện đỏ**" (red spider mite is never asserted: 62.5% precision on field validation photos < 80%).
 - [ ] **Abstain**: tap the **4th** sample image (`03_rust.jpg`; also the 6th, `05_red_spider_mite.jpg`) → title **"Chưa chắc — hỏi cán bộ"**, "Có thể là A hoặc B", big **Hỏi cán bộ** button.
 - [ ] **Retake**: **Chụp lá** → photograph something very blurry or in the dark → "Ảnh chưa rõ — chụp lại nhé".
 - [ ] **Real leaf** (any plant): **Chụp lá → Mở máy ảnh** → photo → **Kiểm tra** → a card or "Chưa chắc" (never a crash).
@@ -29,7 +30,7 @@ Already verified automatically in this container (headless Chromium, Pixel 5 emu
 - [ ] **Giới thiệu → Xóa toàn bộ dữ liệu** → log empty, onboarding shows again.
 
 ## D. Evidence & content — 3 min
-- [ ] **Bằng chứng** shows field (RoCoLe) vs studio (JMuBEN) numbers matching README → "Evidence" table, the "KHÔNG nhận ra" list and datasets with licenses.
+- [ ] **Bằng chứng** shows field (RoCoLe) vs studio (JMuBEN) numbers matching README → "Evidence" table, the per-class table ("Nhện đỏ — Không khẳng định"), the not-a-coffee-leaf result (10/58 real photos wrongly answered), the "KHÔNG nhận ra" list and datasets with licenses.
 - [ ] **Giá cà phê** shows the snapshot date, the "Không phải AI" banner, the staleness warning (snapshot 15/09/2026), and a difference when you type a trader price.
 - [ ] Every advice text on screen is from `content/advice.vi.json` (no other agronomy text exists in the app).
 
@@ -43,6 +44,10 @@ Already verified automatically in this container (headless Chromium, Pixel 5 emu
 | — app JS + CSS | 0.33 MB | |
 | — samples + icons | 0.34 MB | |
 
+Production verified (headless Chromium against https://ami-ama.vercel.app, `tests/prod.spec.ts`): "Sẵn sàng dùng offline ✓" 8.4 s after load; offline reload keeps ✓; sample → "Có thể là bệnh rỉ sắt".
+
+Demo media: `docs/media/` — MP4 0.33 MB, GIF 0.97 MB, 6 screenshots.
+
 Automated evidence: Playwright 3/3 green (offline e2e, offline reload + installability, offline-badge retry); JS↔Python parity 10/10 top-1, max |Δp| 4.8e-5; Lighthouse mobile — Performance 99, Accessibility 100, Best Practices 100 (`docs/lighthouse.json`); `ml/verify_onnx.py` PASS.
 
 ## Docs
@@ -50,7 +55,9 @@ Automated evidence: Playwright 3/3 green (offline e2e, offline reload + installa
 
 ## Not done / known limitations
 - **Real Android test not done by me** (no device in the container) → sections A–C above. Note the "Chi tiết" inference time on your phone (headless desktop Chromium: 55–93 ms).
-- **No Vietnamese leaf photos** in training or test. Headline field metrics are on Ecuadorian robusta (RoCoLe): 83.7% accuracy, answers 80.1% of photos at 89.6% accuracy. Real Tây Nguyên performance is unknown.
+- **No Vietnamese leaf photos** in training or test. Headline field metrics are on Ecuadorian robusta (RoCoLe): 83.7% accuracy; with τ and the per-class gate it answers 74.7% of photos at 91.4% accuracy. Real Tây Nguyên performance is unknown.
+- **Red spider mite is never asserted** (field precision 62.5% < 80%): it is always routed to "Chưa chắc — hỏi cán bộ" with a hint.
+- **Not-a-coffee-leaf is weak**: on 58 openly licensed real photos of other things (soil, sky, hands, grass, pepper/durian/banana/cashew leaves), **10 (17%) got a confident coffee-leaf result** (mostly "rust"), 42 abstained, 5 "not coffee". The negative class only saw bean leaves; fix = add these negatives and retrain (not done today). Synthetic flat/noise/blurred images: 0/16 wrong.
 - Leaf miner / cercospora / phoma learnt only from arabica studio crops (JMuBEN, 128 px) — their 98–99% studio numbers are optimistic; cards say "cần cán bộ xác nhận".
 - **Quantization**: SPEC's static int8 lost 8.7/33 pts → shipped int8 **weight-only** (fp32 compute), −1.3/−0.2 pts. Documented in MODEL_CARD.
 - Calibration (temperature) was fitted on all-source validation; it did **not** improve ECE on the field split (0.071 → 0.075).

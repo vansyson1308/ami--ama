@@ -159,3 +159,4 @@ public/ort/
 .venv/
 tools/tts/voices/
 ml/reports/*.npz
+docs/media/raw/

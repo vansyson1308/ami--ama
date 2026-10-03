@@ -8,7 +8,11 @@
 
 ("Ama"/"Ami" are the Ê Đê words for father/mother — as in Buôn Ma Thuột ← Buôn Ama Thuột.)
 
+<img src="docs/media/ami-ama-demo.gif" width="270" alt="Demo: sample leaf → rust card → saved → works in airplane mode"> 
+
 ![Home, result, abstain, field log](docs/screenshots/readme-strip.png)
+
+Demo video (MP4, 12 s): [docs/media/ami-ama-demo.mp4](docs/media/ami-ama-demo.mp4) · screenshots: [docs/media/](docs/media/)
 
 ## What it does
 1. **Chụp lá** — the farmer photographs one coffee leaf (or taps **Thử với ảnh mẫu** to use a test image).
