@@ -126,3 +126,5 @@ summary { cursor: pointer; min-height: 32px; font-weight: 600; }
 .kv div { display: flex; justify-content: space-between; gap: 10px; padding: 6px 0; border-bottom: 1px solid #0001; font-size: 0.95rem; }
 .dash { padding-left: 20px; }
 .dash li { margin: 4px 0; }
+.gate-no { color: var(--danger); font-weight: 700; font-size: 0.85rem; }
+.gate-ok { color: var(--green); font-size: 0.85rem; }

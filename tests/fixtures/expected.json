@@ -67,7 +67,7 @@
    0.0012099086306989193
   ],
   "top1": "red_spider_mite",
-  "decision": "predict"
+  "decision": "abstain"
  },
  "05_red_spider_mite.jpg": {
   "true": "red_spider_mite",

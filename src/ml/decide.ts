@@ -2,7 +2,7 @@
 export type Decision =
   | { kind: 'retake'; reason: 'dark' | 'bright' | 'blur' }
   | { kind: 'not_coffee'; top: number[]; probs: number[] }
-  | { kind: 'abstain'; top: number[]; probs: number[] }
+  | { kind: 'abstain'; top: number[]; probs: number[]; gated?: boolean }
   | { kind: 'predict'; top: number[]; probs: number[] };
 
 export function softmax(logits: ArrayLike<number>, temperature: number): number[] {
@@ -13,13 +13,16 @@ export function softmax(logits: ArrayLike<number>, temperature: number): number[
   return e.map((v) => v / s);
 }
 
-export function decide(probs: number[], tau: number, margin: number, notCoffeeId: number): Decision {
+// neverAssert: classes whose precision among accepted field predictions is < 0.80 (model_card.json `never_assert`).
+// A confident prediction of such a class becomes ABSTAIN with a single "Có thể là …" hint.
+export function decide(probs: number[], tau: number, margin: number, notCoffeeId: number, neverAssert: number[] = []): Decision {
   const top = probs.map((_, i) => i).sort((a, b) => probs[b] - probs[a]);
   const [t1, t2] = top;
   const p1 = probs[t1];
   const p2 = probs[t2];
   if (t1 === notCoffeeId && p1 >= tau) return { kind: 'not_coffee', top, probs };
   if (p1 < tau || p1 - p2 < margin) return { kind: 'abstain', top, probs };
+  if (neverAssert.includes(t1)) return { kind: 'abstain', top, probs, gated: true };
   return { kind: 'predict', top, probs };
 }
 

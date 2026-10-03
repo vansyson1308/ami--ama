@@ -45,8 +45,9 @@ export default function Result({ analysis, photo, settings }: { analysis: Analys
       name = labels[d.top[0]].vi_name;
     } else {
       cardId = 'uncertain';
+      // Gated class (low field precision): name only that class as a possibility, never assert it.
       maybe = d.top
-        .slice(0, 2)
+        .slice(0, d.gated ? 1 : 2)
         .map((i) => labels[i])
         .filter((l) => l.key !== 'not_coffee_leaf')
         .map((l) => l.vi_name);

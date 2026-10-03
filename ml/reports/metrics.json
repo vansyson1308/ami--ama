@@ -91,8 +91,8 @@
    "n": 312,
    "acc": 0.8365,
    "macro_f1": 0.7358,
-   "coverage_at_tau": 0.8013,
-   "acc_at_tau": 0.896,
+   "coverage_at_tau": 0.7468,
+   "acc_at_tau": 0.9142,
    "ece": 0.075,
    "ece_uncalibrated": 0.071
   },
@@ -118,8 +118,8 @@
    "n": 1407,
    "acc": 0.9545,
    "macro_f1": 0.8995,
-   "coverage_at_tau": 0.9232,
-   "acc_at_tau": 0.9777,
+   "coverage_at_tau": 0.9112,
+   "acc_at_tau": 0.9821,
    "ece": 0.0095,
    "ece_uncalibrated": 0.099
   },
@@ -127,8 +127,8 @@
    "n": 312,
    "acc": 0.8333,
    "macro_f1": 0.759,
-   "coverage_at_tau": 0.7917,
-   "acc_at_tau": 0.9028,
+   "coverage_at_tau": 0.7147,
+   "acc_at_tau": 0.9327,
    "ece": 0.0854,
    "ece_uncalibrated": 0.0779
   }

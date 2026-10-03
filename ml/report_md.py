@@ -3,6 +3,7 @@ from __future__ import annotations
 
 import json
 import re
+from collections import Counter
 
 from common import KEYS, PUBLIC_MODELS, REPORTS, ROOT
 
@@ -66,6 +67,36 @@ def main():
     lvl = card["rust_recall_by_rocole_level_test"]
     lvl_rows = " · ".join(f"level {k}: {pct(v['recall'])} (n={v['n']})" for k, v in lvl.items())
     log = summ["train_log"]
+    ood_md = "Not run."
+    if (REPORTS / "ood.json").exists() and "ood" in card:
+        ood = json.load(open(REPORTS / "ood.json"))
+        o = card["ood"]
+        lines = ["Outcome as a farmer would see it for a camera photo (quality gate first, then the model with τ and the class gate):", "",
+                 "| set / group | " + " | ".join(["wrong assertion", "abstain", "not coffee", "retake"]) + " |", "|---|---|---|---|---|"]
+        for g, v in ood["by_group"].items():
+            wrong = sum(n for k, n in v.items() if k.startswith("WRONG"))
+            lines.append(f"| {g} | {wrong} | {v.get('abstain (hỏi cán bộ)', 0)} | {v.get('not a coffee leaf', 0)} | {v.get('retake (quality gate)', 0)} |")
+        c = o["commons"]
+        wrong_names = Counter(r["outcome_camera"].split("asserted ")[1] for r in ood["rows"] if r["outcome_camera"].startswith("WRONG"))
+        lines += ["", f"**Real photos (Wikimedia Commons, {c['n']} images, CC0/PD/CC BY/CC BY-SA — sources in `ml/reports/ood_sources.json`): "
+                  f"{c['wrong_assertion']} of {c['n']} ({c['wrong_assertion'] / c['n'] * 100:.0f}%) were confidently labelled as a coffee problem** "
+                  f"({', '.join(f'{k} ×{n}' for k, n in wrong_names.most_common())}); {c['abstain']} abstained, {c['not_coffee']} 'not coffee', {c['retake']} retake. "
+                  f"Synthetic images ({o['synthetic']['n']}: solid colours, noise, gradients, checkerboard, soil texture, blurred leaves): "
+                  f"{o['synthetic']['wrong_assertion']} wrong assertions — the quality gate stops flat/blurred images, the model abstains on noise.",
+                  "", "Why: the `not_coffee_leaf` class was trained only on bean leaves. Mitigations in place: the advice cards for a wrong "
+                  "'rust' assertion recommend only low-risk cultural practices and always show 'Hỏi cán bộ'. Fix for v2: add openly licensed "
+                  "negatives (other crops' leaves — pepper, durian, cashew, banana — plus soil, sky, hands) to `not_coffee_leaf` and retrain."]
+        ood_md = "\n".join(lines)
+    cg = card["class_gate"]
+    gate_rows = ["| class | RoCoLe **val** precision (accepted) | n accepted | RoCoLe **test** precision (accepted) | n accepted | decision |",
+                 "|---|---|---|---|---|---|"]
+    gated_txt = '**never asserted** → "Có thể là …" + Hỏi cán bộ'
+    for k, v in cg["field_val"].items():
+        t_ = cg["field_test"].get(k, {})
+        verdict = gated_txt if k in card["never_assert"] else "asserted"
+        gate_rows.append(f"| {k} | {f3(v['precision'])} | {v['accepted_predictions']} | {f3(t_.get('precision'))} | "
+                         f"{t_.get('accepted_predictions', 0)} | {verdict} |")
+    studio = ", ".join(f"{k} {f3(v['precision'])} (n={v['accepted_predictions']})" for k, v in cg["studio_only_classes_all_val"].items())
     best = max(log, key=lambda r: r["select_score"])
 
     md = f"""# Model card — `{card['version']}`
@@ -90,6 +121,13 @@ def main():
 
 The **field** column is the number that matters: real smartphone photos of robusta leaves, and no plant in the test set was seen in training. It only covers healthy / rust / red spider mite. The **studio** column is optimistic (low-res, uniform crops, likely near-duplicates). **No Vietnamese photos were available**, so real-world accuracy in Tây Nguyên is unknown and probably lower.
 
+## Per-class safety gate
+Rule: a class is **never asserted** when its precision among *accepted* predictions on the RoCoLe (field) **validation** split is below **{cg['min_precision']:.2f}**. A confident prediction of such a class is shown as the "Chưa chắc — hỏi cán bộ" card with the hint "Có thể là <class>" and the escalation button. Same rule in `ml/common.py::decide` and `src/ml/decide.ts`; the list ships in `model_card.json` (`never_assert`). All metrics above already include the gate.
+
+{chr(10).join(gate_rows)}
+
+Never asserted: **{', '.join(card['never_assert']) or 'none'}**. Leaf miner, cercospora and phoma have **no field photos**; the model made no accepted field predictions of them (no false alarms on RoCoLe), so their field precision cannot be measured. Their studio-only precision (all-source val) is {studio}. Their advice cards already say an officer must confirm.
+
 Risk–coverage (test): ![risk-coverage](../ml/reports/risk_coverage_{tag}.png)
 
 ## Per-class — field (RoCoLe test)
@@ -108,6 +146,9 @@ Confusion matrix — field (rows = truth):
 
 ## Not-a-coffee-leaf (beans test)
 Accuracy {pct(rep['splits']['test_beans']['acc'])} on {rep['splits']['test_beans']['n']} bean-leaf photos. Untested on soil, hands, other crops.
+
+## Out-of-distribution check (`ml/ood_check.py`, `ml/reports/ood.json`)
+{ood_md}
 
 ## Rust severity (metadata only, not shown to farmers)
 Recall of class *rust* on RoCoLe test by annotated severity: {lvl_rows}.
@@ -143,12 +184,21 @@ A first-step helper for smallholder robusta farmers and extension workers: sugge
         vals = ", ".join(f"{m[k]['ece_uncalibrated']:.3f} → {m[k]['ece']:.3f}" for k in worse)
         ece_note = (" Temperature scaling was fitted on all validation sources together; on the "
                     f"{names} split it did **not** improve ECE ({vals}).")
+    gate_note = (f" **Per-class safety gate:** classes whose precision among accepted field-val predictions is below "
+                 f"{cg['min_precision']:.0%} are never asserted (now: {', '.join(card['never_assert'])}) — they show 'Chưa chắc — hỏi cán bộ' "
+                 f"with a 'Có thể là …' hint; the numbers above include this.") if card["never_assert"] else ""
+    ood_note = ""
+    if "ood" in card:
+        c = card["ood"]["commons"]
+        ood_note = (f" **Not-a-coffee-leaf check:** on {c['n']} openly licensed real photos of other things (soil, sky, hands, grass, "
+                    f"pepper/durian/banana/cashew leaves) {c['wrong_assertion']} ({c['wrong_assertion'] / c['n']:.0%}) were wrongly given a "
+                    f"coffee-leaf result and {c['abstain']} abstained — a known weakness (the negative class only saw bean leaves).")
     sec = f"""<!-- METRICS:START (generated by ml/report_md.py) -->
 Shipped model: `{card['file']}`, **{card['size_bytes'] / 1e6:.2f} MB** ({card['quantization']}), temperature T={card['temperature']:.2f}, abstain threshold τ={card['tau']:.2f}.
 
 {table}
 
-On **real field photos** (RoCoLe test, plants never seen in training) the model answers {pct(m['test_rocole']['coverage_at_tau'])} of photos and is right on {pct(m['test_rocole']['acc_at_tau'])} of those; the rest get "Chưa chắc — hỏi cán bộ". These are Ecuadorian robusta photos — **we have no Vietnamese test photos yet**, so treat this as an upper bound.{ece_note} Full report: [docs/MODEL_CARD.md](docs/MODEL_CARD.md) (per-class, confusion matrices, risk–coverage, quantization).
+On **real field photos** (RoCoLe test, plants never seen in training) the model answers {pct(m['test_rocole']['coverage_at_tau'])} of photos and is right on {pct(m['test_rocole']['acc_at_tau'])} of those; the rest get "Chưa chắc — hỏi cán bộ". These are Ecuadorian robusta photos — **we have no Vietnamese test photos yet**, so treat this as an upper bound.{ece_note}{gate_note}{ood_note} Full report: [docs/MODEL_CARD.md](docs/MODEL_CARD.md) (per-class, confusion matrices, risk–coverage, quantization).
 <!-- METRICS:END -->"""
     if "METRICS_TABLE_PLACEHOLDER" in readme:
         readme = readme.replace("METRICS_TABLE_PLACEHOLDER", sec)
