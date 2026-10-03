@@ -1,0 +1,20 @@
+{
+ "onnx_fp32": {
+  "max_abs_logit_diff": 7.68899917602539e-06,
+  "max_abs_prob_diff": 1.2479722499847412e-07,
+  "mean_abs_prob_diff": 1.0369048730751729e-08,
+  "top1_agreement": 1.0
+ },
+ "shipped": {
+  "max_abs_logit_diff": 0.44678211212158203,
+  "max_abs_prob_diff": 0.0229111909866333,
+  "mean_abs_prob_diff": 0.0009357212693430483,
+  "top1_agreement": 1.0
+ },
+ "shipped_acc_drop_vs_fp32_full_test": {
+  "test_rocole": 0.012820512820512775,
+  "test_jmuben": 0.0022222222222222365
+ },
+ "shipped_size_mb": 4.399182,
+ "pass": true
+}

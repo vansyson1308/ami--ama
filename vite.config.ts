@@ -42,6 +42,14 @@ export default defineConfig({
         cleanupOutdatedCaches: true,
         clientsClaim: true,
         skipWaiting: true,
+        // Safety net: anything the precache missed (or a retry fetched) is cached here and served offline.
+        runtimeCaching: [
+          {
+            urlPattern: ({ url }) => /^\/(models|audio|ort|samples)\//.test(url.pathname),
+            handler: 'CacheFirst',
+            options: { cacheName: 'ami-runtime', cacheableResponse: { statuses: [200] } },
+          },
+        ],
       },
     }),
   ],

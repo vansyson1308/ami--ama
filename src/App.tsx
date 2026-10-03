@@ -1,7 +1,7 @@
-import { useCallback, useEffect, useState } from 'react';
+import { useCallback, useEffect, useRef, useState } from 'react';
 import { t } from './i18n';
 import { getSettings, type Settings } from './lib/store';
-import { offlineProgress } from './lib/offline';
+import { offlineStatus, retryOffline, type OfflineState } from './lib/offline';
 import type { Analysis } from './ml/model';
 import Onboarding from './screens/Onboarding';
 import Home from './screens/Home';
@@ -26,34 +26,74 @@ export function go(route: Route, arg?: string) {
   location.hash = `#/${route}${arg ? '/' + arg : ''}`;
 }
 
+const STALL_MS = 45_000;
+
 function OfflineBadge() {
-  const [p, setP] = useState<number | null>(null);
-  useEffect(() => {
-    let stop = false;
-    const tick = async () => {
-      const v = await offlineProgress();
-      if (stop) return;
-      setP(v);
-      if (v < 1 && v >= 0) setTimeout(tick, 1000);
-    };
-    tick();
-    navigator.serviceWorker?.addEventListener('controllerchange', tick);
-    return () => {
-      stop = true;
-    };
+  const [st, setSt] = useState<OfflineState | null>(null);
+  const [retrying, setRetrying] = useState(false);
+  const timer = useRef<number>(0);
+  const last = useRef({ progress: -1, at: Date.now() });
+
+  const tick = useCallback(async () => {
+    window.clearTimeout(timer.current);
+    const stalled = Date.now() - last.current.at > STALL_MS;
+    const v = await offlineStatus(stalled);
+    if ('progress' in v && v.progress !== last.current.progress) last.current = { progress: v.progress, at: Date.now() };
+    setSt(v);
+    if (v.state === 'loading') timer.current = window.setTimeout(tick, 1000);
+    else if (v.state === 'error' || v.state === 'need-network') timer.current = window.setTimeout(tick, 10_000);
   }, []);
-  if (p === null) return null;
-  if (p < 0) return <span className="badge warn">{t('offline_unsupported')}</span>;
-  if (p >= 1)
+
+  useEffect(() => {
+    tick();
+    const sw = navigator.serviceWorker;
+    sw?.addEventListener('controllerchange', tick);
+    window.addEventListener('online', tick);
+    window.addEventListener('offline', tick);
+    return () => {
+      window.clearTimeout(timer.current);
+      sw?.removeEventListener('controllerchange', tick);
+      window.removeEventListener('online', tick);
+      window.removeEventListener('offline', tick);
+    };
+  }, [tick]);
+
+  if (!st) return null;
+  if (st.state === 'unsupported') return <span className="badge warn">{t('offline_unsupported')}</span>;
+  if (st.state === 'ready')
     return (
       <span className="badge ok" data-testid="offline-ready">
         {t('offline_ready')}
       </span>
     );
+  if (st.state === 'loading')
+    return (
+      <span className="badge" data-testid="offline-loading">
+        {t('offline_loading')} {Math.round(st.progress * 100)}%
+      </span>
+    );
+  if (st.state === 'need-network')
+    return (
+      <span className="badge warn" data-testid="offline-need-network" title={st.missing.join(', ')}>
+        {t('offline_need_network')} ({Math.round(st.progress * 100)}%)
+      </span>
+    );
   return (
-    <span className="badge">
-      {t('offline_loading')} {Math.round(p * 100)}%
-    </span>
+    <button
+      className="badge warn badge-btn"
+      data-testid="offline-error"
+      title={st.missing.join(', ')}
+      disabled={retrying}
+      onClick={async () => {
+        setRetrying(true);
+        last.current = { progress: -1, at: Date.now() };
+        await retryOffline(st.missing);
+        setRetrying(false);
+        tick();
+      }}
+    >
+      {retrying ? t('offline_retrying') : `${t('offline_error')} — ${t('offline_retry')}`}
+    </button>
   );
 }
 

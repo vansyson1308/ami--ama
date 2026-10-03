@@ -23,11 +23,12 @@ html, body { margin: 0; background: var(--cream); min-height: 100%; }
   position: sticky; top: 0; z-index: 5; display: flex; align-items: center; justify-content: space-between; gap: 8px;
   padding: 10px 14px; background: var(--green); color: #fff;
 }
-.brand { font-weight: 700; font-size: 1.15rem; }
+.brand { font-weight: 700; font-size: 1.15rem; white-space: nowrap; }
 .backbtn { background: transparent; border: 2px solid #fff6; color: #fff; font-size: 1rem; border-radius: 10px; min-height: 44px; padding: 0 12px; }
 .badge { display: inline-block; font-size: 0.8rem; padding: 4px 10px; border-radius: 99px; background: #ffffff26; color: #fff; white-space: nowrap; }
 .badge.ok { background: #d8f5df; color: #0d4a20; font-weight: 600; }
 .badge.warn { background: var(--warn-bg); color: var(--warn); }
+.badge-btn { border: none; font: inherit; font-size: 0.8rem; min-height: 40px; cursor: pointer; white-space: normal; text-align: left; }
 .badge.pending { background: var(--warn-bg); color: var(--warn); }
 main { padding: 14px 16px 40px; }
 h1 { font-size: 1.5rem; margin: 6px 0 10px; color: var(--green); line-height: 1.25; }
@@ -118,7 +119,7 @@ summary { cursor: pointer; min-height: 32px; font-weight: 600; }
 .mtable th { font-size: 0.8rem; background: var(--leaf); }
 .mtable td { font-size: 0.9rem; }
 .num { text-align: right !important; font-variant-numeric: tabular-nums; font-weight: 600; }
-.mtable .field { color: var(--green); }
+.mtable .fieldcol { color: var(--green); }
 .diff { font-size: 1.15rem; font-weight: 700; padding: 10px; border-radius: 10px; }
 .diff.lower { background: var(--warn-bg); color: var(--warn); }
 .diff.higher { background: #d8f5df; color: #0d4a20; }
