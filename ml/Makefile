@@ -1,6 +1,6 @@
 # Reproducible pipeline: make -C ml all   (seed 42; CPU is fine, ~1.5 h on 4 cores)
 PY ?= python
-.PHONY: all data prepare train evaluate export verify samples clean
+.PHONY: all data prepare train evaluate export verify samples report clean
 all: data prepare train evaluate export verify samples
 data:
 	$(PY) download.py
@@ -22,5 +22,8 @@ verify:
 	$(PY) verify_onnx.py
 samples:
 	$(PY) make_samples.py
+	$(PY) report_md.py
+report:
+	$(PY) report_md.py
 clean:
 	rm -rf checkpoints reports/*.npz

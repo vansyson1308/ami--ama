@@ -45,7 +45,7 @@ Consequence: classes 3–5 are learnt **only from arabica studio-like crops**; t
 - Eval / app: center square crop → bilinear 224×224 → ImageNet mean/std (identical in `ml/common.py` and `src/ml/preprocess.ts`).
 
 ## Demo sample images (`public/samples/`)
-10 images drawn with a fixed seed from the **test** splits (2 healthy, 2 rust, 2 red spider mite from RoCoLe; 1 each leaf miner / cercospora / phoma from JMuBEN; 1 bean leaf). They are **not** filtered by whether the model gets them right. Center-cropped and resized to 224 px; credits in `public/samples/CREDITS.md` (CC BY 4.0 attribution: changes = crop + resize).
+10 images drawn with a fixed seed from the **test** splits (2 healthy, 2 rust, 2 red spider mite from RoCoLe; 1 each leaf miner / cercospora / phoma from JMuBEN; 1 bean leaf). They are **not** filtered by whether the model gets them right. The camera quality gate is skipped for these bundled images (JMuBEN images are 128 px, so their Laplacian-variance sharpness is 4–13 vs ≥ 212 for 99% of RoCoLe field photos, and the gate's threshold is 60); camera and gallery photos always go through the gate. Center-cropped and resized to 224 px; credits in `public/samples/CREDITS.md` (CC BY 4.0 attribution: changes = crop + resize).
 
 ## Audio
 Voice: Piper `vi_VN-vais1000-medium` from [rhasspy/piper-voices](https://huggingface.co/rhasspy/piper-voices/tree/main/vi/vi_VN/vais1000/medium). Its model card lists the training corpus VAIS-1000 ([IEEE DataPort](https://ieee-dataport.org/documents/vais-1000-vietnamese-speech-synthesis-corpus)) under **CC BY 4.0**. Audio text is exactly `audio_text` / `ui_prompts` from `content/advice.vi.json`.

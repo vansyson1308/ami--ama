@@ -1,5 +1,5 @@
 import { test, expect, type Page } from '@playwright/test';
-import { readFileSync } from 'node:fs';
+import { readFileSync, writeFileSync } from 'node:fs';
 
 const expected: Record<string, { probs: number[]; top1: string; decision: string; true: string }> = JSON.parse(
   readFileSync('tests/fixtures/expected.json', 'utf8'),
@@ -49,7 +49,7 @@ test('offline end-to-end: samples, parity, audio, abstain, field log, escalation
       top.push({ key: (await items.nth(k).getAttribute('data-key'))!, p: Number(await items.nth(k).getAttribute('data-p')) });
     }
     const maxDiff = Math.max(...top.map((t) => Math.abs(t.p - exp.probs[KEY2ID[t.key]])));
-    parity.push({ file: files[i], js_top1: top[0].key, py_top1: exp.top1, maxDiff, js_kind: kind, py_kind: exp.decision });
+    parity.push({ file: files[i], js_top1: top[0].key, py_top1: exp.top1, maxDiff, js_kind: kind, py_kind: exp.decision, ms: Number(await res.getAttribute('data-ms')) });
     expect(top[0].key).toBe(exp.top1);
     expect(maxDiff).toBeLessThanOrEqual(0.01);
     expect(kind).toBe(exp.decision === 'not_coffee' ? 'not_coffee' : exp.decision);
@@ -60,6 +60,7 @@ test('offline end-to-end: samples, parity, audio, abstain, field log, escalation
     }
   }
   console.log('PARITY', JSON.stringify(parity));
+  writeFileSync('docs/e2e-parity.json', JSON.stringify(parity, null, 1));
 
   // Audio plays offline from the precache
   const audio = await page.evaluate(async () => {

@@ -35,7 +35,7 @@ export default function Prices() {
         </tbody>
       </table>
       <p className="muted small">
-        {PRICES.unit} · {t('price_date')}: {snap.toLocaleDateString('vi-VN')} · {t('price_source')}:{' '}
+        {PRICES.unit} · {t('price_date')}: {PRICES.snapshot_date.split('-').reverse().join('/')} · {t('price_source')}:{' '}
         <a href={PRICES.source.url} target="_blank" rel="noreferrer noopener">{PRICES.source.name}</a>
       </p>
       <label className="field">

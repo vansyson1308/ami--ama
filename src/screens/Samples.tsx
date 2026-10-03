@@ -19,7 +19,8 @@ export default function Samples({ onAnalysis }: { onAnalysis: (a: Analysis, phot
     setBusy(s.file);
     try {
       const url = `/samples/${s.file}`;
-      onAnalysis(await analyze(url), url);
+      // Bundled dataset images skip the camera quality gate: JMuBEN images are 128 px and would read as "blurry".
+      onAnalysis(await analyze(url, { skipQuality: true }), url);
     } finally {
       setBusy(null);
     }

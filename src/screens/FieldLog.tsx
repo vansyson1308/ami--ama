@@ -55,7 +55,8 @@ export default function FieldLog() {
                 <span className={`badge ${e.shared ? 'ok' : 'pending'}`}>{e.shared ? t('log_sent') : t('log_pending')}</span>
               </div>
               <div className="muted small">
-                {fmtDate(e.ts)} · {e.conf}
+                {fmtDate(e.ts)}
+                {e.kind !== 'abstain' && ` · ${e.conf}`}
                 {e.maybe.length > 0 && ` · ${t('res_maybe')} ${e.maybe.join(` ${t('res_or')} `)}`}
               </div>
               <div className="muted small">📍 {e.lat != null ? `${e.lat}, ${e.lng}` : t('log_gps_none')}</div>

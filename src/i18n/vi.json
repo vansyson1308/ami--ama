@@ -6,7 +6,6 @@
   "offline_unsupported": "Trình duyệt này chưa lưu được để dùng offline",
   "back": "← Quay lại",
   "home": "Trang chủ",
-
   "onb_title": "Chào bạn!",
   "onb_1": "Chụp một lá cà phê — Ami Ama gợi ý lá có dấu hiệu gì và việc nên làm trước.",
   "onb_2": "Chạy ngay trên điện thoại, không cần mạng.",
@@ -17,7 +16,6 @@
   "consent_note": "Bạn có thể đổi lại trong mục Giới thiệu.",
   "start": "Bắt đầu",
   "listen": "🔊 Nghe",
-
   "tile_capture": "Chụp lá",
   "tile_log": "Sổ rẫy",
   "tile_prices": "Giá cà phê",
@@ -25,7 +23,6 @@
   "link_samples": "Thử với ảnh mẫu",
   "link_evidence": "Bằng chứng",
   "link_about": "Giới thiệu & Quyền riêng tư",
-
   "cap_title": "Chụp lá",
   "cap_guide": "1 lá · mặt dưới lá · đủ sáng · lấp đầy khung",
   "cap_camera": "📷 Mở máy ảnh",
@@ -34,10 +31,8 @@
   "cap_working": "Đang xem lá…",
   "cap_model_loading": "Đang mở mô hình…",
   "cap_error": "Không đọc được ảnh. Hãy thử ảnh khác.",
-
   "samples_title": "Thử với ảnh mẫu",
-  "samples_note": "Ảnh từ bộ dữ liệu công khai RoCoLe (Ecuador) và JMuBEN (Kenya), CC BY 4.0 — dùng để thử khi không có cây cà phê.",
-
+  "samples_note": "Ảnh từ bộ dữ liệu công khai RoCoLe (Ecuador, CC BY 4.0), JMuBEN (Kenya, CC BY 4.0) và iBean (lá đậu, Uganda, MIT) — dùng để thử khi không có cây cà phê.",
   "res_conf_high": "Khá chắc chắn",
   "res_conf_mid": "Có thể",
   "res_conf_low": "Chưa chắc",
@@ -55,7 +50,6 @@
   "res_retake": "📷 Chụp lại",
   "res_details_note": "Xác suất của mô hình (đã hiệu chỉnh)",
   "res_review": "Nội dung lời khuyên là bản nháp, cần cán bộ BVTV/khuyến nông duyệt.",
-
   "log_title": "Sổ rẫy",
   "log_empty": "Chưa có ghi chép. Chụp lá để bắt đầu.",
   "log_pending": "Chờ gửi",
@@ -68,7 +62,6 @@
   "log_confirm_delete_all": "Xóa hết mọi ghi chép trên máy này?",
   "log_gps_none": "không chia sẻ",
   "log_ask": "🙋 Hỏi về mục này",
-
   "ask_title": "Hỏi người",
   "ask_intro": "Gửi tin cho cán bộ khuyến nông hoặc hợp tác xã. Bạn xem và sửa trước khi gửi.",
   "ask_pick": "Chọn ghi chép",
@@ -81,7 +74,6 @@
   "ask_general": "[Ami Ama] Nhờ cán bộ xem giúp rẫy cà phê của tôi.",
   "ask_tpl": "[Ami Ama] Rẫy của tôi: {date}, lá có dấu hiệu {name} ({conf}). Vị trí: {loc}. Nhờ cán bộ xem giúp.",
   "ask_copied": "Đã chép tin nhắn",
-
   "price_title": "Giá cà phê",
   "price_not_ai": "Không phải AI — đây là bảng giá tham chiếu",
   "price_date": "Ngày cập nhật",
@@ -93,7 +85,6 @@
   "price_diff_same": "Bằng bảng giá",
   "price_stale": "Giá này cũ {days} ngày — hỏi HTX/đài trước khi bán",
   "price_world": "Robusta London",
-
   "ev_title": "Bằng chứng",
   "ev_sub": "Mô hình làm tốt đến đâu — đo trên ảnh chưa dùng để học",
   "ev_model": "Mô hình",
@@ -113,7 +104,6 @@
   "ev_limit_2": "Sâu đục lá, đốm mắt cua, Phoma chỉ học từ ảnh arabica.",
   "ev_limit_3": "Các con số trên đo trên ảnh nước ngoài; ngoài vườn thật có thể thấp hơn.",
   "ev_n": "Số ảnh thử",
-
   "about_title": "Giới thiệu & Quyền riêng tư",
   "about_what": "Ami Ama gợi ý dấu hiệu trên lá cà phê từ ảnh, chạy ngay trên điện thoại. Lời khuyên lấy từ thư viện cố định, có nguồn; không có AI viết câu trả lời.",
   "about_private_t": "Quyền riêng tư",

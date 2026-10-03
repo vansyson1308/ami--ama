@@ -101,12 +101,15 @@ def sample_weights(rows):
     return [1.0 / (per_cls_sources[r["label"]] * cnt[(r["label"], r["source"])]) for r in rows]
 
 
+DEV = torch.device("cuda" if torch.cuda.is_available() else "cpu")
+
+
 @torch.no_grad()
 def predict(model, loader):
     model.eval()
     out, ys = [], []
     for x, y in loader:
-        out.append(model(x))
+        out.append(model(x.to(DEV)).cpu())
         ys.append(y)
     return torch.cat(out).numpy(), torch.cat(ys).numpy()
 
@@ -133,7 +136,7 @@ def main():
     dl_va = DataLoader(LeafDS(va, False), batch_size=64, num_workers=a.workers)
     va_roc = np.array([r["source"] == "rocole" for r in va])
 
-    model = timm.create_model(a.arch, pretrained=True, num_classes=len(KEYS))
+    model = timm.create_model(a.arch, pretrained=True, num_classes=len(KEYS)).to(DEV)
     head = set(id(p) for p in model.get_classifier().parameters())
     backbone = [p for p in model.parameters() if id(p) not in head]
     opt = torch.optim.AdamW([{"params": backbone, "lr": 3e-4}, {"params": list(model.get_classifier().parameters()), "lr": 1e-3}],
@@ -151,6 +154,7 @@ def main():
         model.train()
         te, tl, n = time.time(), 0.0, 0
         for x, y in dl_tr:
+            x, y = x.to(DEV), y.to(DEV)
             loss = crit(model(x), y)
             opt.zero_grad()
             loss.backward()
@@ -172,7 +176,7 @@ def main():
         print(json.dumps(rec), flush=True)
         if score > best:
             best, bad = score, 0
-            torch.save({"arch": a.arch, "state_dict": model.state_dict(), "epoch": ep, "score": score}, CKPT / "best.pt")
+            torch.save({"arch": a.arch, "state_dict": {k: v.cpu() for k, v in model.state_dict().items()}, "epoch": ep, "score": score}, CKPT / "best.pt")
         else:
             bad += 1
         json.dump({"args": vars(a), "log": log, "best_select_score": best}, open(REPORTS / "train_log.json", "w"), indent=1)
