@@ -101,6 +101,7 @@
   "ev_acc_tau": "",
   "ev_ece": "",
   "ev_tau": "",
+  "ev_rule": "",
   "ev_not_covered": "",
   "ev_datasets": "",
   "ev_limits": "",

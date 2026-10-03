@@ -6,7 +6,7 @@
   "maxDiff": 0.00003911790847777041,
   "js_kind": "predict",
   "py_kind": "predict",
-  "ms": 93
+  "ms": 101
  },
  {
   "file": "01_healthy.jpg",
@@ -15,7 +15,7 @@
   "maxDiff": 0.00004659566879272603,
   "js_kind": "predict",
   "py_kind": "predict",
-  "ms": 57
+  "ms": 67
  },
  {
   "file": "02_rust.jpg",
@@ -24,7 +24,7 @@
   "maxDiff": 0.00003173930346965789,
   "js_kind": "predict",
   "py_kind": "predict",
-  "ms": 85
+  "ms": 94
  },
  {
   "file": "03_rust.jpg",
@@ -33,7 +33,7 @@
   "maxDiff": 0.00003570189476015395,
   "js_kind": "abstain",
   "py_kind": "abstain",
-  "ms": 65
+  "ms": 56
  },
  {
   "file": "04_red_spider_mite.jpg",
@@ -42,7 +42,7 @@
   "maxDiff": 0.00004829196184873499,
   "js_kind": "predict",
   "py_kind": "predict",
-  "ms": 74
+  "ms": 55
  },
  {
   "file": "05_red_spider_mite.jpg",
@@ -51,7 +51,7 @@
   "maxDiff": 0.000035777854919483154,
   "js_kind": "abstain",
   "py_kind": "abstain",
-  "ms": 57
+  "ms": 62
  },
  {
   "file": "06_leaf_miner.jpg",
@@ -60,7 +60,7 @@
   "maxDiff": 0.00004741888046266851,
   "js_kind": "predict",
   "py_kind": "predict",
-  "ms": 74
+  "ms": 61
  },
  {
   "file": "07_cercospora.jpg",
@@ -69,7 +69,7 @@
   "maxDiff": 0.000045668318914249566,
   "js_kind": "predict",
   "py_kind": "predict",
-  "ms": 59
+  "ms": 62
  },
  {
   "file": "08_phoma.jpg",
@@ -78,7 +78,7 @@
   "maxDiff": 0.000019039338640868702,
   "js_kind": "predict",
   "py_kind": "predict",
-  "ms": 55
+  "ms": 65
  },
  {
   "file": "09_not_coffee_leaf.jpg",
@@ -87,6 +87,6 @@
   "maxDiff": 0.00003081541061400461,
   "js_kind": "not_coffee",
   "py_kind": "not_coffee",
-  "ms": 86
+  "ms": 55
  }
 ]

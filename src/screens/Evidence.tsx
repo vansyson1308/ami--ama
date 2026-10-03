@@ -39,6 +39,7 @@ export default function Evidence() {
         <div><span>{t('ev_size')}</span><b>{(card.size_bytes / 1e6).toFixed(2)} MB · int8 ONNX</b></div>
         <div><span>{t('ev_tau')}</span><b>τ = {card.tau.toFixed(2)} · T = {card.temperature.toFixed(2)}</b></div>
       </div>
+      <p className="muted small">{t('ev_rule')}</p>
       <table className="mtable" data-testid="metrics">
         <thead>
           <tr>
@@ -51,7 +52,7 @@ export default function Evidence() {
           {rows.map(([k, fn]) => (
             <tr key={k}>
               <td>{t(k)}</td>
-              <td className="num field">{fn(f)}</td>
+              <td className="num fieldcol">{fn(f)}</td>
               <td className="num">{fn(s)}</td>
             </tr>
           ))}

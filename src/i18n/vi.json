@@ -101,6 +101,7 @@
   "ev_acc_tau": "Đúng khi trả lời",
   "ev_ece": "Sai số hiệu chỉnh (ECE)",
   "ev_tau": "Ngưỡng chắc chắn",
+  "ev_rule": "Khi xác suất cao nhất dưới ngưỡng τ, hoặc hai khả năng đầu quá sát nhau, Ami Ama không đoán mà nói “Chưa chắc — hỏi cán bộ”.",
   "ev_not_covered": "Ami Ama KHÔNG nhận ra",
   "ev_datasets": "Dữ liệu huấn luyện",
   "ev_limits": "Giới hạn",

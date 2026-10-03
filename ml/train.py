@@ -160,6 +160,8 @@ def main():
     log, best, bad, t0, start = [], -1.0, 0, time.time(), 0
     if a.resume and (CKPT / "last.pt").exists():
         st = torch.load(CKPT / "last.pt", map_location=DEV, weights_only=False)
+        if st["scheduler"]["total_steps"] != steps:
+            raise SystemExit("--resume needs the same --epochs/--bs/data as the interrupted run (LR schedule length differs)")
         model.load_state_dict(st["state_dict"])
         opt.load_state_dict(st["optimizer"])
         sched.load_state_dict(st["scheduler"])

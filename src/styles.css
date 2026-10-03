@@ -119,7 +119,7 @@ summary { cursor: pointer; min-height: 32px; font-weight: 600; }
 .mtable th { font-size: 0.8rem; background: var(--leaf); }
 .mtable td { font-size: 0.9rem; }
 .num { text-align: right !important; font-variant-numeric: tabular-nums; font-weight: 600; }
-.mtable .field { color: var(--green); }
+.mtable .fieldcol { color: var(--green); }
 .diff { font-size: 1.15rem; font-weight: 700; padding: 10px; border-radius: 10px; }
 .diff.lower { background: var(--warn-bg); color: var(--warn); }
 .diff.higher { background: #d8f5df; color: #0d4a20; }
