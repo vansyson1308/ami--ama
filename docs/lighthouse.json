@@ -1,0 +1,17 @@
+{
+ "lighthouse": "12.8.2",
+ "url": "vite preview (production build), mobile form factor",
+ "fetchTime": "2026-10-03T18:58:12.098Z",
+ "scores": {
+  "performance": 0.99,
+  "accessibility": 1,
+  "best-practices": 1
+ },
+ "metrics": {
+  "first-contentful-paint": "1.5 s",
+  "largest-contentful-paint": "1.9 s",
+  "total-blocking-time": "0 ms",
+  "cumulative-layout-shift": "0.001",
+  "speed-index": "1.5 s"
+ }
+}
