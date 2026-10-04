@@ -127,6 +127,18 @@ python3 -m venv .ttsvenv && .ttsvenv/bin/pip install piper-tts
 ## Docs
 [SPEC](docs/SPEC.md) · [PLAN](docs/PLAN.md) · [PROGRESS](docs/PROGRESS.md) · [DATA_CARD](docs/DATA_CARD.md) · [MODEL_CARD](docs/MODEL_CARD.md) · [RESPONSIBLE_AI](docs/RESPONSIBLE_AI.md) · [LANGUAGE](docs/LANGUAGE.md) · [ACCEPTANCE](docs/ACCEPTANCE.md)
 
+## Changelog
+### v1.1 (2026-10-04, before the deadline) — "uncertain" becomes a useful offline flow · **no model change**
+The submitted videos show **v1.0**; v1.1 only adds steps *after* "Chưa chắc". Single-photo decisions are byte-for-byte the same model, temperature, τ, margin and `never_assert` (regression-tested on all 10 samples).
+When Ami Ama is unsure (≈ 21% of field photos, and always for red spider mite):
+1. **More leaves of the same tree** — up to 3 photos per check; mean of temperature-scaled logits, then the same `decide()`; with 2–3 leaves at least 2 must agree (`src/ml/aggregate.ts`, mirrored in `ml/common.py::aggregate`). PlantVillage Nuru's field accuracy rose to 74–88% when 6 leaves per plant were assessed ([Mrisho et al. 2020](https://www.frontiersin.org/journals/plant-science/articles/10.3389/fpls.2020.590889)); averaging 3 images raised top-1 from 59% to 80% in large-scale plant ID ([arXiv:1706.03736](https://arxiv.org/pdf/1706.03736)).
+2. **Tell-apart questions ("Phân biệt")** — the top-2 candidates side by side with reference photos and ≤ 3 yes/no/không rõ questions from `content/questions.vi.json` (draft likelihood ratios, pending expert review). Top-1 79% vs top-2 94% when candidates came with reference photos ([arXiv:1912.09239](https://arxiv.org/pdf/1912.09239)); CABI Plantwise diagnosis is driven by questions about the plant and field, and abiotic causes usually affect the whole plant (Plantwise Diagnostic Field Guide). An answer-supported result is labelled **"Theo dấu hiệu bạn thấy — chưa phải AI khẳng định"**; red spider mite only when the farmer saw mites/eggs/webbing (`q_mite_seen`). Uniform yellowing with no disease sign → "Có thể không phải bệnh" card.
+3. **Useful while waiting** — rewritten `uncertain` card (mark the tree, don't spray yet, re-check in 3–5 days) and a local "Hẹn xem lại sau 4 ngày" reminder (home banner, follow-up linked to the same tree; no push permission). Human answers can take hours in tiered systems ([Wadhwani AI, arXiv:2402.00015](https://arxiv.org/html/2402.00015v2)).
+4. **Ask a person, Zalo first** — an offline case-packet JPEG (< 400 KB: leaf photos, date, "Có thể là A hoặc B", answers, location only if consented) shared via Zalo/any app, with SMS and Call as backups, 2 saved helper contacts, an unsent-queue filter, and "Ghi câu trả lời của cán bộ" (expert label stored locally — the data flywheel). Zalo use among ethnic-minority farmers was 62% (men) vs SMS 58% ([Hue University survey](https://csdlkhoahoc.hueuni.edu.vn/data/2023/5/Mobile_phone_paper_Author_version.pdf)).
+5. A lenient "leaf fills the frame" hint (warning only).
+
+### v1.0 (2026-10-04, submitted) — tag `v1.0-submitted` = `301de48`
+
 ## Credits & licenses
 - Code: **MIT** (see `LICENSE`).
 - RoCoLe — Parraga-Alava, Cusme, Loor, Santander (2019), Mendeley Data DOI 10.17632/c5yvn32dzg.2, **CC BY 4.0**. Sample images cropped/resized.

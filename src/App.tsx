@@ -22,6 +22,23 @@ function readRoute(): { route: Route; arg?: string } {
   return { route, arg };
 }
 
+export const MAX_LEAVES = 3;
+export interface Leaf {
+  analysis: Analysis;
+  photo: string;
+}
+export interface Check {
+  leaves: Leaf[];
+  parentId?: string;
+}
+export type CaptureMode = { kind: 'new' } | { kind: 'add'; n: number } | { kind: 'follow'; id: string };
+
+function captureMode(arg: string | undefined, check: Check | null): CaptureMode {
+  if (arg === 'add' && check && check.leaves.length < MAX_LEAVES) return { kind: 'add', n: check.leaves.length + 1 };
+  if (arg?.startsWith('f-')) return { kind: 'follow', id: arg.slice(2) };
+  return { kind: 'new' };
+}
+
 export function go(route: Route, arg?: string) {
   location.hash = `#/${route}${arg ? '/' + arg : ''}`;
 }
@@ -100,8 +117,7 @@ function OfflineBadge() {
 export default function App() {
   const [{ route, arg }, setR] = useState(readRoute());
   const [settings, setSettings] = useState<Settings | null>(null);
-  const [analysis, setAnalysis] = useState<Analysis | null>(null);
-  const [photo, setPhoto] = useState<string | null>(null);
+  const [check, setCheck] = useState<Check | null>(null);
 
   useEffect(() => {
     const on = () => {
@@ -113,20 +129,24 @@ export default function App() {
     return () => window.removeEventListener('hashchange', on);
   }, []);
 
-  const onAnalysis = useCallback((a: Analysis, photoUrl: string) => {
-    setAnalysis(a);
-    setPhoto(photoUrl);
+  // v1.1 plant check: 'add' appends a leaf (max 3) to the current check; 'f-<id>' starts a follow-up of a log entry.
+  const onAnalysis = useCallback((a: Analysis, photoUrl: string, mode: CaptureMode) => {
+    setCheck((prev) =>
+      mode.kind === 'add' && prev
+        ? { ...prev, leaves: [...prev.leaves, { analysis: a, photo: photoUrl }].slice(0, MAX_LEAVES) }
+        : { leaves: [{ analysis: a, photo: photoUrl }], parentId: mode.kind === 'follow' ? mode.id : undefined },
+    );
     go('result');
   }, []);
+  const mode = captureMode(arg, check);
 
   if (!settings) return null;
 
   let body;
   if (!settings.onboarded) body = <Onboarding onDone={setSettings} />;
-  else if (route === 'capture') body = <Capture onAnalysis={onAnalysis} />;
-  else if (route === 'samples') body = <Samples onAnalysis={onAnalysis} />;
-  else if (route === 'result' && analysis)
-    body = <Result analysis={analysis} photo={photo} settings={settings} />;
+  else if (route === 'capture') body = <Capture mode={mode} onAnalysis={(a, u) => onAnalysis(a, u, mode)} />;
+  else if (route === 'samples') body = <Samples mode={mode} onAnalysis={(a, u) => onAnalysis(a, u, mode)} />;
+  else if (route === 'result' && check) body = <Result check={check} settings={settings} />;
   else if (route === 'log') body = <FieldLog />;
   else if (route === 'ask') body = <Ask entryId={arg} settings={settings} onSettings={setSettings} />;
   else if (route === 'prices') body = <Prices />;
@@ -134,7 +154,7 @@ export default function App() {
   else if (route === 'about') body = <About settings={settings} onSettings={setSettings} />;
   else body = <Home />;
 
-  const isHome = !settings.onboarded || route === 'home' || (route === 'result' && !analysis);
+  const isHome = !settings.onboarded || route === 'home' || (route === 'result' && !check);
   return (
     <div className="app">
       <header className="top">

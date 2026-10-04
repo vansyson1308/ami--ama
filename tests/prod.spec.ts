@@ -20,4 +20,17 @@ test('production: offline-ready ✓, then works in airplane mode', async ({ page
   await page.getByTestId('sample-2').click();
   await expect(page.getByTestId('result')).toHaveAttribute('data-kind', 'predict', { timeout: 60_000 });
   console.log('RESULT', await page.getByTestId('result-title').textContent());
+  // bean leaf -> not coffee
+  await page.goto(URL! + '/#/samples');
+  await page.getByTestId('sample-9').click();
+  await expect(page.getByTestId('result')).toHaveAttribute('data-kind', 'not_coffee', { timeout: 60_000 });
+  // red spider mite (gated) -> "Có thể là Nhện đỏ" -> questions panel (v1.1)
+  await page.goto(URL! + '/#/samples');
+  await page.getByTestId('sample-4').click();
+  await expect(page.getByTestId('maybe')).toHaveText(/Có thể là\s+Nhện đỏ$/, { timeout: 60_000 });
+  if (process.env.PROD_V11) {
+    await page.getByTestId('dif-now').click();
+    await expect(page.getByTestId('differential')).toBeVisible();
+    console.log('V11 differential visible');
+  }
 });

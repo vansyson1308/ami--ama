@@ -78,6 +78,25 @@ def decide(probs: np.ndarray, tau: float, margin: float = MARGIN, never_assert=(
     return "predict", top1
 
 
+def aggregate(logits_list, temperature: float, tau: float, margin: float = MARGIN, never_assert=()):
+    """Plant check (v1.1): combine 1-3 leaves of the same tree. MUST match src/ml/aggregate.ts.
+
+    Mean of temperature-scaled logits over images that passed the quality gate (pass only those), softmax, then the
+    unchanged decide(). Not a product of probabilities (leaves of one tree are correlated). With 2-3 images, abstain
+    unless at least 2 per-image top-1 labels agree. With one image this equals the single-image path.
+    Returns (kind, class_id, probs) or ("retake", None, None) when no image is usable.
+    """
+    if not len(logits_list):
+        return "retake", None, None
+    z = np.mean([np.asarray(l, dtype=np.float64) / temperature for l in logits_list], axis=0)
+    probs = softmax(z, 1.0)
+    kind, c = decide(probs, tau, margin, never_assert)
+    tops = [int(np.argmax(l)) for l in logits_list]
+    if len(tops) >= 2 and max(tops.count(t) for t in set(tops)) < 2 and kind in ("predict", "not_coffee"):
+        kind = "abstain"
+    return kind, c, probs
+
+
 def preprocess_pil(img, size: int = IMG_SIZE) -> np.ndarray:
     """Eval/inference preprocessing — mirrored in src/ml/preprocess.ts.
 

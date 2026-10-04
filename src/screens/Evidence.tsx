@@ -1,6 +1,7 @@
 import { useEffect, useState } from 'react';
 import { t, type StrKey } from '../i18n';
 import { loadMeta, type ModelCard } from '../ml/model';
+import { QUESTIONS } from '../lib/content';
 
 const pct = (v?: number) => (v == null ? '—' : `${(v * 100).toFixed(1)}%`);
 const num = (v?: number) => (v == null ? '—' : v.toFixed(3));
@@ -93,6 +94,16 @@ export default function Evidence() {
           <p className="muted small">{t('ev_gate_studio')}</p>
         </>
       )}
+      <h2>{t('ev_unsure_t')}</h2>
+      <ol className="steps-list" data-testid="unsure-flow">
+        <li>{t('ev_unsure_1')}</li>
+        <li>{t('ev_unsure_2')}</li>
+        <li>{t('ev_unsure_3')}</li>
+        <li>{t('ev_unsure_4')}</li>
+      </ol>
+      <p className="muted small">
+        {t('ev_unsure_draft')} {QUESTIONS.review_status}
+      </p>
       <h2>{t('ev_not_covered')}</h2>
       <ul className="dash">
         {notCovered.map((x) => <li key={x}>{x}</li>)}

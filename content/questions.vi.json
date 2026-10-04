@@ -1,0 +1,23 @@
+{
+  "version": "questions_v1_draft",
+  "review_status": "Bản nháp ngày 04/10/2026 — câu hỏi và trọng số cần cán bộ BVTV/khuyến nông duyệt trước khi dùng thật.",
+  "weights_note": "Trọng số (tỷ số khả dĩ — likelihood ratio) là ước lượng thô, chưa hiệu chỉnh bằng dữ liệu; cần chuyên gia hiệu chỉnh.",
+  "questions": [
+    {"id": "q_any_sign", "for": ["healthy"], "text": "Trên lá có vết lạ nào không — đốm, bột, vết khô hay đổi màu?", "yes": {"healthy": 0.3}, "no": {"healthy": 3},
+     "sources": ["CABI Plantwise Diagnostic Field Guide"]},
+    {"id": "q_rust_powder", "for": ["rust"], "text": "Lật mặt dưới lá, chỗ vết vàng: có lớp bột màu vàng cam không?", "yes": {"rust": 4}, "no": {"rust": 0.3},
+     "sources": ["Plantwise Việt Nam — Bệnh gỉ sắt cà phê (2013) https://farmknowledge.info/sites/default/files/resource/20157800694.pdf", "Báo Nông nghiệp và Môi trường https://nongnghiepmoitruong.vn/benh-ri-sat-hai-ca-phe-d362735.html"]},
+    {"id": "q_eye_spot", "for": ["cercospora"], "text": "Vết bệnh có tròn (cỡ 5–10 mm), giữa màu xám trắng, viền nâu đậm và có quầng vàng bên ngoài không?", "yes": {"cercospora": 4}, "no": {"cercospora": 0.4},
+     "sources": ["Pacific Pests & Pathogens #142 https://apps.lucidcentral.org/ppp_v9/pdf/web_full/coffee_browneye_spot_142.pdf"]},
+    {"id": "q_mine_tunnel", "for": ["leaf_miner"], "text": "Vết nâu khô như giấy ở mặt trên lá: bóc lớp da mặt trên ra thì thấy rỗng bên trong hoặc có sâu non màu trắng nhỏ không?", "yes": {"leaf_miner": 5}, "no": {"leaf_miner": 0.4},
+     "sources": ["Plant Doctor training — Common pests and diseases of coffee https://farmknowledge.info/sites/default/files/resource/20137804172.pdf"]},
+    {"id": "q_mite_seen", "for": ["red_spider_mite"], "text": "Nhìn thật kỹ mặt lá (có kính lúp càng tốt): có chấm đỏ li ti đang bò, trứng đỏ rất nhỏ hoặc tơ mỏng không?", "yes": {"red_spider_mite": 5}, "no": {"red_spider_mite": 0.5},
+     "sources": ["Plantix — Red tea mite (Oligonychus coffeae) https://plantix.net/en/library/plant-diseases/500030/red-tea-mite/ — nguồn về chè, cần chuyên gia xác nhận cho cà phê vối"]},
+    {"id": "q_bronze_dry", "for": ["red_spider_mite"], "text": "Lá già chuyển màu đồng xỉn hoặc nâu đỏ ở mặt trên, sau một đợt nắng nóng, khô hạn?", "yes": {"red_spider_mite": 2}, "no": {"red_spider_mite": 0.6},
+     "sources": ["Plantix — Red tea mite (nguồn về chè, cần xác nhận)"]},
+    {"id": "q_young_cold", "for": ["phoma"], "text": "Vết bệnh chủ yếu ở lá non, đọt non, mép lá xoăn hoặc nứt, sau đợt mưa gió lạnh?", "yes": {"phoma": 3}, "no": {"phoma": 0.5},
+     "sources": ["EPAMIG — Mancha de Phoma https://livrariaepamig.com.br/wp-content/uploads/2023/02/Mancha-de-phoma.pdf — nguồn Brazil/arabica, cần xác nhận cho cà phê vối"]},
+    {"id": "q_uniform_yellow", "for": ["*"], "text": "Lá vàng đều trên cả cây hoặc nhiều cây, không có ranh giới rõ với phần xanh, và không thấy bột, đốm hay đường đục?", "yes": {"rust": 0.5, "cercospora": 0.5, "leaf_miner": 0.5, "phoma": 0.5, "red_spider_mite": 0.5}, "no": {},
+     "flag": "nutrition", "sources": ["CABI Plantwise Diagnostic Field Guide — nguyên nhân phi sinh học thường ảnh hưởng cả cây"]}
+  ]
+}

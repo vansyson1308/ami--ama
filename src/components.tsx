@@ -76,10 +76,14 @@ export function AdviceCard({ c }: { c: Card }) {
           <summary>{t('res_sources')}</summary>
           <ul>
             {c.sources.map((s) => (
-              <li key={s.url}>
-                <a href={s.url} target="_blank" rel="noreferrer noopener">
-                  {s.name}
-                </a>
+              <li key={s.name}>
+                {s.url ? (
+                  <a href={s.url} target="_blank" rel="noreferrer noopener">
+                    {s.name}
+                  </a>
+                ) : (
+                  s.name
+                )}
               </li>
             ))}
           </ul>

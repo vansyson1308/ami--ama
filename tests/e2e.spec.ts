@@ -77,7 +77,7 @@ test('offline end-to-end: samples, parity, audio, abstain, field log, escalation
   expect(audio.status).toBe(200);
   expect(audio.duration).toBeGreaterThan(3);
 
-  // ABSTAIN: the model must say "Chưa chắc — hỏi cán bộ" with escalation one tap away
+  // ABSTAIN: "Chưa chắc — cùng kiểm tra thêm" (v1.1 copy) with escalation one tap away
   const abstainIdx = files.findIndex((f) => expected[f].decision === 'abstain');
   let res;
   if (abstainIdx >= 0) {
@@ -90,7 +90,7 @@ test('offline end-to-end: samples, parity, audio, abstain, field log, escalation
   }
   await expect(res).toHaveAttribute('data-kind', abstainIdx >= 0 ? 'abstain' : /abstain|not_coffee/);
   if (abstainIdx >= 0) {
-    await expect(page.getByTestId('result-title')).toHaveText('Chưa chắc — hỏi cán bộ');
+    await expect(page.getByTestId('result-title')).toHaveText('Chưa chắc — cùng kiểm tra thêm');
     await expect(page.getByRole('button', { name: /Hỏi cán bộ/ }).first()).toBeVisible();
     await page.screenshot({ path: `${SHOT}/abstain.png`, fullPage: true });
   }
@@ -100,7 +100,7 @@ test('offline end-to-end: samples, parity, audio, abstain, field log, escalation
   if (gatedIdx >= 0) {
     const r = await runSample(page, gatedIdx);
     await expect(r).toHaveAttribute('data-kind', 'abstain');
-    await expect(page.getByTestId('result-title')).toHaveText('Chưa chắc — hỏi cán bộ');
+    await expect(page.getByTestId('result-title')).toHaveText('Chưa chắc — cùng kiểm tra thêm');
     await expect(page.getByTestId('maybe')).toHaveText(/Có thể là\s+Nhện đỏ$/);
     await page.screenshot({ path: `${SHOT}/gated-red-spider-mite.png`, fullPage: true });
   }
