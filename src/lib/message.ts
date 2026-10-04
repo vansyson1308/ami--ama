@@ -4,9 +4,12 @@ import type { LogEntry } from './store';
 
 export function entryMessage(e?: LogEntry): string {
   if (!e) return t('ask_general');
-  const name = e.kind === 'predict' ? e.name : e.maybe.length ? `${t('ask_unknown')}: ${e.maybe.join('/')}` : t('ask_unknown');
   const loc = e.lat != null && e.lng != null ? `${e.lat},${e.lng}` : t('log_gps_none');
-  const msg = t('ask_tpl', { date: fmtDate(e.ts), name, conf: e.conf || t('res_conf_low'), loc });
+  const date = fmtDate(e.ts);
+  let msg: string;
+  if (e.kind === 'not_coffee') msg = t('ask_tpl_not_coffee', { date, loc });
+  else if (e.kind === 'abstain') msg = t('ask_tpl', { date, name: t('ask_unknown'), conf: t('res_conf_low'), loc });
+  else msg = t('ask_tpl', { date, name: e.name, conf: e.conf, loc });
   return e.note ? `${msg} ${t('log_note')}: ${e.note}` : msg;
 }
 

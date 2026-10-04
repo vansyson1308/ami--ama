@@ -77,6 +77,7 @@
   "ask_unknown": "chưa rõ",
   "ask_general": "[Ami Ama] Nhờ cán bộ xem giúp rẫy cà phê của tôi.",
   "ask_tpl": "[Ami Ama] Rẫy của tôi: {date}, lá có dấu hiệu {name} ({conf}). Vị trí: {loc}. Nhờ cán bộ xem giúp.",
+  "ask_tpl_not_coffee": "[Ami Ama] Rẫy của tôi: {date}, ảnh có vẻ không phải lá cà phê. Vị trí: {loc}. Nhờ cán bộ xem giúp.",
   "ask_copied": "Đã chép tin nhắn",
   "price_title": "Giá cà phê",
   "price_not_ai": "Không phải AI — đây là bảng giá tham chiếu",
