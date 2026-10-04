@@ -23,14 +23,14 @@ Ami Ama is a **first-step helper**, not a diagnosis. A person — the farmer and
 ## Bias & fairness
 - Trained on **Ecuador robusta** (RoCoLe) and **Kenya arabica** (JMuBEN). It has never seen a Vietnamese leaf. Expect lower accuracy on Tây Nguyên varieties, light, and phone cameras than the numbers on the Evidence screen.
 - Leaf miner, cercospora and phoma are learnt only from arabica studio crops → their cards carry an extra "needs officer confirmation" safety line.
-- The "not a coffee leaf" class only saw bean leaves.
+- The "not a coffee leaf" class saw bean leaves plus (leaf_v2) 331 openly licensed photos of grass, soil, sky, hands and other crop leaves — mostly temperate, well-lit scenes.
 - Mitigations: abstain threshold chosen on **field** data, grouped-by-plant split, source-balanced sampling, honest field-vs-studio reporting, and the feedback loop below.
 
 ## Failure modes and what the farmer sees
 | Situation | Behaviour |
 |---|---|
 | Blurry / too dark / too bright photo | "Ảnh chưa rõ — chụp lại nhé" (no prediction) |
-| Not a leaf / not coffee | "Có vẻ không phải lá cà phê" or abstain — **but** on 58 real non-coffee photos 17% got a confident coffee result (mostly "rust"); see MODEL_CARD → Out-of-distribution. |
+| Not a leaf / not coffee | "Có vẻ không phải lá cà phê" or abstain — on 58 held-out real non-coffee photos leaf_v2 gives 1 (2%) confident coffee result (leaf_v1: 17%); see MODEL_CARD → Out-of-distribution. |
 | Disease the model never learnt (mealybug, borers, nematodes, deficiency, pink disease, dieback) | Ideally abstain → "Chưa chắc — hỏi cán bộ" (the uncertain card names these explicitly). It **can** be confidently wrong; the safety lines and "Hỏi cán bộ" remain visible on every card. |
 | Confident but wrong | Advice cards only recommend low-risk cultural practices (pruning, sanitation, balanced fertiliser, watering, monitoring, asking an officer), so a wrong card should not lead to harmful action. |
 

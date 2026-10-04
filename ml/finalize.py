@@ -6,11 +6,12 @@ whose accuracy drop vs fp32 ONNX is <= 2 pts on BOTH test sets and whose size is
 from __future__ import annotations
 
 import datetime as dt
+import os
 import hashlib
 import json
 import shutil
 
-from common import CKPT, LABELS, MARGIN, PUBLIC_MODELS, REPORTS
+from common import CKPT, LABELS, MARGIN, PUBLIC_MODELS, REPORTS, ROOT, SPLITS
 
 MAX_BYTES = 6 * 1024 * 1024
 NOT_COVERED = ["Ảnh lá cà phê ở Việt Nam (chưa có trong dữ liệu học)", "Rệp sáp, mọt đục quả (sâu hại quả)",
@@ -70,7 +71,9 @@ def main():
     data = dest.read_bytes()
     train = json.load(open(REPORTS / "train_log.json"))
     card = {
-        "version": "leaf_v1", "arch": train["args"]["arch"], "file": "leaf_v1.int8.onnx", "quantization": desc,
+        "version": os.environ.get("AMI_VERSION", "leaf_v1"), "arch": train["args"]["arch"],
+        "training": (f"fine-tuned from leaf_v1 weights ({train['args']['init']}) for {len(train['log'])} epochs with added negatives"
+                     if train["args"].get("init") else f"{len(train['log'])} epochs from ImageNet weights"), "file": "leaf_v1.int8.onnx", "quantization": desc,
         "input": {"name": "input", "size": 224, "layout": "NCHW", "mean": [0.485, 0.456, 0.406], "std": [0.229, 0.224, 0.225],
                   "preprocess": "center square crop -> bilinear resize 224 -> /255 -> ImageNet normalisation"},
         "output": "logits", "temperature": round(m["temperature"], 4), "tau": m["tau"], "margin": MARGIN,
@@ -85,10 +88,16 @@ def main():
                     "test_beans": pick(m, "test_beans"), "test_all": pick(m, "test_all"),
                     "val_rocole": pick(m, "val_rocole")},
         "rust_recall_by_rocole_level_test": m["splits"]["test_rocole_rust_recall_by_level"],
-        "trained_on": ["rocole", "jmuben(subsampled 1,200/class)", "beans"],
+        "trained_on": ["rocole", "jmuben(subsampled 1,200/class)", "beans"]
+                      + (["wikimedia-commons negatives (CC0/PD/CC BY/CC BY-SA, reports/negatives_sources.json)"]
+                         if "negatives" in (SPLITS / "train.csv").read_text() else []),
         "split": "RoCoLe 60/20/20 grouped by plant; JMuBEN & beans 70/15/15 stratified; seed 42",
         "date": dt.date(2026, 10, 4).isoformat(), "not_covered": NOT_COVERED, "not_covered_en": NOT_COVERED_EN,
-        "datasets": DATASETS, "labels_list": LABELS,
+        "datasets": DATASETS + ([{"name": "Wikimedia Commons (ảnh mở)", "license": "CC0 / PD / CC BY / CC BY-SA",
+                                  "n": f"{len(json.load(open(ROOT / 'reports' / 'negatives_sources.json')))} ảnh: cỏ, đất, trời, bàn tay, lá chuối, điều, cây trồng khác",
+                                  "note": "Chỉ dùng làm lớp 'không phải lá cà phê' (v2). Nguồn và giấy phép từng ảnh trong ml/reports/negatives_sources.json."}]
+                                if "negatives" in (SPLITS / "train.csv").read_text() else []),
+        "labels_list": LABELS,
     }
     json.dump(card, open(PUBLIC_MODELS / "model_card.json", "w"), ensure_ascii=False, indent=1)
     json.dump(LABELS, open(PUBLIC_MODELS / "labels.json", "w"), ensure_ascii=False, indent=1)

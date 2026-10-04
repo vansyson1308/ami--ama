@@ -15,9 +15,10 @@ DATA = Path(os.environ.get("AMI_DATA", ROOT / "data"))
 RAW = DATA / "raw"
 CACHE = DATA / "cache"
 SPLITS = ROOT / "splits"
-REPORTS = ROOT / "reports"
-CKPT = ROOT / "checkpoints"
-PUBLIC_MODELS = ROOT.parent / "public" / "models"
+# Overridable so a candidate model (e.g. v2) can be trained/evaluated/staged without touching the shipped one.
+REPORTS = Path(os.environ.get("AMI_REPORTS", ROOT / "reports"))
+CKPT = Path(os.environ.get("AMI_CKPT", ROOT / "checkpoints"))
+PUBLIC_MODELS = Path(os.environ.get("AMI_PUBLIC", ROOT.parent / "public" / "models"))
 
 SEED = 42
 IMG_SIZE = 224

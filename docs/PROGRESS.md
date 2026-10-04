@@ -77,3 +77,18 @@ Times are Asia/Saigon, Sun 4 Oct 2026.
 2. **OOD check** (`ml/ood_check.py`): 16 synthetic (solid colours, noise, gradients, checkerboard, soil texture, blurred leaves) → 0 wrong (11 stopped by the quality gate, 5 abstain). 58 Wikimedia Commons photos (CC0/PD/CC BY/BY-SA; sources in `ml/reports/ood_sources.json`) → **10 wrong (17%)** — rust ×7, healthy ×1, leaf_miner ×1, phoma ×1 — 42 abstain, 5 "not coffee", 1 retake. Pepper 8/8 and durian 8/8 safe; banana 3/8 and cashew 2/8 wrong. Not retrained (needs a new negative set + ~1 h CPU); documented in MODEL_CARD, README, Evidence screen, ACCEPTANCE.
 3. **Demo media** (`docs/media/`, `tests/media.spec.ts`, `scripts/media.sh`): 11.6 s MP4 (0.33 MB) + GIF (0.97 MB) at 390×844, 6 JPEG screenshots (93–160 KB).
 4. `content/prices.vi.json` left unchanged on purpose (staleness warning demo).
+
+## leaf_v2 — stronger "not a coffee leaf" (Sun 11:00 → 12:00) ✅ shipped
+- **Data**: 331 openly licensed Wikimedia Commons photos (grass 35, banana 40, cashew 36, other crop leaves 88, sky 42, soil 48, hands 42; CC0/PD/CC BY/BY-SA, every file's author/license/URL in `ml/reports/negatives_sources.json`). The 58-image OOD test stays held out: different search terms, and no shared file (asserted by title). Split 70/15/15 → 231/50/50; existing splits untouched (rows only appended). Commons throttled non-standard thumbnail sizes (HTTP 429); switched to the standard 330 px; cassava and black-pepper queries failed and are not in the set.
+- **Training**: fine-tuned leaf_v1 (`checkpoints/best.pt`) for 3 epochs, backbone LR 1e-4, head 3e-4 (≈ 11 min CPU) — chosen over a full retrain to fit the 13:30 stop. Then export → weight-only int8 → evaluate → calibrate (T 0.597, τ 0.79, gate still red_spider_mite) → `verify_onnx` PASS.
+- **Merge rule (fixed before training, `ml/compare_v2.py`)**:
+
+  | | leaf_v1 | leaf_v2 | rule |
+  |---|---|---|---|
+  | field accuracy on answered | 91.4% | 91.1% | drop ≤ 1 pt ✅ |
+  | field coverage | 74.7% | 79.2% | drop ≤ 1 pt ✅ |
+  | held-out OOD confident-wrong | 10/58 | **1/58** | improves ✅ |
+
+  Also: field accuracy 83.7% → 83.7%, field macro-F1 0.736 → 0.756, studio accuracy 98.6% → 99.2%. Regression: synthetic checkerboard now asserted "healthy" (1/16; v1 0/16).
+- Shipped as `leaf_v2` (file name `leaf_v1.int8.onnx` kept for cache-path stability; 4.40 MB, sha256 `ce445886…`). v1 reports kept in `ml/reports/`, v2 in `ml/reports/v2/`; weights `ml/checkpoints/v2/best.pt`.
+- Regenerated: samples' expected outputs (same 10 images; same decision types), MODEL_CARD (incl. v1-vs-v2 table), README metrics, Evidence screen, e2e screenshots, README strip, demo MP4/GIF + 6 screenshots. Playwright 3/3 green; JS↔Python parity 10/10.

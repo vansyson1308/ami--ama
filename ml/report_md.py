@@ -2,6 +2,7 @@
 from __future__ import annotations
 
 import json
+import os
 import re
 from collections import Counter
 
@@ -77,15 +78,21 @@ def main():
             wrong = sum(n for k, n in v.items() if k.startswith("WRONG"))
             lines.append(f"| {g} | {wrong} | {v.get('abstain (hỏi cán bộ)', 0)} | {v.get('not a coffee leaf', 0)} | {v.get('retake (quality gate)', 0)} |")
         c = o["commons"]
-        wrong_names = Counter(r["outcome_camera"].split("asserted ")[1] for r in ood["rows"] if r["outcome_camera"].startswith("WRONG"))
+        wrong_names = Counter(r["outcome_camera"].split("asserted ")[1] for r in ood["rows"]
+                              if r["set"] == "commons" and r["outcome_camera"].startswith("WRONG"))
+        syn_wrong = [f"{r['image']} → {r['top1']}" for r in ood["rows"] if r["set"] == "synthetic" and r["outcome_camera"].startswith("WRONG")]
         lines += ["", f"**Real photos (Wikimedia Commons, {c['n']} images, CC0/PD/CC BY/CC BY-SA — sources in `ml/reports/ood_sources.json`): "
                   f"{c['wrong_assertion']} of {c['n']} ({c['wrong_assertion'] / c['n'] * 100:.0f}%) were confidently labelled as a coffee problem** "
                   f"({', '.join(f'{k} ×{n}' for k, n in wrong_names.most_common())}); {c['abstain']} abstained, {c['not_coffee']} 'not coffee', {c['retake']} retake. "
                   f"Synthetic images ({o['synthetic']['n']}: solid colours, noise, gradients, checkerboard, soil texture, blurred leaves): "
-                  f"{o['synthetic']['wrong_assertion']} wrong assertions — the quality gate stops flat/blurred images, the model abstains on noise.",
-                  "", "Why: the `not_coffee_leaf` class was trained only on bean leaves. Mitigations in place: the advice cards for a wrong "
-                  "'rust' assertion recommend only low-risk cultural practices and always show 'Hỏi cán bộ'. Fix for v2: add openly licensed "
-                  "negatives (other crops' leaves — pepper, durian, cashew, banana — plus soil, sky, hands) to `not_coffee_leaf` and retrain."]
+                  f"{o['synthetic']['wrong_assertion']} wrong assertion(s){' (' + ', '.join(syn_wrong) + ')' if syn_wrong else ''}; "
+                  f"{o['synthetic']['retake']} stopped by the quality gate, {o['synthetic']['abstain']} abstain, {o['synthetic']['not_coffee']} 'not coffee'.",
+                  "", ("The `not_coffee_leaf` class now also learns from 331 openly licensed Commons negatives (grass, soil, sky, hands, "
+                      "banana/cashew/other crop leaves) — different files from this held-out test (see DATA_CARD). v1, trained on bean leaves "
+                      "only, wrongly asserted 10 of these 58 photos."
+                      if any("commons" in t for t in card["trained_on"]) else
+                      "Why: the `not_coffee_leaf` class was trained only on bean leaves. Fix: add openly licensed negatives and retrain."),
+                  "Mitigations in any case: the advice cards recommend only low-risk cultural practices and always show 'Hỏi cán bộ'."]
         ood_md = "\n".join(lines)
     cg = card["class_gate"]
     gate_rows = ["| class | RoCoLe **val** precision (accepted) | n accepted | RoCoLe **test** precision (accepted) | n accepted | decision |",
@@ -99,6 +106,26 @@ def main():
     studio = ", ".join(f"{k} {f3(v['precision'])} (n={v['accepted_predictions']})" for k, v in cg["studio_only_classes_all_val"].items())
     best = max(log, key=lambda r: r["select_score"])
 
+    RREL = os.path.relpath(REPORTS, DOCS)
+    dec_md = ""
+    if (REPORTS / "decision.json").exists():
+        d = json.load(open(REPORTS / "decision.json"))
+        v1, v2 = d["v1"], d["v2"]
+        dec_md = f"""
+## {card['version']} vs leaf_v1 — merge decision (rule fixed before training, `ml/compare_v2.py`)
+Ship only if field accuracy-on-answered and field coverage each drop by ≤ 1 pt **and** confident-wrong answers on the 58 held-out non-coffee photos go down.
+
+| | leaf_v1 | {card['version']} | check |
+|---|---|---|---|
+| Field (RoCoLe test) accuracy on answered | {pct(v1['field_acc_at_tau'])} | {pct(v2['field_acc_at_tau'])} | {'✅' if d['checks']['field_acc_at_tau_drop_le_1pt'] else '❌'} |
+| Field coverage | {pct(v1['field_coverage'])} | {pct(v2['field_coverage'])} | {'✅' if d['checks']['field_coverage_drop_le_1pt'] else '❌'} |
+| Held-out OOD confident-wrong | {v1['ood_wrong']}/{v1['ood_n']} | {v2['ood_wrong']}/{v2['ood_n']} | {'✅' if d['checks']['ood_confident_wrong_improves'] else '❌'} |
+| Field accuracy (all photos) / macro-F1 | {pct(v1['test_rocole']['acc'])} / {f3(v1['test_rocole']['macro_f1'])} | {pct(v2['test_rocole']['acc'])} / {f3(v2['test_rocole']['macro_f1'])} | |
+| Studio (JMuBEN) accuracy | {pct(v1['test_jmuben']['acc'])} | {pct(v2['test_jmuben']['acc'])} | |
+| τ / T / never asserted | {v1['tau']} / {v1['T']:.3f} / {', '.join(v1['never_assert'])} | {v2['tau']} / {v2['T']:.3f} / {', '.join(v2['never_assert'])} | |
+
+Decision: **{'ship ' + card['version'] if d['ship_v2'] else 'keep leaf_v1'}**. leaf_v1 reports remain in `ml/reports/`; {card['version']} reports are in `ml/reports/v2/`.
+"""
     md = f"""# Model card — `{card['version']}`
 
 *Generated by `ml/report_md.py` from `ml/reports/` and `public/models/model_card.json`. Do not edit numbers by hand.*
@@ -108,7 +135,7 @@ def main():
 |---|---|
 | Task | 7-way classification of one coffee-leaf photo: {', '.join(KEYS)} |
 | Architecture | `{card['arch']}` (timm, ImageNet-pretrained), 224×224 input |
-| Shipped file | `public/models/{card['file']}` — **{card['size_bytes'] / 1e6:.2f} MB**, {card['quantization']} |
+| Shipped file | `public/models/{card['file']}` — **{card['size_bytes'] / 1e6:.2f} MB**, {card['quantization']} (file name kept stable across versions; the version is `{card['version']}`) |
 | SHA-256 | `{card['sha256']}` |
 | Runtime | onnxruntime-web (WASM, 1 thread) in the browser; same ONNX in onnxruntime (Python) for evaluation |
 | Calibration | temperature **T = {card['temperature']:.3f}** (fitted on val, all sources) |
@@ -121,6 +148,7 @@ def main():
 
 The **field** column is the number that matters: real smartphone photos of robusta leaves, and no plant in the test set was seen in training. It only covers healthy / rust / red spider mite. The **studio** column is optimistic (low-res, uniform crops, likely near-duplicates). **No Vietnamese photos were available**, so real-world accuracy in Tây Nguyên is unknown and probably lower.
 
+{dec_md}
 ## Per-class safety gate
 Rule: a class is **never asserted** when its precision among *accepted* predictions on the RoCoLe (field) **validation** split is below **{cg['min_precision']:.2f}**. A confident prediction of such a class is shown as the "Chưa chắc — hỏi cán bộ" card with the hint "Có thể là <class>" and the escalation button. Same rule in `ml/common.py::decide` and `src/ml/decide.ts`; the list ships in `model_card.json` (`never_assert`). All metrics above already include the gate.
 
@@ -128,7 +156,7 @@ Rule: a class is **never asserted** when its precision among *accepted* predicti
 
 Never asserted: **{', '.join(card['never_assert']) or 'none'}**. Leaf miner, cercospora and phoma have **no field photos**; the model made no accepted field predictions of them (no false alarms on RoCoLe), so their field precision cannot be measured. Their studio-only precision (all-source val) is {studio}. Their advice cards already say an officer must confirm.
 
-Risk–coverage (test): ![risk-coverage](../ml/reports/risk_coverage_{tag}.png)
+Risk–coverage (test): ![risk-coverage]({RREL}/risk_coverage_{tag}.png)
 
 ## Per-class — field (RoCoLe test)
 {per_class(rep, 'test_rocole')}
@@ -137,12 +165,12 @@ Confusion matrix — field (rows = truth):
 
 {confusion(rep, 'test_rocole')}
 
-![confusion field](../ml/reports/confusion_{tag}_test_rocole.png)
+![confusion field]({RREL}/confusion_{tag}_test_rocole.png)
 
 ## Per-class — studio (JMuBEN test)
 {per_class(rep, 'test_jmuben')}
 
-![confusion studio](../ml/reports/confusion_{tag}_test_jmuben.png)
+![confusion studio]({RREL}/confusion_{tag}_test_jmuben.png)
 
 ## Not-a-coffee-leaf (beans test)
 Accuracy {pct(rep['splits']['test_beans']['acc'])} on {rep['splits']['test_beans']['n']} bean-leaf photos. Untested on soil, hands, other crops.
@@ -160,6 +188,7 @@ Verification (`ml/verify_onnx.py`, 20 test images): PyTorch vs ONNX fp32 max |Δ
 
 ## Training
 - Optimizer AdamW (backbone 3e-4, head 1e-3, wd 0.02), one-cycle cosine schedule, label smoothing 0.1, batch 48, `WeightedRandomSampler` balancing classes and sources within a class.
+- {card.get('training', '')}
 - Epochs run: {len(log)} (first {sum(1 for r in log if r['frozen'])} with frozen backbone); selection = mean(val macro-F1 all, val macro-F1 RoCoLe); best epoch {best['epoch']} (val macro-F1 {best['val_macro_f1']:.3f}, RoCoLe-val macro-F1 {best['val_rocole_macro_f1']:.3f}).
 - Hardware: 4-vCPU cloud container, no GPU (~{sum(r['epoch_min'] for r in log):.0f} min total).
 {'- PyTorch fp32 reference: field acc ' + pct(torch_rep['splits']['test_rocole']['acc']) + ', studio acc ' + pct(torch_rep['splits']['test_jmuben']['acc']) + '.' if torch_rep else ''}
@@ -191,8 +220,8 @@ A first-step helper for smallholder robusta farmers and extension workers: sugge
     if "ood" in card:
         c = card["ood"]["commons"]
         ood_note = (f" **Not-a-coffee-leaf check:** on {c['n']} openly licensed real photos of other things (soil, sky, hands, grass, "
-                    f"pepper/durian/banana/cashew leaves) {c['wrong_assertion']} ({c['wrong_assertion'] / c['n']:.0%}) were wrongly given a "
-                    f"coffee-leaf result and {c['abstain']} abstained — a known weakness (the negative class only saw bean leaves).")
+                    f"pepper/durian/banana/cashew leaves; held out from training) {c['wrong_assertion']} ({c['wrong_assertion'] / c['n']:.0%}) "
+                    f"were wrongly given a coffee-leaf result, {c['not_coffee']} were recognised as 'not coffee' and {c['abstain']} abstained.")
     sec = f"""<!-- METRICS:START (generated by ml/report_md.py) -->
 Shipped model: `{card['file']}`, **{card['size_bytes'] / 1e6:.2f} MB** ({card['quantization']}), temperature T={card['temperature']:.2f}, abstain threshold τ={card['tau']:.2f}.
 

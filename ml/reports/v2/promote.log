@@ -1,0 +1,64 @@
+{
+ "shipped": "onnx_int8_weights",
+ "size_mb": 4.399182,
+ "comparison": {
+  "onnx_int8_weights": {
+   "file": "leaf_int8_weights.onnx",
+   "size_bytes": 4399182,
+   "acc_drop_vs_fp32": {
+    "test_rocole": 0.0064102564102563875,
+    "test_jmuben": 0.0022222222222222365
+   },
+   "eligible": true,
+   "test_rocole_acc": 0.8365384615384616,
+   "test_jmuben_acc": 0.9922222222222222
+  },
+  "onnx_fp32": {
+   "file": "leaf_fp32.onnx",
+   "size_bytes": 16831150,
+   "acc_drop_vs_fp32": {
+    "test_rocole": 0.0,
+    "test_jmuben": 0.0
+   },
+   "eligible": false,
+   "test_rocole_acc": 0.842948717948718,
+   "test_jmuben_acc": 0.9944444444444445
+  }
+ }
+}
+commons: reusing 58 held-out images
+synthetic/solid              {'retake (quality gate)': 6}
+synthetic/noise              {'abstain (hỏi cán bộ)': 2, 'not a coffee leaf': 1}
+synthetic/gradient           {'retake (quality gate)': 2}
+synthetic/checkerboard       {'WRONG: asserted healthy': 1}
+synthetic/soil               {'abstain (hỏi cán bộ)': 1}
+synthetic/blurred            {'retake (quality gate)': 3}
+commons/sky                  {'not a coffee leaf': 2}
+commons/soil                 {'not a coffee leaf': 8}
+commons/hands                {'not a coffee leaf': 8}
+commons/grass                {'not a coffee leaf': 6, 'retake (quality gate)': 1, 'abstain (hỏi cán bộ)': 1}
+commons/pepper_leaves        {'not a coffee leaf': 8}
+commons/durian_leaves        {'not a coffee leaf': 8}
+commons/banana_leaves        {'not a coffee leaf': 6, 'WRONG: asserted rust': 1, 'abstain (hỏi cán bộ)': 1}
+commons/cashew_leaves        {'abstain (hỏi cán bộ)': 4, 'not a coffee leaf': 4}
+model only (no quality gate): {'synthetic': {'not_coffee': 3, 'abstain': 11, 'asserted a coffee problem': 2}, 'commons': {'not_coffee': 50, 'abstain': 7, 'asserted a coffee problem': 1}}
+{
+ "onnx_fp32": {
+  "max_abs_logit_diff": 8.285045623779297e-06,
+  "max_abs_prob_diff": 2.980232238769531e-07,
+  "mean_abs_prob_diff": 1.4911231360770216e-08,
+  "top1_agreement": 1.0
+ },
+ "shipped": {
+  "max_abs_logit_diff": 0.30449843406677246,
+  "max_abs_prob_diff": 0.0053920745849609375,
+  "mean_abs_prob_diff": 0.00039460122934542596,
+  "top1_agreement": 1.0
+ },
+ "shipped_acc_drop_vs_fp32_full_test": {
+  "test_rocole": 0.0064102564102563875,
+  "test_jmuben": 0.0022222222222222365
+ },
+ "shipped_size_mb": 4.399182,
+ "pass": true
+}

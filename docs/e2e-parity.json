@@ -3,90 +3,90 @@
   "file": "00_healthy.jpg",
   "js_top1": "healthy",
   "py_top1": "healthy",
-  "maxDiff": 0.00003911790847777041,
+  "maxDiff": 0.000048645044863224185,
   "js_kind": "predict",
   "py_kind": "predict",
-  "ms": 135
+  "ms": 61
  },
  {
   "file": "01_healthy.jpg",
   "js_top1": "healthy",
   "py_top1": "healthy",
-  "maxDiff": 0.00004659566879272603,
+  "maxDiff": 0.00003988587856293413,
   "js_kind": "predict",
   "py_kind": "predict",
-  "ms": 58
+  "ms": 34
  },
  {
   "file": "02_rust.jpg",
   "js_top1": "rust",
   "py_top1": "rust",
-  "maxDiff": 0.00003173930346965789,
+  "maxDiff": 0.000042142744152806694,
   "js_kind": "predict",
   "py_kind": "predict",
-  "ms": 97
+  "ms": 38
  },
  {
   "file": "03_rust.jpg",
-  "js_top1": "rust",
-  "py_top1": "rust",
-  "maxDiff": 0.00003570189476015395,
+  "js_top1": "healthy",
+  "py_top1": "healthy",
+  "maxDiff": 0.0000428939282894128,
   "js_kind": "abstain",
   "py_kind": "abstain",
-  "ms": 61
+  "ms": 36
  },
  {
   "file": "04_red_spider_mite.jpg",
   "js_top1": "red_spider_mite",
   "py_top1": "red_spider_mite",
-  "maxDiff": 0.00004829196184873499,
+  "maxDiff": 0.0000324072629213322,
   "js_kind": "abstain",
   "py_kind": "abstain",
-  "ms": 59
+  "ms": 33
  },
  {
   "file": "05_red_spider_mite.jpg",
   "js_top1": "healthy",
   "py_top1": "healthy",
-  "maxDiff": 0.000035777854919483154,
+  "maxDiff": 0.00003608789443970695,
   "js_kind": "abstain",
   "py_kind": "abstain",
-  "ms": 65
+  "ms": 33
  },
  {
   "file": "06_leaf_miner.jpg",
   "js_top1": "leaf_miner",
   "py_top1": "leaf_miner",
-  "maxDiff": 0.00004741888046266851,
+  "maxDiff": 0.00004325677582528442,
   "js_kind": "predict",
   "py_kind": "predict",
-  "ms": 59
+  "ms": 33
  },
  {
   "file": "07_cercospora.jpg",
   "js_top1": "cercospora",
   "py_top1": "cercospora",
-  "maxDiff": 0.000045668318914249566,
+  "maxDiff": 0.00003285896703600881,
   "js_kind": "predict",
   "py_kind": "predict",
-  "ms": 75
+  "ms": 38
  },
  {
   "file": "08_phoma.jpg",
   "js_top1": "phoma",
   "py_top1": "phoma",
-  "maxDiff": 0.000019039338640868702,
+  "maxDiff": 0.000047925781272351703,
   "js_kind": "predict",
   "py_kind": "predict",
-  "ms": 70
+  "ms": 33
  },
  {
   "file": "09_not_coffee_leaf.jpg",
   "js_top1": "not_coffee_leaf",
   "py_top1": "not_coffee_leaf",
-  "maxDiff": 0.00003081541061400461,
+  "maxDiff": 0.00004939022781327363,
   "js_kind": "not_coffee",
   "py_kind": "not_coffee",
-  "ms": 58
+  "ms": 35
  }
 ]

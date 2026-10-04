@@ -30,7 +30,7 @@ Already verified automatically in this container (headless Chromium, Pixel 5 emu
 - [ ] **Giới thiệu → Xóa toàn bộ dữ liệu** → log empty, onboarding shows again.
 
 ## D. Evidence & content — 3 min
-- [ ] **Bằng chứng** shows field (RoCoLe) vs studio (JMuBEN) numbers matching README → "Evidence" table, the per-class table ("Nhện đỏ — Không khẳng định"), the not-a-coffee-leaf result (10/58 real photos wrongly answered), the "KHÔNG nhận ra" list and datasets with licenses.
+- [ ] **Bằng chứng** shows field (RoCoLe) vs studio (JMuBEN) numbers matching README → "Evidence" table, the per-class table ("Nhện đỏ — Không khẳng định"), the not-a-coffee-leaf result (1/58 held-out real photos wrongly answered with leaf_v2; was 10/58 with leaf_v1), the "KHÔNG nhận ra" list and datasets with licenses.
 - [ ] **Giá cà phê** shows the snapshot date, the "Không phải AI" banner, the staleness warning (snapshot 15/09/2026), and a difference when you type a trader price.
 - [ ] Every advice text on screen is from `content/advice.vi.json` (no other agronomy text exists in the app).
 
@@ -55,9 +55,9 @@ Automated evidence: Playwright 3/3 green (offline e2e, offline reload + installa
 
 ## Not done / known limitations
 - **Real Android test not done by me** (no device in the container) → sections A–C above. Note the "Chi tiết" inference time on your phone (headless desktop Chromium: 55–93 ms).
-- **No Vietnamese leaf photos** in training or test. Headline field metrics are on Ecuadorian robusta (RoCoLe): 83.7% accuracy; with τ and the per-class gate it answers 74.7% of photos at 91.4% accuracy. Real Tây Nguyên performance is unknown.
+- **No Vietnamese leaf photos** in training or test. Headline field metrics are on Ecuadorian robusta (RoCoLe): 83.7% accuracy; with τ and the per-class gate leaf_v2 answers 79.2% of photos at 91.1% accuracy (leaf_v1: 74.7% at 91.4%). Real Tây Nguyên performance is unknown.
 - **Red spider mite is never asserted** (field precision 62.5% < 80%): it is always routed to "Chưa chắc — hỏi cán bộ" with a hint.
-- **Not-a-coffee-leaf is weak**: on 58 openly licensed real photos of other things (soil, sky, hands, grass, pepper/durian/banana/cashew leaves), **10 (17%) got a confident coffee-leaf result** (mostly "rust"), 42 abstained, 5 "not coffee". The negative class only saw bean leaves; fix = add these negatives and retrain (not done today). Synthetic flat/noise/blurred images: 0/16 wrong.
+- **Not-a-coffee-leaf (improved in leaf_v2)**: on 58 held-out openly licensed real photos of other things (soil, sky, hands, grass, pepper/durian/banana/cashew leaves) leaf_v2 gives **1 confident coffee result (2%; a banana leaf → rust)**, 50 "not coffee", 6 abstain, 1 retake — leaf_v1 had 10 (17%). Trained negatives are different Commons files (331, license-logged). Synthetic: a checkerboard is now asserted "healthy" (1/16; leaf_v1 0/16).
 - Leaf miner / cercospora / phoma learnt only from arabica studio crops (JMuBEN, 128 px) — their 98–99% studio numbers are optimistic; cards say "cần cán bộ xác nhận".
 - **Quantization**: SPEC's static int8 lost 8.7/33 pts → shipped int8 **weight-only** (fp32 compute), −1.3/−0.2 pts. Documented in MODEL_CARD.
 - Calibration (temperature) was fitted on all-source validation; it did **not** improve ECE on the field split (0.071 → 0.075).

@@ -1,6 +1,7 @@
 {
- "version": "leaf_v1",
+ "version": "leaf_v2",
  "arch": "mobilenetv3_large_100",
+ "training": "fine-tuned from leaf_v1 weights (checkpoints/best.pt) for 3 epochs with added negatives",
  "file": "leaf_v1.int8.onnx",
  "quantization": "int8 weight-only per-channel (fp32 activations/compute)",
  "input": {
@@ -20,8 +21,8 @@
   "preprocess": "center square crop -> bilinear resize 224 -> /255 -> ImageNet normalisation"
  },
  "output": "logits",
- "temperature": 0.607,
- "tau": 0.82,
+ "temperature": 0.5973,
+ "tau": 0.79,
  "margin": 0.15,
  "tau_rule": "target met",
  "tau_target_acc": 0.9,
@@ -33,137 +34,138 @@
   "basis": "precision among accepted predictions on RoCoLe val (field)",
   "field_val": {
    "healthy": {
-    "accepted_predictions": 147,
+    "accepted_predictions": 145,
     "correct": 140,
-    "precision": 0.9523809523809523,
+    "precision": 0.9655172413793104,
     "support": 158
    },
    "rust": {
-    "accepted_predictions": 76,
-    "correct": 68,
-    "precision": 0.8947368421052632,
+    "accepted_predictions": 78,
+    "correct": 70,
+    "precision": 0.8974358974358975,
     "support": 120
    },
    "red_spider_mite": {
-    "accepted_predictions": 24,
-    "correct": 15,
-    "precision": 0.625,
+    "accepted_predictions": 25,
+    "correct": 16,
+    "precision": 0.64,
     "support": 34
    }
   },
   "field_test": {
    "healthy": {
-    "accepted_predictions": 159,
-    "correct": 145,
-    "precision": 0.9119496855345912,
+    "accepted_predictions": 164,
+    "correct": 148,
+    "precision": 0.9024390243902439,
     "support": 157
    },
    "rust": {
-    "accepted_predictions": 74,
-    "correct": 68,
-    "precision": 0.918918918918919,
+    "accepted_predictions": 83,
+    "correct": 77,
+    "precision": 0.927710843373494,
     "support": 122
    },
    "red_spider_mite": {
-    "accepted_predictions": 17,
+    "accepted_predictions": 19,
     "correct": 11,
-    "precision": 0.6470588235294118,
+    "precision": 0.5789473684210527,
     "support": 33
    }
   },
   "studio_only_classes_all_val": {
    "leaf_miner": {
-    "accepted_predictions": 184,
-    "correct": 179,
-    "precision": 0.9728260869565217,
+    "accepted_predictions": 180,
+    "correct": 178,
+    "precision": 0.9888888888888889,
     "support": 180
    },
    "cercospora": {
-    "accepted_predictions": 180,
-    "correct": 180,
+    "accepted_predictions": 177,
+    "correct": 177,
     "precision": 1.0,
     "support": 180
    },
    "phoma": {
-    "accepted_predictions": 174,
-    "correct": 173,
-    "precision": 0.9942528735632183,
+    "accepted_predictions": 178,
+    "correct": 178,
+    "precision": 1.0,
     "support": 180
    }
   }
  },
  "labels": "labels.json",
  "size_bytes": 4399182,
- "sha256": "ec558c1dd6f6f010af54e48a2759caa3b0d1817d0acee8142eb2e1157f343326",
+ "sha256": "ce445886aa4a77471cc02cbcd39a0f4c9b1a9d86fe987acbc1ecd9fec431c64f",
  "metrics": {
   "test_rocole": {
    "n": 312,
    "acc": 0.8365,
-   "macro_f1": 0.7358,
-   "coverage_at_tau": 0.7468,
-   "acc_at_tau": 0.9142,
-   "ece": 0.075,
-   "ece_uncalibrated": 0.071
+   "macro_f1": 0.756,
+   "coverage_at_tau": 0.7917,
+   "acc_at_tau": 0.9109,
+   "ece": 0.0756,
+   "ece_uncalibrated": 0.0785
   },
   "test_jmuben": {
    "n": 900,
-   "acc": 0.9856,
-   "macro_f1": 0.9854,
-   "coverage_at_tau": 0.95,
-   "acc_at_tau": 0.9965,
-   "ece": 0.0254,
-   "ece_uncalibrated": 0.1192
+   "acc": 0.9922,
+   "macro_f1": 0.9927,
+   "coverage_at_tau": 0.9789,
+   "acc_at_tau": 0.9955,
+   "ece": 0.0172,
+   "ece_uncalibrated": 0.1035
   },
   "test_beans": {
    "n": 195,
    "acc": 1.0,
    "macro_f1": 1.0,
-   "coverage_at_tau": 0.9949,
+   "coverage_at_tau": 1.0,
    "acc_at_tau": 1.0,
-   "ece": 0.0123,
-   "ece_uncalibrated": 0.0896
+   "ece": 0.0107,
+   "ece_uncalibrated": 0.0878
   },
   "test_all": {
-   "n": 1407,
-   "acc": 0.9545,
-   "macro_f1": 0.8995,
-   "coverage_at_tau": 0.9112,
-   "acc_at_tau": 0.9821,
-   "ece": 0.0095,
-   "ece_uncalibrated": 0.099
+   "n": 1457,
+   "acc": 0.9581,
+   "macro_f1": 0.9108,
+   "coverage_at_tau": 0.9389,
+   "acc_at_tau": 0.981,
+   "ece": 0.0145,
+   "ece_uncalibrated": 0.0908
   },
   "val_rocole": {
    "n": 312,
-   "acc": 0.8333,
-   "macro_f1": 0.759,
+   "acc": 0.8301,
+   "macro_f1": 0.7464,
    "coverage_at_tau": 0.7147,
-   "acc_at_tau": 0.9327,
-   "ece": 0.0854,
-   "ece_uncalibrated": 0.0779
+   "acc_at_tau": 0.9417,
+   "ece": 0.0714,
+   "ece_uncalibrated": 0.0674
   }
  },
  "rust_recall_by_rocole_level_test": {
   "1": {
    "n": 69,
-   "recall": 0.6086956521739131
+   "recall": 0.5652173913043478
   },
   "2": {
    "n": 34,
-   "recall": 0.9411764705882353
+   "recall": 0.9705882352941176
   },
   "3": {
    "n": 13,
-   "recall": 0.8461538461538461
+   "recall": 0.9230769230769231
   },
   "4": {
    "n": 6,
-   "recall": 0.8333333333333334
+   "recall": 0.6666666666666666
   }
  },
  "trained_on": [
   "rocole",
   "jmuben(subsampled 1,200/class)",
-  "beans"
+  "beans",
+  "wikimedia-commons negatives (CC0/PD/CC BY/CC BY-SA, reports/negatives_sources.json)"
  ],
  "split": "RoCoLe 60/20/20 grouped by plant; JMuBEN & beans 70/15/15 stratified; seed 42",
  "date": "2026-10-04",
@@ -203,6 +205,12 @@
    "license": "MIT",
    "n": "1.295 ảnh lá đậu, Uganda",
    "note": "Chỉ dùng làm lớp 'không phải lá cà phê'."
+  },
+  {
+   "name": "Wikimedia Commons (ảnh mở)",
+   "license": "CC0 / PD / CC BY / CC BY-SA",
+   "n": "331 ảnh: cỏ, đất, trời, bàn tay, lá chuối, điều, cây trồng khác",
+   "note": "Chỉ dùng làm lớp 'không phải lá cà phê' (v2). Nguồn và giấy phép từng ảnh trong ml/reports/negatives_sources.json."
   }
  ],
  "labels_list": [
@@ -252,9 +260,9 @@
  "ood": {
   "synthetic": {
    "n": 16,
-   "wrong_assertion": 0,
-   "abstain": 5,
-   "not_coffee": 0,
+   "wrong_assertion": 1,
+   "abstain": 3,
+   "not_coffee": 1,
    "retake": 11,
    "groups": [
     "blurred",
@@ -267,9 +275,9 @@
   },
   "commons": {
    "n": 58,
-   "wrong_assertion": 10,
-   "abstain": 42,
-   "not_coffee": 5,
+   "wrong_assertion": 1,
+   "abstain": 6,
+   "not_coffee": 50,
    "retake": 1,
    "groups": [
     "banana_leaves",

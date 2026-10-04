@@ -2,8 +2,8 @@
 
 | file | what | size |
 |---|---|---|
-| `ami-ama-demo.mp4` | 11.6 s, 390×844, H.264: onboarding → offline badge ✓ → Thử với ảnh mẫu → rust card → Lưu vào sổ rẫy → airplane mode → Sổ rẫy still there | 0.33 MB |
-| `ami-ama-demo.gif` | same, 270 px wide, 8 fps (for LinkedIn/README) | 0.97 MB |
+| `ami-ama-demo.mp4` | 12.0 s, 390×844, H.264: onboarding → offline badge ✓ → Thử với ảnh mẫu → rust card → Lưu vào sổ rẫy → airplane mode → Sổ rẫy still there | 0.36 MB |
+| `ami-ama-demo.gif` | same, 270 px wide, 8 fps (for LinkedIn/README) | 1.07 MB |
 | `01-home-offline.jpg` | home screen after an offline reload, badge "Sẵn sàng dùng offline ✓" | |
 | `02-samples.jpg` | "Thử với ảnh mẫu" grid | |
 | `03-result-rust.jpg` | confident result: "Có thể là bệnh rỉ sắt" + 4-step card | |

@@ -1,6 +1,6 @@
 # Reproducible pipeline: make -C ml all   (seed 42; CPU is fine, ~1.5 h on 4 cores)
 PY ?= python
-.PHONY: all data prepare train evaluate export verify samples ood report clean
+.PHONY: all data prepare train evaluate export verify samples ood report v2 clean
 all: data prepare train evaluate export verify samples
 data:
 	$(PY) download.py
@@ -28,5 +28,11 @@ ood:
 	$(PY) ood_check.py
 report:
 	$(PY) report_md.py
+# leaf_v2 = leaf_v1 + openly licensed Commons negatives (fine-tune), staged in checkpoints/v2 + reports/v2;
+# compare_v2.py applies the pre-registered merge rule; promotion = copy reports/v2/public/* to ../public/models.
+v2:
+	$(PY) collect_negatives.py
+	PY=$(PY) ./run_v2.sh
+	$(PY) compare_v2.py
 clean:
 	rm -rf checkpoints reports/*.npz

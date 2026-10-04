@@ -1,4 +1,4 @@
-# Data card — Ami Ama leaf model (`leaf_v1`)
+# Data card — Ami Ama leaf model (`leaf_v2`; `leaf_v1` = same data without the Commons negatives)
 
 Every number below was read from the downloaded files or the dataset's own API/card (scripts: `ml/download.py`, `ml/prepare.py`; split counts in `ml/splits/summary.json`). Raw images are **not** committed; split manifests are (`ml/splits/{train,val,test}.csv`).
 
@@ -8,9 +8,29 @@ Every number below was read from the downloaded files or the dataset's own API/c
 |---|---|---|---|---|---|---|
 | `rocole` | **RoCoLe** — Robusta Coffee Leaf images (Parraga-Alava, Cusme, Loor, Santander; *Data in Brief*, 2019) | Mendeley Data, DOI [10.17632/c5yvn32dzg.2](https://data.mendeley.com/datasets/c5yvn32dzg/2), fetched via the Mendeley public API | CC BY 4.0 | **all 1,560** images (2048×1152 smartphone photos) | **Robusta**, real field, Ecuador. Labels (from `RoCoLE-csv.csv`): healthy 791, red spider mite 167, rust level 1: 344, level 2: 166, level 3: 62, level 4: 30 | Only 3 conditions (healthy / rust / red spider mite). No Vietnamese plants, varieties, soils, light. No leaf miner, cercospora, phoma. 390 plants only. |
 | `jmuben` | **JMuBEN** arabica leaves (Jepkoech, Mugo, Kenduiywo, Chebet; *Data in Brief* 36, 2021; Mendeley DOIs 10.17632/t2r6rszp5c.1, 10.17632/tgv3zb82nd.1) | Hugging Face [`Project-AgML/arabica_coffee_leaf_disease_classification`](https://huggingface.co/datasets/Project-AgML/arabica_coffee_leaf_disease_classification) (parquet) | CC BY 4.0 | **6,000** of 58,549 (stratified seeded subsample, 1,200 per class) | **Arabica**, Kenya, 128×128 crops, near-studio. Full counts: Cerscospora 7,681 · Healthy 18,983 · Leaf_rust 8,336 · Miner 16,978 · Phoma 6,571 | Not robusta. Low resolution, cropped, uniform look; filenames suggest many augmented near-duplicates (e.g. `9(1447).jpg`), so its test score is optimistic. |
+| `negatives` | **Wikimedia Commons** photos (v2) | Commons search API (`ml/collect_negatives.py`) | CC0 / PD / CC BY / CC BY-SA, per image in `ml/reports/negatives_sources.json` | **331** (grass 35, banana 40, cashew 36, other crops 88, sky 42, soil 48, hands 42) | Only as `not_coffee_leaf` (see section below) | Mostly temperate, well-lit; few Tây Nguyên backgrounds |
 | `beans` | **iBean** (Makerere AI Lab) | Hugging Face [`AI-Lab-Makerere/beans`](https://huggingface.co/datasets/AI-Lab-Makerere/beans) | MIT (dataset card) | **all 1,295** (500×500) | Bean leaves (angular leaf spot, bean rust, healthy), Uganda. Used **only** as the negative class `not_coffee_leaf`. | Only bean leaves — not soil, hands, sky, other crops. "Not coffee" detection for other objects is untested. |
 
 No synthetic images were added. No Vietnamese images exist in the training data.
+
+## leaf_v2: extra "not a coffee leaf" negatives (Wikimedia Commons)
+**Used in the shipped model `leaf_v2`** (leaf_v1 fine-tuned for 3 epochs with these added; the merge rule and result are in MODEL_CARD → "leaf_v2 vs leaf_v1").
+
+Collected by `ml/collect_negatives.py` (Wikimedia Commons search API, 330/400-px thumbnails), **331 images**, each with title, author, license and URL in [`ml/reports/negatives_sources.json`](../ml/reports/negatives_sources.json). Licenses: CC BY-SA 4.0 ×152, CC BY-SA 2.0 ×51, CC BY-SA 3.0 ×38, Public domain ×30, CC0 ×23, CC BY 2.0 ×15, CC BY 4.0 ×12, CC BY 3.0 ×8, CC BY-SA 2.5 ×1, CC BY 2.5 ×1. Only CC0 / public domain / CC BY / CC BY-SA files were accepted (attribution: see the JSON; changes = resized/cropped).
+
+| group | images | search queries |
+|---|---|---|
+| grass | 35 | lawn grass closeup, grass field meadow, weeds ground cover |
+| banana_leaves | 40 | banana leaf, banana plantation leaves |
+| cashew_leaves | 36 | cashew tree leaves, cashew plant |
+| other_crop_leaves | 88 | rubber tree leaves, maize leaves field, mango tree leaves, avocado tree leaves, tea plant leaves, durian tree leaves, cacao tree leaves, jackfruit tree leaves |
+| sky | 42 | cloudy sky, blue sky clouds, overcast sky |
+| soil | 48 | soil closeup, red soil, plowed field soil, mud ground |
+| hands | 42 | human hand, hands holding, palm of hand |
+
+- **Held-out OOD test kept clean:** none of the 58 OOD test files (`ml/reports/ood_sources.json`) is in this set (checked by title, asserted in the script), and different search terms were used than the OOD test's categories. The same author/scene could still appear in both sets; near-duplicates were not checked.
+- Split 70/15/15 (seed 42) → train 231 / val 50 / test 50, label `not_coffee_leaf`. Existing RoCoLe/JMuBEN/beans splits are unchanged (rows were only appended).
+- Gaps: Commons photos are mostly well-lit, in-focus, often European/temperate scenes; Tây Nguyên-specific backgrounds (basalt soil, coffee-farm weeds, shade trees) are under-represented.
 
 ## Label taxonomy (`public/models/labels.json`)
 
@@ -22,7 +42,7 @@ No synthetic images were added. No Vietnamese images exist in the training data.
 | 3 | leaf_miner | Sâu đục lá (sâu vẽ bùa) | jmuben:Miner |
 | 4 | cercospora | Bệnh đốm mắt cua | jmuben:Cerscospora |
 | 5 | phoma | Bệnh đốm lá do nấm Phoma | jmuben:Phoma |
-| 6 | not_coffee_leaf | Không phải lá cà phê | beans (all classes) |
+| 6 | not_coffee_leaf | Không phải lá cà phê | beans (all classes) + Commons negatives (v2) |
 
 Consequence: classes 3–5 are learnt **only from arabica studio-like crops**; their advice cards carry a safety line saying so, and the model's answer for them must be confirmed by an officer.
 

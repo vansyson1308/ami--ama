@@ -160,3 +160,5 @@ public/ort/
 tools/tts/voices/
 ml/reports/*.npz
 docs/media/raw/
+ml/reports/v2/public/
+ml/reports/**/*.npz

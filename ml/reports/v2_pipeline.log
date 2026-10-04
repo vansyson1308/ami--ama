@@ -1,0 +1,84 @@
+rocole 1560 Counter({('train', 'healthy'): 476, ('train', 'rust'): 360, ('val', 'healthy'): 158, ('test', 'healthy'): 157, ('test', 'rust'): 122, ('val', 'rust'): 120, ('train', 'red_spider_mite'): 100, ('val', 'red_spider_mite'): 34, ('test', 'red_spider_mite'): 33})
+jmuben 6000 Counter({('train', 'cercospora'): 840, ('train', 'healthy'): 840, ('train', 'phoma'): 840, ('train', 'rust'): 840, ('train', 'leaf_miner'): 840, ('test', 'cercospora'): 180, ('val', 'cercospora'): 180, ('test', 'healthy'): 180, ('val', 'healthy'): 180, ('test', 'phoma'): 180, ('val', 'phoma'): 180, ('val', 'rust'): 180, ('test', 'rust'): 180, ('val', 'leaf_miner'): 180, ('test', 'leaf_miner'): 180})
+beans 1295 Counter({('train', 'not_coffee_leaf'): 906, ('test', 'not_coffee_leaf'): 195, ('val', 'not_coffee_leaf'): 194})
+negatives 331 Counter({('train', 'not_coffee_leaf'): 231, ('val', 'not_coffee_leaf'): 50, ('test', 'not_coffee_leaf'): 50})
+initialised from checkpoints/best.pt
+  ep0 1920/6273 loss 0.626 1.3 min
+  ep0 3840/6273 loss 0.607 2.2 min
+  ep0 5760/6273 loss 0.594 3.2 min
+{"epoch": 0, "frozen": false, "train_loss": 0.591945481123621, "val_macro_f1": 0.889349754581341, "val_rocole_macro_f1": 0.7148459383753502, "val_acc": 0.9443681318681318, "select_score": 0.8020978464783456, "epoch_min": 3.6699441274007163}
+  ep1 1920/6273 loss 0.557 1.0 min
+  ep1 3840/6273 loss 0.555 2.0 min
+  ep1 5760/6273 loss 0.553 2.9 min
+{"epoch": 1, "frozen": false, "train_loss": 0.5512231216084039, "val_macro_f1": 0.8951513503461629, "val_rocole_macro_f1": 0.7282862736608151, "val_acc": 0.9443681318681318, "select_score": 0.811718812003489, "epoch_min": 3.3757067402203877}
+  ep2 1920/6273 loss 0.539 1.0 min
+  ep2 3840/6273 loss 0.540 1.9 min
+  ep2 5760/6273 loss 0.541 2.9 min
+{"epoch": 2, "frozen": false, "train_loss": 0.5417489055125466, "val_macro_f1": 0.9012175353967617, "val_rocole_macro_f1": 0.7366135269583546, "val_acc": 0.9526098901098901, "select_score": 0.8189155311775582, "epoch_min": 3.3227349321047464}
+/home/user/ami--ama/ml/export.py:54: DeprecationWarning: You are using the legacy TorchScript-based ONNX export. Starting in PyTorch 2.9, the new torch.export-based ONNX exporter has become the default. Learn more about the new export logic: https://docs.pytorch.org/docs/stable/onnx_export.html. For exporting control flow: https://pytorch.org/tutorials/beginner/onnx/export_control_flow_model_to_onnx_tutorial.html
+  torch.onnx.export(m, x, str(fp32), dynamo=False, **kw)
+fp32 16.83115 MB
+static int8 4.68088 MB
+Collecting tensor data and making histogram ...
+Finding optimal threshold for each tensor using 'percentile' algorithm ...
+Number of tensors : 141
+Number of histogram bins : 2048
+Percentile : (0.010000000000005116,99.99)
+static int8 (percentile) 4.6809 MB
+dynamic int8 4.41543 MB
+weight-only int8 4.399182 MB
+onnx_fp32    test_rocole  n= 312 acc=0.843 macroF1=0.764 cov@tau=0.792 acc@tau=0.9149797570850202 ece=0.072 (uncal 0.072)
+onnx_fp32    test_jmuben  n= 900 acc=0.994 macroF1=0.995 cov@tau=0.987 acc@tau=0.9954954954954955 ece=0.017 (uncal 0.100)
+onnx_fp32    test_beans   n= 195 acc=1.000 macroF1=1.000 cov@tau=1.000 acc@tau=1.0 ece=0.011 (uncal 0.083)
+onnx_fp32    test_all     n=1457 acc=0.960 macroF1=0.914 cov@tau=0.943 acc@tau=0.9818049490538574 ece=0.013 (uncal 0.088)
+T=0.607 tau=0.78 target met never_assert=['red_spider_mite']
+onnx_int8_weights test_rocole  n= 312 acc=0.837 macroF1=0.756 cov@tau=0.792 acc@tau=0.9109311740890689 ece=0.076 (uncal 0.079)
+onnx_int8_weights test_jmuben  n= 900 acc=0.992 macroF1=0.993 cov@tau=0.979 acc@tau=0.9954597048808173 ece=0.017 (uncal 0.104)
+onnx_int8_weights test_beans   n= 195 acc=1.000 macroF1=1.000 cov@tau=1.000 acc@tau=1.0 ece=0.011 (uncal 0.088)
+onnx_int8_weights test_all     n=1457 acc=0.958 macroF1=0.911 cov@tau=0.939 acc@tau=0.9809941520467836 ece=0.015 (uncal 0.091)
+T=0.597 tau=0.79 target met never_assert=['red_spider_mite']
+{
+ "shipped": "onnx_int8_weights",
+ "size_mb": 4.399182,
+ "comparison": {
+  "onnx_int8_weights": {
+   "file": "leaf_int8_weights.onnx",
+   "size_bytes": 4399182,
+   "acc_drop_vs_fp32": {
+    "test_rocole": 0.0064102564102563875,
+    "test_jmuben": 0.0022222222222222365
+   },
+   "eligible": true,
+   "test_rocole_acc": 0.8365384615384616,
+   "test_jmuben_acc": 0.9922222222222222
+  },
+  "onnx_fp32": {
+   "file": "leaf_fp32.onnx",
+   "size_bytes": 16831150,
+   "acc_drop_vs_fp32": {
+    "test_rocole": 0.0,
+    "test_jmuben": 0.0
+   },
+   "eligible": false,
+   "test_rocole_acc": 0.842948717948718,
+   "test_jmuben_acc": 0.9944444444444445
+  }
+ }
+}
+commons: reusing 58 held-out images
+synthetic/solid              {'retake (quality gate)': 6}
+synthetic/noise              {'abstain (hỏi cán bộ)': 2, 'not a coffee leaf': 1}
+synthetic/gradient           {'retake (quality gate)': 2}
+synthetic/checkerboard       {'WRONG: asserted healthy': 1}
+synthetic/soil               {'abstain (hỏi cán bộ)': 1}
+synthetic/blurred            {'retake (quality gate)': 3}
+commons/sky                  {'not a coffee leaf': 2}
+commons/soil                 {'not a coffee leaf': 8}
+commons/hands                {'not a coffee leaf': 8}
+commons/grass                {'not a coffee leaf': 6, 'retake (quality gate)': 1, 'abstain (hỏi cán bộ)': 1}
+commons/pepper_leaves        {'not a coffee leaf': 8}
+commons/durian_leaves        {'not a coffee leaf': 8}
+commons/banana_leaves        {'not a coffee leaf': 6, 'WRONG: asserted rust': 1, 'abstain (hỏi cán bộ)': 1}
+commons/cashew_leaves        {'abstain (hỏi cán bộ)': 4, 'not a coffee leaf': 4}
+model only (no quality gate): {'synthetic': {'not_coffee': 3, 'abstain': 11, 'asserted a coffee problem': 2}, 'commons': {'not_coffee': 50, 'abstain': 7, 'asserted a coffee problem': 1}}
+EXIT 0

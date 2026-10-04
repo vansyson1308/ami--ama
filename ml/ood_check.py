@@ -101,6 +101,15 @@ def commons_api(params):
 
 def commons():
     OOD.mkdir(parents=True, exist_ok=True)
+    # Reuse the frozen held-out set when it is complete (same 58 images for every model version; no network).
+    frozen = ROOT / "reports" / "ood_sources.json"
+    if frozen.exists():
+        src = json.load(open(frozen))
+        if src and all((OOD / s["file"]).exists() for s in src):
+            if REPORTS != ROOT / "reports":
+                json.dump(src, open(REPORTS / "ood_sources.json", "w"), ensure_ascii=False, indent=1)
+            print(f"commons: reusing {len(src)} held-out images")
+            return [((OOD / s["file"]).stem, Image.open(OOD / s["file"]).convert("RGB")) for s in src]
     sources, out = [], []
     for group, cats in CATEGORIES.items():
         got = 0
