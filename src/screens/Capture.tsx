@@ -1,8 +1,9 @@
 import { useEffect, useRef, useState } from 'react';
 import { t } from '../i18n';
 import { analyze, loadSession, type Analysis } from '../ml/model';
+import { go, type CaptureMode } from '../App';
 
-export default function Capture({ onAnalysis }: { onAnalysis: (a: Analysis, photo: string) => void }) {
+export default function Capture({ mode, onAnalysis }: { mode: CaptureMode; onAnalysis: (a: Analysis, photo: string) => void }) {
   const [file, setFile] = useState<File | null>(null);
   const [url, setUrl] = useState<string | null>(null);
   const [busy, setBusy] = useState(false);
@@ -36,7 +37,10 @@ export default function Capture({ onAnalysis }: { onAnalysis: (a: Analysis, phot
 
   return (
     <div className="screen capture">
-      <h1>{t('cap_title')}</h1>
+      <h1 data-testid="capture-title">
+        {mode.kind === 'add' ? t('chk_leaf_n', { n: mode.n }) : mode.kind === 'follow' ? t('chk_follow') : t('cap_title')}
+      </h1>
+      {mode.kind === 'add' && <p className="muted">{t('chk_leaf_hint')}</p>}
       <div className="frame">
         {url ? <img src={url} alt="" /> : <div className="frame-empty">🍃</div>}
         <div className="guide">{t('cap_guide')}</div>
@@ -64,6 +68,11 @@ export default function Capture({ onAnalysis }: { onAnalysis: (a: Analysis, phot
         </>
       )}
       {err && <p className="error">{err}</p>}
+      {mode.kind === 'add' && (
+        <button className="btn small" onClick={() => go('samples', 'add')} data-testid="add-from-samples">
+          {t('chk_more_samples')}
+        </button>
+      )}
     </div>
   );
 }

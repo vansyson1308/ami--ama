@@ -1,6 +1,7 @@
 import { useState } from 'react';
 import { t } from '../i18n';
 import { deleteAll, saveSettings, type Settings } from '../lib/store';
+import { ADVICE, QUESTIONS } from '../lib/content';
 
 export default function About({ settings, onSettings }: { settings: Settings; onSettings: (s: Settings) => void }) {
   const [msg, setMsg] = useState('');
@@ -35,6 +36,10 @@ export default function About({ settings, onSettings }: { settings: Settings; on
         {t('about_delete_all')}
       </button>
       {msg && <p className="toast">{msg}</p>}
+      <h2>{t('about_questions_t')}</h2>
+      <p className="muted small" data-testid="questions-review">{QUESTIONS.review_status}</p>
+      <p className="muted small">{QUESTIONS.weights_note}</p>
+      <p className="muted small">{ADVICE.review_status}</p>
       <h2>{t('about_lang_t')}</h2>
       <p>{t('about_lang')}</p>
       <h2>{t('about_team_t')}</h2>

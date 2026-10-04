@@ -1,6 +1,7 @@
 import { useEffect, useState } from 'react';
 import { t } from '../i18n';
 import { analyze, loadSession, type Analysis } from '../ml/model';
+import type { CaptureMode } from '../App';
 
 interface Sample {
   file: string;
@@ -8,7 +9,7 @@ interface Sample {
   credit: string;
 }
 
-export default function Samples({ onAnalysis }: { onAnalysis: (a: Analysis, photo: string) => void }) {
+export default function Samples({ mode, onAnalysis }: { mode: CaptureMode; onAnalysis: (a: Analysis, photo: string) => void }) {
   const [list, setList] = useState<Sample[]>([]);
   const [busy, setBusy] = useState<string | null>(null);
   useEffect(() => {
@@ -27,7 +28,7 @@ export default function Samples({ onAnalysis }: { onAnalysis: (a: Analysis, phot
   };
   return (
     <div className="screen samples">
-      <h1>{t('samples_title')}</h1>
+      <h1>{mode.kind === 'add' ? t('chk_leaf_n', { n: mode.n }) : t('samples_title')}</h1>
       <div className="grid">
         {list.map((s, i) => (
           <button key={s.file} className="sample" onClick={() => run(s)} disabled={!!busy} data-testid={`sample-${i}`}>

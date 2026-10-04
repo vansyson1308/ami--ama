@@ -92,3 +92,9 @@ Times are Asia/Saigon, Sun 4 Oct 2026.
   Also: field accuracy 83.7% → 83.7%, field macro-F1 0.736 → 0.756, studio accuracy 98.6% → 99.2%. Regression: synthetic checkerboard now asserted "healthy" (1/16; v1 0/16).
 - Shipped as `leaf_v2` (file name `leaf_v1.int8.onnx` kept for cache-path stability; 4.40 MB, sha256 `ce445886…`). v1 reports kept in `ml/reports/`, v2 in `ml/reports/v2/`; weights `ml/checkpoints/v2/best.pt`.
 - Regenerated: samples' expected outputs (same 10 images; same decision types), MODEL_CARD (incl. v1-vs-v2 table), README metrics, Evidence screen, e2e screenshots, README strip, demo MP4/GIF + 6 screenshots. Playwright 3/3 green; JS↔Python parity 10/10.
+
+## v1.1 "uncertain is useful" (Sun 15:00 → ) — branch `v1.1-uncertain`, no model change
+- Rollback prepared first: production before v1.1 = Vercel deployment `ami-2dg4r28b3-nguyen-van-sons-projects.vercel.app` (`301de48`); see `docs/ROLLBACK.md`. Tag `v1.0-submitted` blocked by the container's GitHub proxy (TODO(human)).
+- P0: plant check (1–3 leaves, `src/ml/aggregate.ts` + Python mirror), tell-apart questions (`src/ml/differential.ts`, `content/questions.vi.json` draft), assisted result badge, red-spider-mite rule (`q_mite_seen`), nutrition card, rewritten `uncertain` card, abstain reasons, local follow-up reminder + home banner + follow-up linkage, case-packet JPEG + Zalo/share fallback + SMS/Call + 2 contacts (officerPhone migrated), unsent filter, expert answer label, leaf-fills-frame hint (threshold 0.20; lowest coffee sample 0.26), Evidence/About/README.
+- Audio: Piper regenerated for the new cards + 8 questions (total 1.09 MB ≤ 3 MB).
+- Tests: Playwright 17 passed (unit 11 incl. 10-sample single-image regression; v1.1 e2e 3 offline flows; v1.0 e2e/offline/badge). Bundle JS 100.5 → 110.0 KB gzip (+9.5 KB), CSS +0.5 KB.

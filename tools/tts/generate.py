@@ -37,6 +37,9 @@ def main() -> None:
     advice = json.loads((ROOT / "content" / "advice.vi.json").read_text())
     items = {cid: c["audio_text"] for cid, c in advice["cards"].items()}
     items.update(advice["ui_prompts"])
+    qfile = ROOT / "content" / "questions.vi.json"
+    if qfile.exists():  # v1.1: tell-apart questions are read aloud too
+        items.update({q["id"]: q["text"] for q in json.loads(qfile.read_text())["questions"]})
     model = ensure_voice()
     piper = Path(sys.executable).parent / "piper"
     OUT.mkdir(parents=True, exist_ok=True)

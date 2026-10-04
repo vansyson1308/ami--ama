@@ -6,9 +6,15 @@
   "cards": {
     "healthy": {
       "title": "Lá khỏe",
-      "see": ["Lá xanh đều, không thấy đốm, bột hay vết lạ."],
-      "why": ["Cây đang phát triển bình thường."],
-      "goal": ["Giữ vườn khỏe, phát hiện sớm nếu có bệnh."],
+      "see": [
+        "Lá xanh đều, không thấy đốm, bột hay vết lạ."
+      ],
+      "why": [
+        "Cây đang phát triển bình thường."
+      ],
+      "goal": [
+        "Giữ vườn khỏe, phát hiện sớm nếu có bệnh."
+      ],
       "do": [
         "Thăm vườn đều đặn, nhất là sau mưa dài.",
         "Tỉa cành cho vườn thông thoáng.",
@@ -18,7 +24,10 @@
       "safety": "Một lá khỏe chưa nói lên cả vườn — hãy kiểm tra thêm vài cây.",
       "audio_text": "Lá này trông khỏe. Hãy thăm vườn đều đặn, tỉa cành cho thông thoáng và bón phân cân đối. Một lá khỏe chưa nói lên cả vườn, nên kiểm tra thêm vài cây.",
       "sources": [
-        {"name": "Báo Nông nghiệp và Môi trường — Chủ động phòng sâu bệnh hại cà phê trong mùa mưa (Chi cục Trồng trọt và BVTV Lâm Đồng)", "url": "https://nongnghiepmoitruong.vn/chu-dong-phong-sau-benh-hai-ca-phe-trong-mua-mua-d762385.html"}
+        {
+          "name": "Báo Nông nghiệp và Môi trường — Chủ động phòng sâu bệnh hại cà phê trong mùa mưa (Chi cục Trồng trọt và BVTV Lâm Đồng)",
+          "url": "https://nongnghiepmoitruong.vn/chu-dong-phong-sau-benh-hai-ca-phe-trong-mua-mua-d762385.html"
+        }
       ]
     },
     "rust": {
@@ -31,7 +40,9 @@
         "Do nấm Hemileia gây ra.",
         "Phát mạnh trong mùa mưa, khi vườn ẩm và rậm rạp."
       ],
-      "goal": ["Chặn bệnh lây sang lá mới, giữ lá để nuôi quả."],
+      "goal": [
+        "Chặn bệnh lây sang lá mới, giữ lá để nuôi quả."
+      ],
       "do": [
         "Tỉa cành, làm cỏ để vườn thông thoáng.",
         "Thu gom, vệ sinh lá bệnh và cành chết.",
@@ -42,8 +53,14 @@
       "safety": "Không tự mua thuốc theo lời người bán. Hỏi cán bộ về thuốc được phép và thời điểm phun.",
       "audio_text": "Lá này có thể bị bệnh rỉ sắt. Dấu hiệu là các vết bột màu vàng cam ở mặt dưới lá. Hãy tỉa cành cho vườn thông thoáng, gom lá bệnh và bón phân cân đối. Nếu nhiều cây bị, hãy hỏi cán bộ khuyến nông trước khi dùng thuốc.",
       "sources": [
-        {"name": "Báo Nông nghiệp và Môi trường — Bệnh rỉ sắt hại cà phê", "url": "https://nongnghiepmoitruong.vn/benh-ri-sat-hai-ca-phe-d362735.html"},
-        {"name": "Báo Nông nghiệp và Môi trường — Chủ động phòng sâu bệnh hại cà phê trong mùa mưa", "url": "https://nongnghiepmoitruong.vn/chu-dong-phong-sau-benh-hai-ca-phe-trong-mua-mua-d762385.html"}
+        {
+          "name": "Báo Nông nghiệp và Môi trường — Bệnh rỉ sắt hại cà phê",
+          "url": "https://nongnghiepmoitruong.vn/benh-ri-sat-hai-ca-phe-d362735.html"
+        },
+        {
+          "name": "Báo Nông nghiệp và Môi trường — Chủ động phòng sâu bệnh hại cà phê trong mùa mưa",
+          "url": "https://nongnghiepmoitruong.vn/chu-dong-phong-sau-benh-hai-ca-phe-trong-mua-mua-d762385.html"
+        }
       ]
     },
     "red_spider_mite": {
@@ -56,7 +73,9 @@
         "Nhện đỏ rất nhỏ, chích hút lá.",
         "Phát mạnh khi khô hạn; thuốc trừ sâu phổ rộng giết cả thiên địch làm nhện bùng phát."
       ],
-      "goal": ["Giảm mật độ nhện, giữ lại thiên địch có ích."],
+      "goal": [
+        "Giảm mật độ nhện, giữ lại thiên địch có ích."
+      ],
       "do": [
         "Tưới đủ nước trong mùa khô theo lịch của vườn.",
         "Giữ cây che bóng, cây chắn gió nếu có.",
@@ -66,8 +85,14 @@
       "safety": "Mắt thường khó thấy nhện. Ảnh chỉ là gợi ý — nhờ cán bộ xác nhận.",
       "audio_text": "Lá này có thể bị nhện đỏ hại. Lá chuyển màu nâu đỏ, thường gặp vào mùa khô. Hãy tưới đủ nước, giữ cây che bóng và đừng phun thuốc trừ sâu phổ rộng khi chưa cần. Nếu lan rộng, hãy hỏi cán bộ khuyến nông.",
       "sources": [
-        {"name": "NBAIR (ICAR, Ấn Độ) — Oligonychus coffeae (red spider mite)", "url": "https://databases.nbair.res.in/insectpests/Oligonychus-coffeae.php"},
-        {"name": "Parraga-Alava et al. (2019) — RoCoLe dataset (lớp nhện đỏ trên cà phê robusta)", "url": "https://data.mendeley.com/datasets/c5yvn32dzg/2"}
+        {
+          "name": "NBAIR (ICAR, Ấn Độ) — Oligonychus coffeae (red spider mite)",
+          "url": "https://databases.nbair.res.in/insectpests/Oligonychus-coffeae.php"
+        },
+        {
+          "name": "Parraga-Alava et al. (2019) — RoCoLe dataset (lớp nhện đỏ trên cà phê robusta)",
+          "url": "https://data.mendeley.com/datasets/c5yvn32dzg/2"
+        }
       ]
     },
     "leaf_miner": {
@@ -80,7 +105,9 @@
         "Sâu non ăn bên trong lá.",
         "Hay phát sinh khi khô và nóng."
       ],
-      "goal": ["Giữ lá xanh, bảo vệ thiên địch tự nhiên (ong ký sinh, kiến…)."],
+      "goal": [
+        "Giữ lá xanh, bảo vệ thiên địch tự nhiên (ong ký sinh, kiến…)."
+      ],
       "do": [
         "Giữ vườn đa dạng, có cây che bóng.",
         "Theo dõi sớm từ đầu mùa khô.",
@@ -90,8 +117,14 @@
       "safety": "Mô hình học loại này chủ yếu từ ảnh cà phê arabica — với robusta, cần cán bộ xác nhận.",
       "audio_text": "Lá này có thể bị sâu đục lá. Lá có mảng nâu và vệt vàng nhạt. Hãy giữ vườn có cây che bóng, theo dõi từ đầu mùa khô và không lạm dụng thuốc. Nếu nhiều lá bị, hãy hỏi cán bộ khuyến nông.",
       "sources": [
-        {"name": "Plantix — Coffee leaf miner", "url": "https://plantix.net/en/library/plant-diseases/600367/coffee-leaf-miner/"},
-        {"name": "Review: Coffee Leaf Miner Leucoptera coffeella (PMC8707027)", "url": "https://www.ncbi.nlm.nih.gov/pmc/articles/PMC8707027/"}
+        {
+          "name": "Plantix — Coffee leaf miner",
+          "url": "https://plantix.net/en/library/plant-diseases/600367/coffee-leaf-miner/"
+        },
+        {
+          "name": "Review: Coffee Leaf Miner Leucoptera coffeella (PMC8707027)",
+          "url": "https://www.ncbi.nlm.nih.gov/pmc/articles/PMC8707027/"
+        }
       ]
     },
     "cercospora": {
@@ -103,7 +136,9 @@
         "Do nấm Cercospora gây ra.",
         "Hay nặng hơn khi cây yếu, thiếu dinh dưỡng hoặc nắng gắt."
       ],
-      "goal": ["Giúp cây khỏe lại để chống bệnh."],
+      "goal": [
+        "Giúp cây khỏe lại để chống bệnh."
+      ],
       "do": [
         "Bón phân cân đối theo hướng dẫn của cán bộ.",
         "Giữ cây che bóng hợp lý.",
@@ -113,8 +148,14 @@
       "safety": "Mô hình học loại này chủ yếu từ ảnh cà phê arabica — cần cán bộ xác nhận.",
       "audio_text": "Lá này có thể bị bệnh đốm mắt cua. Vết đốm màu nâu, giữa nhạt, có quầng vàng. Hãy bón phân cân đối, giữ cây che bóng và gom lá bệnh. Nếu bệnh lan rộng, hãy hỏi cán bộ khuyến nông.",
       "sources": [
-        {"name": "Trung tâm Khuyến nông – Khuyến ngư Kon Tum (qua Báo Kon Tum) — Chăm sóc cà phê mùa khô (nêu bệnh đốm mắt cua)", "url": "https://www.baokontum.com.vn/kinh-te/cham-soc-ca-phe-xu-lanh-trong-mua-kho-515.html"},
-        {"name": "JMuBEN / AgML — Arabica coffee leaf disease dataset (lớp Cercospora)", "url": "https://huggingface.co/datasets/Project-AgML/arabica_coffee_leaf_disease_classification"}
+        {
+          "name": "Trung tâm Khuyến nông – Khuyến ngư Kon Tum (qua Báo Kon Tum) — Chăm sóc cà phê mùa khô (nêu bệnh đốm mắt cua)",
+          "url": "https://www.baokontum.com.vn/kinh-te/cham-soc-ca-phe-xu-lanh-trong-mua-kho-515.html"
+        },
+        {
+          "name": "JMuBEN / AgML — Arabica coffee leaf disease dataset (lớp Cercospora)",
+          "url": "https://huggingface.co/datasets/Project-AgML/arabica_coffee_leaf_disease_classification"
+        }
       ]
     },
     "phoma": {
@@ -125,7 +166,9 @@
       "why": [
         "Do nấm Phoma, hay gặp ở vùng cao, lạnh, nhiều gió (thường trên cà phê arabica)."
       ],
-      "goal": ["Giảm tổn thương lá non, giữ cây phát triển."],
+      "goal": [
+        "Giảm tổn thương lá non, giữ cây phát triển."
+      ],
       "do": [
         "Trồng hoặc giữ cây chắn gió, cây che bóng.",
         "Tỉa và vệ sinh cành, lá bệnh.",
@@ -134,15 +177,27 @@
       "safety": "Mô hình học loại này từ ảnh cà phê arabica ở Kenya — độ tin cậy với robusta Tây Nguyên thấp, cần người xác nhận.",
       "audio_text": "Lá này có thể bị bệnh đốm lá do nấm Phoma. Bệnh này thường gặp ở vùng cao, lạnh và nhiều gió. Hãy giữ cây chắn gió, tỉa lá bệnh, và hỏi cán bộ khuyến nông để xác nhận.",
       "sources": [
-        {"name": "Temporal analysis of Phoma leaf spot of coffee plants at different altitudes (Revista Ceres)", "url": "https://ojs.ceres.ufv.br/ceres/article/view/7708"},
-        {"name": "JMuBEN / AgML — Arabica coffee leaf disease dataset (lớp Phoma)", "url": "https://huggingface.co/datasets/Project-AgML/arabica_coffee_leaf_disease_classification"}
+        {
+          "name": "Temporal analysis of Phoma leaf spot of coffee plants at different altitudes (Revista Ceres)",
+          "url": "https://ojs.ceres.ufv.br/ceres/article/view/7708"
+        },
+        {
+          "name": "JMuBEN / AgML — Arabica coffee leaf disease dataset (lớp Phoma)",
+          "url": "https://huggingface.co/datasets/Project-AgML/arabica_coffee_leaf_disease_classification"
+        }
       ]
     },
     "not_coffee_leaf": {
       "title": "Có vẻ không phải lá cà phê",
-      "see": ["Ảnh không giống lá cà phê mà mô hình đã học."],
-      "why": ["Ami Ama chỉ nhận diện lá cà phê."],
-      "goal": ["Chụp lại đúng một lá cà phê."],
+      "see": [
+        "Ảnh không giống lá cà phê mà mô hình đã học."
+      ],
+      "why": [
+        "Ami Ama chỉ nhận diện lá cà phê."
+      ],
+      "goal": [
+        "Chụp lại đúng một lá cà phê."
+      ],
       "do": [
         "Chụp một lá cà phê, lấp đầy khung hình.",
         "Chụp nơi đủ sáng, không rung tay."
@@ -152,27 +207,46 @@
       "sources": []
     },
     "uncertain": {
-      "title": "Chưa chắc — hỏi cán bộ",
-      "see": ["Ami Ama chưa đủ chắc chắn về ảnh này."],
-      "why": [
-        "Có thể là bệnh mà mô hình chưa học (rệp sáp, mọt đục cành, tuyến trùng, thiếu dinh dưỡng, nấm hồng…).",
-        "Hoặc ảnh chưa rõ."
+      "title": "Chưa chắc — cùng kiểm tra thêm",
+      "see": [
+        "Ami Ama chưa đủ chắc chắn với ảnh này."
       ],
-      "goal": ["Để người có chuyên môn xem giúp — không đoán bừa."],
+      "why": [
+        "Ảnh chỉ thấy một lá, một góc; nhiều bệnh nhìn rất giống nhau."
+      ],
+      "goal": [
+        "Biết rõ vấn đề trước khi bỏ tiền mua thuốc."
+      ],
       "do": [
-        "Bấm “Hỏi cán bộ” để gửi ảnh và ghi chú.",
-        "Lưu vào sổ rẫy để theo dõi.",
-        "Có thể chụp lại lá khác rõ hơn."
+        "Chụp thêm 2 lá khác trên cùng cây.",
+        "Trả lời vài câu hỏi để phân biệt.",
+        "Buộc dây đánh dấu cây, chưa phun thuốc khi chưa rõ bệnh.",
+        "Xem lại cây sau 3–5 ngày; nếu lan sang nhiều cây, gửi ảnh cho cán bộ."
       ],
       "safety": "Khi chưa chắc, Ami Ama không đưa lời khuyên chữa bệnh.",
-      "audio_text": "Ami Ama chưa đủ chắc chắn về ảnh này. Hãy lưu vào sổ rẫy và bấm hỏi cán bộ để người có chuyên môn xem giúp.",
-      "sources": []
+      "audio_text": "Ami Ama chưa đủ chắc chắn với ảnh này. Hãy chụp thêm 2 lá khác trên cùng cây, và trả lời vài câu hỏi để phân biệt. Buộc dây đánh dấu cây, chưa phun thuốc khi chưa rõ bệnh. Xem lại cây sau 3 đến 5 ngày; nếu lan sang nhiều cây, gửi ảnh cho cán bộ.",
+      "sources": [
+        {
+          "name": "Mrisho et al. 2020 — đánh giá 6 lá mỗi cây giúp PlantVillage Nuru chính xác hơn ngoài đồng (Frontiers in Plant Science)",
+          "url": "https://www.frontiersin.org/journals/plant-science/articles/10.3389/fpls.2020.590889"
+        },
+        {
+          "name": "CABI Plantwise Diagnostic Field Guide",
+          "url": ""
+        }
+      ]
     },
     "retake": {
       "title": "Ảnh chưa rõ — chụp lại nhé",
-      "see": ["Ảnh bị mờ, quá tối hoặc quá sáng."],
-      "why": ["Ảnh chưa rõ thì kết quả dễ sai."],
-      "goal": ["Có một ảnh rõ của một lá."],
+      "see": [
+        "Ảnh bị mờ, quá tối hoặc quá sáng."
+      ],
+      "why": [
+        "Ảnh chưa rõ thì kết quả dễ sai."
+      ],
+      "goal": [
+        "Có một ảnh rõ của một lá."
+      ],
       "do": [
         "Giữ chắc tay, chạm màn hình để lấy nét.",
         "Chụp mặt dưới lá, nơi đủ sáng nhưng không chói.",
@@ -181,6 +255,36 @@
       "safety": "",
       "audio_text": "Ảnh chưa rõ. Hãy giữ chắc tay, chụp một lá ở nơi đủ sáng và để lá lấp đầy khung hình.",
       "sources": []
+    },
+    "not_disease_nutrition": {
+      "title": "Có thể không phải bệnh — có thể do dinh dưỡng, đất hoặc nước",
+      "see": [
+        "Lá vàng đều trên cả cây, không có bột, đốm hay đường đục."
+      ],
+      "why": [
+        "Thiếu dinh dưỡng, khô hạn hoặc rễ yếu thường làm cả cây vàng dần, không tạo vết rõ."
+      ],
+      "goal": [
+        "Tìm đúng nguyên nhân trước khi bón hay phun."
+      ],
+      "do": [
+        "Không phun thuốc trừ bệnh khi không thấy dấu hiệu bệnh.",
+        "Xem lại lịch bón phân và tưới gần đây.",
+        "Hỏi cán bộ về phân tích đất hoặc lá.",
+        "Chụp lại sau 1–2 tuần để so sánh."
+      ],
+      "safety": "Đây là gợi ý từ câu trả lời của bạn, không phải chẩn đoán của AI. Hỏi cán bộ trước khi bón hay phun.",
+      "audio_text": "Có thể không phải bệnh, mà do dinh dưỡng, đất hoặc nước. Lá vàng đều trên cả cây, không có bột, đốm hay đường đục. Không phun thuốc trừ bệnh khi không thấy dấu hiệu bệnh. Xem lại lịch bón phân và tưới gần đây, hỏi cán bộ về phân tích đất hoặc lá, và chụp lại sau 1 đến 2 tuần để so sánh.",
+      "sources": [
+        {
+          "name": "CABI Plantwise Diagnostic Field Guide — nguyên nhân phi sinh học thường ảnh hưởng cả cây",
+          "url": ""
+        },
+        {
+          "name": "Kerala Agricultural University — Coffee: nutrient deficiency (nguồn Ấn Độ, không phải Việt Nam)",
+          "url": "https://celkau.in/crops/plantation/coffee/deficiency.php"
+        }
+      ]
     }
   },
   "ui_prompts": {

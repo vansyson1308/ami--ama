@@ -8,6 +8,8 @@ export function entryMessage(e?: LogEntry): string {
   const date = fmtDate(e.ts);
   let msg: string;
   if (e.kind === 'not_coffee') msg = t('ask_tpl_not_coffee', { date, loc });
+  else if (e.cardId === 'not_disease_nutrition') msg = t('ask_tpl', { date, name: t('case_nutrition'), conf: t('assisted_conf'), loc });
+  else if (e.assisted) msg = t('ask_tpl', { date, name: e.name, conf: t('assisted_conf'), loc });
   else if (e.kind === 'abstain') msg = t('ask_tpl', { date, name: t('ask_unknown'), conf: t('res_conf_low'), loc });
   else msg = t('ask_tpl', { date, name: e.name, conf: e.conf, loc });
   return e.note ? `${msg} ${t('log_note')}: ${e.note}` : msg;
