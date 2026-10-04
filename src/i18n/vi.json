@@ -197,5 +197,8 @@
   "ev_unsure_4": "Trong lúc chờ: việc an toàn + hẹn xem lại + gửi phiếu hỏi cho người giúp.",
   "ev_unsure_draft": "Câu hỏi và trọng số là bản nháp, chưa được chuyên gia hiệu chỉnh.",
   "about_questions_t": "Câu hỏi phân biệt",
-  "case_not_coffee": "Ảnh có vẻ không phải lá cà phê"
+  "case_not_coffee": "Ảnh có vẻ không phải lá cà phê",
+  "contrib_export": "📦 Xuất dữ liệu đóng góp",
+  "contrib_confirm": "Xuất các ghi chép đã có câu trả lời của cán bộ (kèm ảnh nhỏ, câu trả lời, vị trí nếu đã cho phép) thành một tệp để bạn tự gửi cho dự án? Ami Ama không tự gửi đi đâu.",
+  "contrib_done": "Đã xuất {n} ghi chép đóng góp"
 }

@@ -2,6 +2,8 @@ import { test, expect, type Page } from '@playwright/test';
 
 // v1.1 "uncertain is useful" flow — runs fully offline after first load.
 const BASE = process.env.V11_URL ?? '';
+// Against a deployment from the cloud test container, TLS is re-terminated by an egress proxy Chromium does not trust.
+if (BASE) test.use({ ignoreHTTPSErrors: true, launchOptions: { executablePath: '/opt/pw-browsers/chromium', args: ['--ignore-certificate-errors'] } });
 
 async function setup(page: Page, context: import('@playwright/test').BrowserContext) {
   await page.goto(BASE + '/');
@@ -145,6 +147,16 @@ test('follow-up reminder, case image, share fallback, unsent filter, expert answ
   await page.getByTestId('expert-label').selectOption('rust');
   await page.getByTestId('expert-save').click();
   await expect(page.getByTestId('expert-saved')).toContainText('Bệnh rỉ sắt');
+  // P1: consented export of expert-labelled entries (download fallback, no upload)
+  page.once('dialog', (d) => d.accept());
+  const cdl = page.waitForEvent('download');
+  await page.getByTestId('contrib-export').click();
+  const contrib = await cdl;
+  expect(contrib.suggestedFilename()).toMatch(/^ami-ama-dong-gop-.*\.json$/);
+  const body = JSON.parse(await (await import('node:fs/promises')).readFile((await contrib.path())!, 'utf8'));
+  expect(body.kind).toBe('contribution');
+  expect(body.entries).toHaveLength(1);
+  expect(body.entries[0].expertLabel).toBe('rust');
 
   // 5 days later (mocked clock) -> home banner -> follow-up capture of the same tree
   await page.clock.fastForward(5 * 86400000);
