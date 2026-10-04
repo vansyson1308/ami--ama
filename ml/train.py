@@ -127,6 +127,9 @@ def main():
     ap.add_argument("--resume", action="store_true", help="continue from checkpoints/last.pt")
     ap.add_argument("--limit", type=int, default=0, help="smoke test: use only N train/val rows")
     ap.add_argument("--ckpt-dir", default=None, help="override checkpoint directory (smoke tests)")
+    ap.add_argument("--init", default=None, help="start from these weights (fine-tune), e.g. checkpoints/best.pt")
+    ap.add_argument("--lr-backbone", type=float, default=3e-4)
+    ap.add_argument("--lr-head", type=float, default=1e-3)
     a = ap.parse_args()
     seed_everything(SEED)
     torch.set_num_threads(4)
@@ -147,13 +150,17 @@ def main():
     dl_va = DataLoader(LeafDS(va, False), batch_size=64, num_workers=a.workers)
     va_roc = np.array([r["source"] == "rocole" for r in va])
 
-    model = timm.create_model(a.arch, pretrained=True, num_classes=len(KEYS)).to(DEV)
+    model = timm.create_model(a.arch, pretrained=a.init is None, num_classes=len(KEYS)).to(DEV)
+    if a.init:
+        model.load_state_dict(torch.load(a.init, map_location=DEV, weights_only=False)["state_dict"])
+        print("initialised from", a.init, flush=True)
     head = set(id(p) for p in model.get_classifier().parameters())
     backbone = [p for p in model.parameters() if id(p) not in head]
-    opt = torch.optim.AdamW([{"params": backbone, "lr": 3e-4}, {"params": list(model.get_classifier().parameters()), "lr": 1e-3}],
+    opt = torch.optim.AdamW([{"params": backbone, "lr": a.lr_backbone},
+                             {"params": list(model.get_classifier().parameters()), "lr": a.lr_head}],
                             weight_decay=0.02)
     steps = a.epochs * len(dl_tr)
-    sched = torch.optim.lr_scheduler.OneCycleLR(opt, max_lr=[3e-4, 1e-3], total_steps=steps, pct_start=0.1,
+    sched = torch.optim.lr_scheduler.OneCycleLR(opt, max_lr=[a.lr_backbone, a.lr_head], total_steps=steps, pct_start=0.1,
                                                 anneal_strategy="cos")
     crit = nn.CrossEntropyLoss(label_smoothing=0.1)
 

@@ -5,6 +5,7 @@
  "test|jmuben|leaf_miner": 180,
  "test|jmuben|phoma": 180,
  "test|jmuben|rust": 180,
+ "test|negatives|not_coffee_leaf": 50,
  "test|rocole|healthy": 157,
  "test|rocole|red_spider_mite": 33,
  "test|rocole|rust": 122,
@@ -14,6 +15,7 @@
  "train|jmuben|leaf_miner": 840,
  "train|jmuben|phoma": 840,
  "train|jmuben|rust": 840,
+ "train|negatives|not_coffee_leaf": 231,
  "train|rocole|healthy": 476,
  "train|rocole|red_spider_mite": 100,
  "train|rocole|rust": 360,
@@ -23,6 +25,7 @@
  "val|jmuben|leaf_miner": 180,
  "val|jmuben|phoma": 180,
  "val|jmuben|rust": 180,
+ "val|negatives|not_coffee_leaf": 50,
  "val|rocole|healthy": 158,
  "val|rocole|red_spider_mite": 34,
  "val|rocole|rust": 120

@@ -1,0 +1,66 @@
+{
+ "v1": {
+  "field_acc_at_tau": 0.9142,
+  "field_coverage": 0.7468,
+  "ood_wrong": 10,
+  "ood_n": 58,
+  "never_assert": [
+   "red_spider_mite"
+  ],
+  "tau": 0.82,
+  "T": 0.607,
+  "test_rocole": {
+   "n": 312,
+   "acc": 0.8365,
+   "macro_f1": 0.7358,
+   "coverage_at_tau": 0.7468,
+   "acc_at_tau": 0.9142,
+   "ece": 0.075,
+   "ece_uncalibrated": 0.071
+  },
+  "test_jmuben": {
+   "n": 900,
+   "acc": 0.9856,
+   "macro_f1": 0.9854,
+   "coverage_at_tau": 0.95,
+   "acc_at_tau": 0.9965,
+   "ece": 0.0254,
+   "ece_uncalibrated": 0.1192
+  }
+ },
+ "v2": {
+  "field_acc_at_tau": 0.9109,
+  "field_coverage": 0.7917,
+  "ood_wrong": 1,
+  "ood_n": 58,
+  "never_assert": [
+   "red_spider_mite"
+  ],
+  "tau": 0.79,
+  "T": 0.5973,
+  "test_rocole": {
+   "n": 312,
+   "acc": 0.8365,
+   "macro_f1": 0.756,
+   "coverage_at_tau": 0.7917,
+   "acc_at_tau": 0.9109,
+   "ece": 0.0756,
+   "ece_uncalibrated": 0.0785
+  },
+  "test_jmuben": {
+   "n": 900,
+   "acc": 0.9922,
+   "macro_f1": 0.9927,
+   "coverage_at_tau": 0.9789,
+   "acc_at_tau": 0.9955,
+   "ece": 0.0172,
+   "ece_uncalibrated": 0.1035
+  }
+ },
+ "checks": {
+  "field_acc_at_tau_drop_le_1pt": true,
+  "field_coverage_drop_le_1pt": true,
+  "ood_confident_wrong_improves": true
+ },
+ "ship_v2": true
+}

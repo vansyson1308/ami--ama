@@ -1,0 +1,50 @@
+{
+ "args": {
+  "arch": "mobilenetv3_large_100",
+  "epochs": 3,
+  "freeze_epochs": 0,
+  "bs": 48,
+  "workers": 3,
+  "patience": 4,
+  "max_minutes": 45.0,
+  "resume": false,
+  "limit": 0,
+  "ckpt_dir": null,
+  "init": "checkpoints/best.pt",
+  "lr_backbone": 0.0001,
+  "lr_head": 0.0003
+ },
+ "log": [
+  {
+   "epoch": 0,
+   "frozen": false,
+   "train_loss": 0.591945481123621,
+   "val_macro_f1": 0.889349754581341,
+   "val_rocole_macro_f1": 0.7148459383753502,
+   "val_acc": 0.9443681318681318,
+   "select_score": 0.8020978464783456,
+   "epoch_min": 3.6699441274007163
+  },
+  {
+   "epoch": 1,
+   "frozen": false,
+   "train_loss": 0.5512231216084039,
+   "val_macro_f1": 0.8951513503461629,
+   "val_rocole_macro_f1": 0.7282862736608151,
+   "val_acc": 0.9443681318681318,
+   "select_score": 0.811718812003489,
+   "epoch_min": 3.3757067402203877
+  },
+  {
+   "epoch": 2,
+   "frozen": false,
+   "train_loss": 0.5417489055125466,
+   "val_macro_f1": 0.9012175353967617,
+   "val_rocole_macro_f1": 0.7366135269583546,
+   "val_acc": 0.9526098901098901,
+   "select_score": 0.8189155311775582,
+   "epoch_min": 3.3227349321047464
+  }
+ ],
+ "best_select_score": 0.8189155311775582
+}

@@ -1,0 +1,11 @@
+grass: 35
+banana_leaves: 40
+cashew_leaves: 36
+search failed cassava leaves HTTP Error 429: Too Many Requests
+search failed black pepper vine HTTP Error 429: Too Many Requests
+other_crop_leaves: 88
+sky: 42
+soil: 48
+hands: 42
+total 331
+EXIT 0

@@ -113,9 +113,16 @@ def main() -> None:
     be = parquet_rows("beans", [RAW / "beans" / f"{s}.parquet" for s in ("train", "validation", "test")], "labels",
                       lambda l: "not_coffee_leaf", None)
     split_simple(be)
+    # v2: openly licensed Wikimedia Commons negatives (ml/collect_negatives.py), if present. Split 70/15/15 by group.
+    ng = [{"source": "negatives", "orig": f.name, "key": "not_coffee_leaf", "fine": f.name.rsplit("_", 1)[0], "level": 0,
+           "group": "", "_load": f} for f in sorted((RAW / "negatives").glob("*.jpg"))]
+    if ng:
+        split_simple(ng)
 
     all_rows = []
-    for ds, rows in (("rocole", roc), ("jmuben", jm), ("beans", be)):
+    for ds, rows in (("rocole", roc), ("jmuben", jm), ("beans", be), ("negatives", ng)):
+        if not rows:
+            continue
         for k, r in enumerate(rows):
             rel = f"{ds}/{k:05d}.jpg"
             dest = CACHE / rel
