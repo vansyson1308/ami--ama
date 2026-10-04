@@ -1,7 +1,7 @@
 # Acceptance checklist (≈ 15 minutes)
 
 Live URL: **https://ami-ama.vercel.app** (Vercel, production = `main`)
-Release: tag `v1.0` — **TODO(human)**: this container may not create tags (GitHub proxy returns 403 for tag refs). Create it on the final `main` commit: GitHub → Releases → *Draft a new release* → tag `v1.0`, target `main` (or `git tag -a v1.0 origin/main -m v1.0 && git push origin v1.0`). · PRs: [#1](https://github.com/vansyson1308/ami--ama/pull/1) (M1, merged), [#2](https://github.com/vansyson1308/ami--ama/pull/2) (model + M2–M7, merged), [#3](https://github.com/vansyson1308/ami--ama/pull/3) (per-class safety gate, OOD check, demo media)
+Release: v1.1.0 live (PR [#6](https://github.com/vansyson1308/ami--ama/pull/6) + P1 PR #7); rollback: `docs/ROLLBACK.md`. Tags `v1.0-submitted` (`301de48`) and `v1.1.0` — **TODO(human)**: this container may not create tags (GitHub proxy returns 403 for tag refs). Create it on the final `main` commit: GitHub → Releases → *Draft a new release* → tag `v1.0`, target `main` (or `git tag -a v1.0 origin/main -m v1.0 && git push origin v1.0`). · PRs: [#1](https://github.com/vansyson1308/ami--ama/pull/1) (M1, merged), [#2](https://github.com/vansyson1308/ami--ama/pull/2) (model + M2–M7, merged), [#3](https://github.com/vansyson1308/ami--ama/pull/3) (per-class safety gate, OOD check, demo media)
 
 Already verified automatically in this container (headless Chromium, Pixel 5 emulation, production build via `vite preview`) — evidence in `docs/PROGRESS.md`, `docs/e2e-parity.json`, `docs/screenshots/`. The boxes below are for **you** on a real phone.
 
@@ -29,7 +29,18 @@ Already verified automatically in this container (headless Chromium, Pixel 5 emu
 - [ ] **Tải JSON** downloads `so-ray-YYYY-MM-DD.json`.
 - [ ] **Giới thiệu → Xóa toàn bộ dữ liệu** → log empty, onboarding shows again.
 
+## E. v1.1 "uncertain is useful" — 4 min (airplane mode is fine)
+- [ ] **Thử với ảnh mẫu → 4th image** (`03_rust`) → "Chưa chắc — cùng kiểm tra thêm" → primary **"Chụp thêm 2 lá trên cùng cây"** → "Thử: thêm lá từ ảnh mẫu" twice → result shows 3 thumbnails and **"Kết quả từ 3 lá"**.
+- [ ] **5th image** (`04_red_spider_mite`) → "Có thể là Nhện đỏ" → **"Trả lời câu hỏi ngay"** → "Phân biệt: Nhện đỏ hay Bệnh rỉ sắt?" with 2 reference photos and 3 questions (🔊 Nghe on each).
+  - Answer the mite question **Không** → no assisted result; "Trong lúc chờ" + **"Gửi phiếu hỏi qua Zalo"** + "Hẹn xem lại sau 4 ngày".
+  - Again, answer the mite question **Có** → **"Theo dấu hiệu bạn thấy — chưa phải AI khẳng định"** badge on the red-spider-mite card.
+  - Again, answer "lá vàng đều…" **Có** and the rest **Không** → "Có thể không phải bệnh — có thể do dinh dưỡng, đất hoặc nước".
+- [ ] **Gửi phiếu hỏi qua Zalo** → Hỏi người shows the case image (photos, date, "Có thể là…", your answers) → **"Gửi qua Zalo / ứng dụng khác"** opens the Android share sheet with the image (pick Zalo); SMS and 📞 Gọi are below; save 2 helper contacts.
+- [ ] **Sổ rẫy** → "Chưa gửi" filter → one-tap **📤 Gửi**; **"Ghi câu trả lời của cán bộ"** → pick a class → saved line; **"📦 Xuất dữ liệu đóng góp"** asks for consent then saves a JSON file.
+- [ ] Single-photo results are unchanged: 3rd image still "Có thể là bệnh rỉ sắt", 10th (bean leaf) still "không phải lá cà phê".
+
 ## D. Evidence & content — 3 min
+- [ ] **Bằng chứng** has the new section "Khi Ami Ama chưa chắc" (4 steps, assisted = farmer's own observations, weights are a draft); **Giới thiệu** shows the questions' review_status.
 - [ ] **Bằng chứng** shows field (RoCoLe) vs studio (JMuBEN) numbers matching README → "Evidence" table, the per-class table ("Nhện đỏ — Không khẳng định"), the not-a-coffee-leaf result (1/58 held-out real photos wrongly answered with leaf_v2; was 10/58 with leaf_v1), the "KHÔNG nhận ra" list and datasets with licenses.
 - [ ] **Giá cà phê** shows the snapshot date, the "Không phải AI" banner, the staleness warning (snapshot 15/09/2026), and a difference when you type a trader price.
 - [ ] Every advice text on screen is from `content/advice.vi.json` (no other agronomy text exists in the app).

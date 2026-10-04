@@ -90,6 +90,41 @@ export default function FieldLog() {
     a.click();
     setTimeout(() => URL.revokeObjectURL(a.href), 1000);
   };
+  // P1: consented export of expert-labelled entries (the data flywheel). Local file only — never uploaded by the app.
+  const labelled = log.filter((e) => e.expertLabel);
+  const exportContrib = async () => {
+    if (!labelled.length || !confirm(t('contrib_confirm'))) return;
+    const data = {
+      app: 'ami-ama',
+      kind: 'contribution',
+      version: 1,
+      exported: new Date().toISOString(),
+      note: 'Expert-labelled field observations, exported by the farmer with consent. Photos are 160 px thumbnails.',
+      entries: labelled.map((e) => ({
+        ts: e.ts, model: e.model, kind: e.kind, top: e.top, nLeaves: e.nLeaves, answers: e.answers, assisted: e.assisted,
+        expertLabel: e.expertLabel, expertNote: e.expertNote, lat: e.lat, lng: e.lng,
+        photos: e.photos?.length ? e.photos : e.thumb ? [e.thumb] : [],
+      })),
+    };
+    const file = new File([JSON.stringify(data, null, 1)], `ami-ama-dong-gop-${new Date().toISOString().slice(0, 10)}.json`, {
+      type: 'application/json',
+    });
+    try {
+      if (navigator.share && navigator.canShare?.({ files: [file] })) {
+        await navigator.share({ files: [file] });
+        setToast(t('contrib_done', { n: labelled.length }));
+        return;
+      }
+    } catch {
+      return;
+    }
+    const a = document.createElement('a');
+    a.href = URL.createObjectURL(file);
+    a.download = file.name;
+    a.click();
+    setTimeout(() => URL.revokeObjectURL(a.href), 2000);
+    setToast(t('contrib_done', { n: labelled.length }));
+  };
   const title = (e: LogEntry) =>
     e.cardId === 'not_disease_nutrition'
       ? t('case_nutrition')
@@ -105,6 +140,11 @@ export default function FieldLog() {
         <div className="row">
           <button className="btn secondary" onClick={shareAll}>{t('log_share')}</button>
           <button className="btn secondary" onClick={downloadJson}>{t('log_json')}</button>
+          {labelled.length > 0 && (
+            <button className="btn secondary" onClick={exportContrib} data-testid="contrib-export">
+              {t('contrib_export')} ({labelled.length})
+            </button>
+          )}
         </div>
       )}
       {log.length > 0 && (
