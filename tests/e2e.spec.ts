@@ -120,10 +120,24 @@ test('offline end-to-end: samples, parity, audio, abstain, field log, escalation
   const oddKind = await page.getByTestId('result').getAttribute('data-kind');
   console.log('ODD', oddKind, await page.getByTestId('result-title').textContent());
 
+  // Escalation message wording per result type: not-coffee and uncertain entries
+  const notCoffeeIdx = files.findIndex((f) => expected[f].decision === 'not_coffee');
+  const plainAbstainIdx = files.findIndex((f) => expected[f].decision === 'abstain');
+  for (const [idx, want] of [
+    [notCoffeeIdx, /ảnh có vẻ không phải lá cà phê\. Vị trí/],
+    [plainAbstainIdx, /lá có dấu hiệu chưa rõ \(Chưa chắc\)\. Vị trí/],
+  ] as const) {
+    await runSample(page, idx);
+    await page.getByTestId('save').click();
+    await page.goto('/#/ask'); // newest entry is preselected
+    await expect(page.getByTestId('ask-msg')).toHaveValue(want);
+    await expect(page.getByTestId('ask-msg')).not.toHaveValue(/Khá chắc chắn/);
+  }
+
   // Field log persists across an offline reload
   await page.reload();
   await page.goto('/#/log');
-  await expect(page.getByTestId('log-entry')).toHaveCount(3);
+  await expect(page.getByTestId('log-entry')).toHaveCount(5);
   await expect(page.getByTestId('log-entry').first().locator('img')).toBeVisible(); // consented thumbnail
   await expect(page.getByText('Chờ gửi').first()).toBeVisible();
   await page.screenshot({ path: `${SHOT}/field-log.png`, fullPage: true });
